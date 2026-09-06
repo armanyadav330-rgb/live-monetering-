@@ -137,7 +137,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="p-2.5 space-y-0.5 flex-1 overflow-hidden flex flex-col">
+        <div className="p-2.5 space-y-0.5 flex-1 overflow-y-auto flex flex-col">
           <div className="flex items-center justify-between px-2.5 py-1 mb-0.5">
             <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
               Navigation
@@ -152,7 +152,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </button>
             )}
           </div>
-          <div className="space-y-0.5 overflow-hidden">
+          <div className="space-y-0.5">
             {allowedItems.map((item) => {
               const Icon = item.icon;
               const viewStr = effectiveView || '';

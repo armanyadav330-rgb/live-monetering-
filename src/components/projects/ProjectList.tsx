@@ -323,9 +323,10 @@ export const ProjectList: React.FC<ProjectListProps> = ({
         </div>
       </div>
 
-      {/* Projects Table */}
+      {/* Projects Table (Desktop) & Cards (Mobile) */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
               <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider text-[10px]">
@@ -414,6 +415,89 @@ export const ProjectList: React.FC<ProjectListProps> = ({
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Card-Based List View */}
+        <div className="md:hidden divide-y divide-slate-100">
+          {paginatedProjects.length === 0 ? (
+            <div className="py-8 text-center text-xs text-slate-400">
+              No projects found matching the selected search criteria.
+            </div>
+          ) : (
+            paginatedProjects.map((p) => (
+              <div key={p.id} className="p-3.5 space-y-2.5 hover:bg-slate-50/70 transition">
+                {/* Header: Project Name, ID & Risk */}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-semibold text-xs text-slate-900 leading-snug">
+                      {p.projectName}
+                    </h4>
+                    <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                      {p.projectId} • {p.district}, {p.state}
+                    </div>
+                  </div>
+                  <div className="shrink-0">{getRiskBadge(p.riskLevel, p.riskScore)}</div>
+                </div>
+
+                {/* Scheme & NGO details */}
+                <div className="text-[11px] text-slate-600 bg-slate-50 p-2 rounded-lg border border-slate-100 space-y-1">
+                  <div className="font-medium text-slate-800 truncate">
+                    {p.scheme.split('(')[0]}
+                  </div>
+                  <div className="text-[10px] text-slate-500 truncate">
+                    NGO: {p.ngoName}
+                  </div>
+                </div>
+
+                {/* Metrics Row: Beneficiaries & CCTV status */}
+                <div className="flex items-center justify-between text-[11px] text-slate-600 pt-0.5">
+                  <div>
+                    <span className="font-semibold text-slate-900">{p.beneficiaryCount}</span>{' '}
+                    <span className="text-[10px] text-slate-500">Beneficiaries ({p.averageAttendancePercent}% Att.)</span>
+                  </div>
+                  <div>{getCCTVIndicator(p.cctvStatus, p.activeCamerasCount, p.totalCamerasCount)}</div>
+                </div>
+
+                {/* Action Buttons Row */}
+                <div className="flex items-center justify-end gap-2 pt-1 border-t border-slate-100">
+                  <button
+                    onClick={() => onSelectProject(p.id)}
+                    className="flex-1 py-1.5 px-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs flex items-center justify-center gap-1.5 transition"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    <span>View Details</span>
+                  </button>
+
+                  {canManage && (
+                    <>
+                      <button
+                        onClick={() => onEditProject(p)}
+                        className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-600 transition"
+                        title="Edit Project"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              `Are you sure you want to remove project "${p.projectName}"? This action will be audited.`
+                            )
+                          ) {
+                            onDeleteProject(p.id);
+                          }
+                        }}
+                        className="p-1.5 rounded-lg border border-rose-200 hover:bg-rose-50 text-rose-500 transition"
+                        title="Delete Project"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Pagination bar */}

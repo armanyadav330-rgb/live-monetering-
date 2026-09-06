@@ -74,7 +74,7 @@ export const RiskChart: React.FC<RiskChartProps> = ({ projects = [] }) => {
                 outerRadius={75}
                 innerRadius={45}
                 paddingAngle={4}
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={({ percent }) => (percent > 0.05 ? `${(percent * 100).toFixed(0)}%` : '')}
                 labelLine={false}
               >
                 {riskData.map((entry, index) => (

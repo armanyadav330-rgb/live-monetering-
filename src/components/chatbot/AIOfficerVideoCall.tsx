@@ -411,16 +411,17 @@ export const AIOfficerVideoCall: React.FC<AIOfficerVideoCallProps> = ({
         </div>
 
         {/* Controls Row */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center space-x-1.5 sm:space-x-2">
             {/* Document Inspection Button */}
             <button
               onClick={handleInspectDocument}
               disabled={isScanningDocument}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-600/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-600/30 text-xs font-semibold transition-colors disabled:opacity-50"
+              className="inline-flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-emerald-600/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-600/30 text-xs font-semibold transition-colors disabled:opacity-50"
             >
-              <FileCheck className="w-4 h-4 text-emerald-400" />
-              <span>Inspect Document / ID</span>
+              <FileCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span className="hidden sm:inline">Inspect Document / ID</span>
+              <span className="sm:hidden">Inspect ID</span>
             </button>
 
             {/* Watermark Snapshot */}
@@ -433,7 +434,7 @@ export const AIOfficerVideoCall: React.FC<AIOfficerVideoCallProps> = ({
             </button>
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             {/* Mic Toggle */}
             <button
               onClick={() => {

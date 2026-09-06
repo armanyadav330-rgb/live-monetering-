@@ -107,7 +107,7 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
                 setSelectedProjectId(e.target.value);
                 setFocusedCameraId(null);
               }}
-              className="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-medium"
+              className="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-medium max-w-[190px] xs:max-w-[260px] sm:max-w-xs"
             >
               <option value="ALL">All Monitored Facilities ({projects.length})</option>
               {projects.map((p) => (
@@ -182,24 +182,24 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
                   onToggleFocus={() => setFocusedCameraId(null)}
                 />
                 {/* Status Simulator Controls */}
-                <div className="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                <div className="p-3 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
                   <span className="font-bold text-slate-700">Simulate Hardware Event:</span>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <button
                       onClick={() => handleToggleStatus(cam.id, 'ONLINE')}
-                      className="px-3 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold rounded"
+                      className="px-3 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold rounded text-xs"
                     >
                       Set ONLINE
                     </button>
                     <button
                       onClick={() => handleToggleStatus(cam.id, 'WARNING')}
-                      className="px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold rounded"
+                      className="px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold rounded text-xs"
                     >
                       Simulate JITTER / WARNING
                     </button>
                     <button
                       onClick={() => handleToggleStatus(cam.id, 'OFFLINE')}
-                      className="px-3 py-1 bg-rose-100 hover:bg-rose-200 text-rose-800 font-bold rounded"
+                      className="px-3 py-1 bg-rose-100 hover:bg-rose-200 text-rose-800 font-bold rounded text-xs"
                     >
                       Simulate DISCONNECT / OFFLINE
                     </button>

@@ -438,9 +438,9 @@ export const RandomVoiceCall: React.FC<RandomVoiceCallProps> = ({
               {/* VIDEO CALL UPGRADE BANNER (During Active Voice Call) */}
               {callState === 'CONNECTED' && (
                 <div className="pt-2">
-                  <div className="max-w-md mx-auto p-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg flex items-center justify-between gap-3 border border-emerald-400/40">
+                  <div className="max-w-md mx-auto p-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border border-emerald-400/40">
                     <div className="flex items-center gap-2 text-left">
-                      <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
                         <Video className="w-4 h-4 text-white" />
                       </div>
                       <div>
@@ -453,7 +453,7 @@ export const RandomVoiceCall: React.FC<RandomVoiceCallProps> = ({
 
                     <button
                       onClick={onUpgradeToVideoCall}
-                      className="px-3.5 py-1.5 rounded-lg bg-white text-emerald-950 font-bold text-xs hover:bg-emerald-50 transition shadow-xs shrink-0 cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-lg bg-white text-emerald-950 font-bold text-xs hover:bg-emerald-50 transition shadow-xs shrink-0 cursor-pointer text-center"
                     >
                       Connect Video Now
                     </button>

@@ -226,7 +226,7 @@ export const AIOfficerVoiceCall: React.FC<AIOfficerVoiceCallProps> = ({
       </div>
 
       {/* Center Officer Avatar & Calling State */}
-      <div className="flex-1 flex flex-col items-center justify-center py-4 z-10">
+      <div className="flex-1 overflow-y-auto flex flex-col items-center justify-center py-2 sm:py-4 z-10">
         {callState === 'RINGING' ? (
           <div className="text-center space-y-4">
             <div className="relative mx-auto w-28 h-28 flex items-center justify-center">
