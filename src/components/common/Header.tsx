@@ -8,6 +8,7 @@ import {
   RefreshCw,
   Building2,
   Menu,
+  Settings,
 } from 'lucide-react';
 import { User, UserRole } from '../../types';
 import { api, setStoredUser } from '../../services/api';
@@ -239,6 +240,18 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             )}
           </div>
+
+          {/* Portal Settings Quick Button */}
+          {onNavigate && (
+            <button
+              onClick={() => onNavigate('settings')}
+              className="p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer"
+              title="Portal Settings"
+              aria-label="Open Portal Settings"
+            >
+              <Settings className="w-4 h-4" />
+            </button>
+          )}
 
           {/* Current User Badge */}
           <div className="flex items-center gap-2 pl-2 border-l border-slate-200">

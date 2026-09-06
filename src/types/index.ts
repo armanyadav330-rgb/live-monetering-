@@ -247,7 +247,8 @@ export interface AuditLog {
     | 'USER_CREATED'
     | 'USER_ROLE_CHANGED'
     | 'AI_ANALYSIS_TRIGGERED'
-    | 'DEMO_DATA_RESET';
+    | 'DEMO_DATA_RESET'
+    | 'SETTINGS_UPDATED';
   targetType: 'PROJECT' | 'INSPECTION' | 'USER' | 'REPORT' | 'SYSTEM';
   targetId?: string;
   targetName?: string;
@@ -255,3 +256,88 @@ export interface AuditLog {
   ipAddress?: string;
   timestamp: string;
 }
+
+export interface PortalSettings {
+  // General & Organization
+  portalTitle: string;
+  departmentName: string;
+  ministryName: string;
+  financialYear: string;
+  defaultLanguage: 'en' | 'hi';
+  simulationMode: boolean;
+
+  // Telephony & Toll-Free Gateway
+  primaryTollFree: string;
+  secondaryTollFree: string;
+  ivrLanguage: 'hi-IN' | 'en-IN' | 'bilingual';
+  autoVideoCallBridge: boolean;
+  recordingConsentNotice: boolean;
+
+  // AI Risk Weights (must sum to 100%)
+  riskWeights: {
+    attendanceAnomaly: number; // default 20
+    cctvDowntime: number;      // default 15
+    inspectionHistory: number; // default 20
+    gpsVerification: number;   // default 20
+    complianceHistory: number; // default 15
+    otherSignals: number;      // default 10
+  };
+
+  // Inspection & Field Rules
+  geofenceRadiusMeters: number; // default 100
+  mandatoryPhotosCount: number; // default 4
+  minCctvUptimePercent: number; // default 85
+  offlineSyncEnabled: boolean;
+  autoSurpriseAuditTrigger: boolean;
+
+  // Notification & Alerts
+  smsAlertsEnabled: boolean;
+  whatsappAlertsEnabled: boolean;
+  emailDigestFrequency: 'IMMEDIATE' | 'DAILY' | 'WEEKLY';
+  alertEmailRecipient: string;
+
+  // Security & Data
+  sessionTimeoutMinutes: number; // 15, 30, 60
+  enforce2FA: boolean;
+  watermarkExportedReports: boolean;
+  updatedAt?: string;
+  updatedBy?: string;
+}
+
+export interface GrievanceTicket {
+  id: string;
+  ticketNumber: string; // e.g. GRV-2026-8491
+  applicantName: string;
+  applicantPhone?: string;
+  category:
+    | 'SCHOLARSHIP'
+    | 'CCTV_OFFLINE'
+    | 'ATTENDANCE_ANOMALY'
+    | 'INSPECTION_APPEAL'
+    | 'GRANT_IN_AID'
+    | 'GENERAL_GRIEVANCE';
+  subject: string;
+  description: string;
+  scheme?: string;
+  projectName?: string;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+  status: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+  resolutionNotes?: string;
+  assignedOfficer?: string;
+  createdAt: string;
+  resolvedAt?: string;
+  channel: 'CHATBOT' | 'AUDIO_CALL' | 'VIDEO_CALL' | 'PORTAL';
+}
+
+export interface AIChatMessage {
+  id: string;
+  sender: 'user' | 'bot' | 'system';
+  text: string;
+  spokenText?: string;
+  timestamp: string;
+  mode?: 'text' | 'audio_call' | 'video_call';
+  ticket?: GrievanceTicket;
+  actionTaken?: string;
+  quickReplies?: string[];
+}
+

@@ -11,6 +11,8 @@ import {
   RiskFactorBreakdown,
   RiskLevel,
   UserRole,
+  PortalSettings,
+  GrievanceTicket,
 } from '../types';
 import {
   SEED_PROJECTS,
@@ -22,6 +24,7 @@ import {
   SEED_NOTIFICATIONS,
   SEED_AUDIT_LOGS,
   SEED_VC_RECORDS,
+  SEED_GRIEVANCES,
 } from '../data/seedData';
 
 class PortalDataStore {
@@ -34,9 +37,75 @@ class PortalDataStore {
   private notifications: NotificationItem[] = [];
   private auditLogs: AuditLog[] = [];
   private vcRecords: RandomVCRecord[] = [];
+  private grievances: GrievanceTicket[] = [];
+  private settings: PortalSettings = {
+    portalTitle: 'Department of Social Justice & Empowerment - Institutional Monitoring & Inspection Portal',
+    departmentName: 'Department of Social Justice and Empowerment (DoSJE)',
+    ministryName: 'Ministry of Social Justice and Empowerment, Government of India',
+    financialYear: '2026-2027',
+    defaultLanguage: 'en',
+    simulationMode: true,
+
+    primaryTollFree: '1800-180-4921',
+    secondaryTollFree: '1800-200-8890',
+    ivrLanguage: 'bilingual',
+    autoVideoCallBridge: true,
+    recordingConsentNotice: true,
+
+    riskWeights: {
+      attendanceAnomaly: 20,
+      cctvDowntime: 15,
+      inspectionHistory: 20,
+      gpsVerification: 20,
+      complianceHistory: 15,
+      otherSignals: 10,
+    },
+
+    geofenceRadiusMeters: 100,
+    mandatoryPhotosCount: 4,
+    minCctvUptimePercent: 85,
+    offlineSyncEnabled: true,
+    autoSurpriseAuditTrigger: true,
+
+    smsAlertsEnabled: true,
+    whatsappAlertsEnabled: true,
+    emailDigestFrequency: 'DAILY',
+    alertEmailRecipient: 'monitoring-officer@dosje.gov.in',
+
+    sessionTimeoutMinutes: 30,
+    enforce2FA: true,
+    watermarkExportedReports: true,
+    updatedAt: new Date().toISOString(),
+    updatedBy: 'Dr. Rajeshwar Sharma, IAS (Super Admin)',
+  };
 
   constructor() {
     this.resetToSeed();
+    this.loadSettingsFromStorage();
+  }
+
+  private loadSettingsFromStorage(): void {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        const saved = window.localStorage.getItem('dosje_portal_settings');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          this.settings = { ...this.settings, ...parsed };
+        }
+      } catch {
+        // ignore
+      }
+    }
+  }
+
+  private saveSettingsToStorage(): void {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        window.localStorage.setItem('dosje_portal_settings', JSON.stringify(this.settings));
+      } catch {
+        // ignore
+      }
+    }
   }
 
   public resetToSeed(): void {
@@ -49,6 +118,7 @@ class PortalDataStore {
     this.notifications = JSON.parse(JSON.stringify(SEED_NOTIFICATIONS));
     this.auditLogs = JSON.parse(JSON.stringify(SEED_AUDIT_LOGS));
     this.vcRecords = JSON.parse(JSON.stringify(SEED_VC_RECORDS));
+    this.grievances = JSON.parse(JSON.stringify(SEED_GRIEVANCES));
   }
 
   // ---- AUDIT LOGS ----
@@ -702,6 +772,168 @@ class PortalDataStore {
       return this.attendance.filter((a) => a.projectId === projectId);
     }
     return [...this.attendance];
+  }
+
+  // ---- PORTAL SETTINGS ----
+  public getSettings(): PortalSettings {
+    return { ...this.settings };
+  }
+
+  public updateSettings(
+    newSettings: Partial<PortalSettings>,
+    user?: { id: string; name: string; role?: UserRole }
+  ): PortalSettings {
+    this.settings = {
+      ...this.settings,
+      ...newSettings,
+      riskWeights: {
+        ...this.settings.riskWeights,
+        ...(newSettings.riskWeights || {}),
+      },
+      updatedAt: new Date().toISOString(),
+      updatedBy: user ? `${user.name} (${user.role || 'Super Admin'})` : 'Super Admin',
+    };
+    this.saveSettingsToStorage();
+
+    // Log to audit log
+    this.addAuditLog(
+      user?.id || 'usr_super_admin',
+      user?.name || 'Dr. Rajeshwar Sharma, IAS',
+      user?.role || 'SUPER_ADMIN',
+      'SETTINGS_UPDATED',
+      'SYSTEM',
+      'system_settings',
+      'Portal Configuration & Policy Rules',
+      { modifiedFields: Object.keys(newSettings) }
+    );
+
+    return { ...this.settings };
+  }
+
+  public resetSettings(): PortalSettings {
+    this.settings = {
+      portalTitle: 'Department of Social Justice & Empowerment - Institutional Monitoring & Inspection Portal',
+      departmentName: 'Department of Social Justice and Empowerment (DoSJE)',
+      ministryName: 'Ministry of Social Justice and Empowerment, Government of India',
+      financialYear: '2026-2027',
+      defaultLanguage: 'en',
+      simulationMode: true,
+
+      primaryTollFree: '1800-180-4921',
+      secondaryTollFree: '1800-200-8890',
+      ivrLanguage: 'bilingual',
+      autoVideoCallBridge: true,
+      recordingConsentNotice: true,
+
+      riskWeights: {
+        attendanceAnomaly: 20,
+        cctvDowntime: 15,
+        inspectionHistory: 20,
+        gpsVerification: 20,
+        complianceHistory: 15,
+        otherSignals: 10,
+      },
+
+      geofenceRadiusMeters: 100,
+      mandatoryPhotosCount: 4,
+      minCctvUptimePercent: 85,
+      offlineSyncEnabled: true,
+      autoSurpriseAuditTrigger: true,
+
+      smsAlertsEnabled: true,
+      whatsappAlertsEnabled: true,
+      emailDigestFrequency: 'DAILY',
+      alertEmailRecipient: 'monitoring-officer@dosje.gov.in',
+
+      sessionTimeoutMinutes: 30,
+      enforce2FA: true,
+      watermarkExportedReports: true,
+      updatedAt: new Date().toISOString(),
+      updatedBy: 'System Default Reset',
+    };
+    this.saveSettingsToStorage();
+    return { ...this.settings };
+  }
+
+  // ---- GRIEVANCES & TICKETS ----
+  public getGrievances(): GrievanceTicket[] {
+    return [...this.grievances].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }
+
+  public getGrievanceById(id: string): GrievanceTicket | undefined {
+    return this.grievances.find((g) => g.id === id || g.ticketNumber === id);
+  }
+
+  public createGrievance(
+    data: Partial<GrievanceTicket>,
+    user?: { id: string; name: string; role: UserRole }
+  ): GrievanceTicket {
+    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+    const ticketNumber = data.ticketNumber || `GRV-2026-${randomSuffix}`;
+    const newTicket: GrievanceTicket = {
+      id: `grv_${Date.now()}`,
+      ticketNumber,
+      applicantName: data.applicantName || user?.name || 'Citizen / NGO Representative',
+      applicantPhone: data.applicantPhone || '+91 98180 00000',
+      category: data.category || 'GENERAL_GRIEVANCE',
+      subject: data.subject || 'Citizen Grievance Resolution Request',
+      description: data.description || 'Request submitted via AI Assistant.',
+      scheme: data.scheme || 'Central Sector Schemes (DoSJE)',
+      projectName: data.projectName,
+      priority: data.priority || 'HIGH',
+      status: data.status || 'OPEN',
+      resolutionNotes: data.resolutionNotes || 'Logged by AI Assistant Desk. Forwarded to field directorate for immediate review.',
+      assignedOfficer: data.assignedOfficer || 'Dr. Rajeshwar Sharma, IAS',
+      createdAt: new Date().toISOString(),
+      channel: data.channel || 'CHATBOT',
+    };
+
+    this.grievances.unshift(newTicket);
+
+    if (user) {
+      this.addAuditLog(
+        user.id,
+        user.name,
+        user.role,
+        'SYSTEM' as any,
+        'SYSTEM',
+        newTicket.id,
+        `Grievance Logged: ${ticketNumber}`,
+        { category: newTicket.category, subject: newTicket.subject }
+      );
+    }
+
+    return newTicket;
+  }
+
+  public resolveGrievance(
+    id: string,
+    resolutionNotes: string,
+    user?: { id: string; name: string; role: UserRole }
+  ): GrievanceTicket | null {
+    const item = this.getGrievanceById(id);
+    if (!item) return null;
+
+    item.status = 'RESOLVED';
+    item.resolutionNotes = resolutionNotes;
+    item.resolvedAt = new Date().toISOString();
+
+    if (user) {
+      this.addAuditLog(
+        user.id,
+        user.name,
+        user.role,
+        'SYSTEM' as any,
+        'SYSTEM',
+        item.id,
+        `Grievance Resolved: ${item.ticketNumber}`,
+        { resolutionNotes }
+      );
+    }
+
+    return item;
   }
 }
 

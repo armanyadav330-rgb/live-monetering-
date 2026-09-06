@@ -1,23 +1,31 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   PhoneCall,
-  PhoneOff,
-  Mic,
-  MicOff,
-  Video as VideoIcon,
-  VideoOff,
+  Phone,
+  Video,
   Shuffle,
   ShieldCheck,
   CheckCircle2,
-  XCircle,
   AlertTriangle,
   User,
   Clock,
   Building2,
+  RefreshCw,
+  ExternalLink,
+  MessageCircle,
+  Copy,
+  Check,
+  Download,
+  Share2,
+  Sparkles,
+  FileSpreadsheet,
 } from 'lucide-react';
-import { Project, RandomVCRecord, UserRole } from '../../types';
+import { Project, RandomVCRecord } from '../../types';
 import { SimulationBanner } from '../common/SimulationBanner';
 import { api } from '../../services/api';
+import { RandomVoiceCall } from './RandomVoiceCall';
+import { WhatsAppVideoCall } from './WhatsAppVideoCall';
+import { TollFreeGenerator } from './TollFreeGenerator';
 
 interface RandomVCModuleProps {
   initialProjectId?: string;
@@ -26,33 +34,24 @@ interface RandomVCModuleProps {
 export const RandomVCModule: React.FC<RandomVCModuleProps> = ({ initialProjectId }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [participantType, setParticipantType] = useState<
-    'PROJECT_INCHARGE' | 'STAFF' | 'BENEFICIARY'
-  >('PROJECT_INCHARGE');
+  const [activeTab, setActiveTab] = useState<'VOICE_CALL' | 'VIDEO_CALL' | 'TOLL_FREE' | 'HISTORY'>('VOICE_CALL');
+  const [autoStartVoice, setAutoStartVoice] = useState(false);
+  const [autoStartVideo, setAutoStartVideo] = useState(false);
+
+  // Participant State
+  const [participantType, setParticipantType] = useState<'PROJECT_INCHARGE' | 'STAFF' | 'BENEFICIARY'>('PROJECT_INCHARGE');
   const [participantName, setParticipantName] = useState('');
   const [participantRole, setParticipantRole] = useState('');
+  const [participantPhone, setParticipantPhone] = useState('+91 98101 23456');
 
-  const [isInCall, setIsInCall] = useState(false);
-  const [callDuration, setCallDuration] = useState(0);
-  const [isMicMuted, setIsMicMuted] = useState(false);
-  const [isVideoMuted, setIsVideoMuted] = useState(false);
-  const [useLocalCam, setUseLocalCam] = useState(false);
+  // Toll-Free Configuration State
+  const [tollFreeNumber, setTollFreeNumber] = useState('1800-180-4921');
+  const [tollFreePin, setTollFreePin] = useState('481902');
 
-  // Verification Checklist
-  const [idCardVerified, setIdCardVerified] = useState(true);
-  const [locationConfirmed, setLocationConfirmed] = useState(true);
-  const [physicalAttendanceMatched, setPhysicalAttendanceMatched] = useState(true);
-  const [verificationResult, setVerificationResult] = useState<
-    'VERIFIED' | 'DISCREPANCY_DETECTED' | 'UNAVAILABLE'
-  >('VERIFIED');
-  const [verificationNotes, setVerificationNotes] = useState('');
-
-  // Past VC Logs
+  // Past Logs
   const [vcHistory, setVcHistory] = useState<RandomVCRecord[]>([]);
 
-  const localVideoRef = useRef<HTMLVideoElement | null>(null);
-  const localStreamRef = useRef<MediaStream | null>(null);
-
+  // Load Projects & VC History
   useEffect(() => {
     api.getProjects().then((p) => {
       setProjects(p);
@@ -67,92 +66,45 @@ export const RandomVCModule: React.FC<RandomVCModuleProps> = ({ initialProjectId
     api.getVCRecords().then((recs) => setVcHistory(recs));
   }, [initialProjectId]);
 
-  // Call duration counter
-  useEffect(() => {
-    let interval: any;
-    if (isInCall) {
-      interval = setInterval(() => {
-        setCallDuration((d) => d + 1);
-      }, 1000);
+  // Target Selection Helpers
+  const selectTarget = (proj: Project) => {
+    setSelectedProject(proj);
+    setParticipantType('PROJECT_INCHARGE');
+    setParticipantName(proj.projectIncharge || 'Dr. Rajesh Verma');
+    setParticipantRole(`Project Director (${proj.ngoName})`);
+    setParticipantPhone(proj.contact || '+91 98101 23456');
+  };
+
+  const selectRandomTarget = (list = projects) => {
+    if (list.length === 0) return;
+    const randProj = list[Math.floor(Math.random() * list.length)];
+    const types: Array<'PROJECT_INCHARGE' | 'STAFF' | 'BENEFICIARY'> = ['PROJECT_INCHARGE', 'STAFF', 'BENEFICIARY'];
+    const chosenType = types[Math.floor(Math.random() * types.length)];
+
+    setSelectedProject(randProj);
+    setParticipantType(chosenType);
+
+    if (chosenType === 'PROJECT_INCHARGE') {
+      setParticipantName(randProj.projectIncharge || 'Dr. Rajesh Verma');
+      setParticipantRole(`Project In-Charge (${randProj.ngoName})`);
+      setParticipantPhone(randProj.contact || '+91 98101 23456');
+    } else if (chosenType === 'STAFF') {
+      const staffNames = ['Sunita Sharma (Trainer)', 'Ramesh Kumar (Center Coordinator)', 'Pooja Rani (Warden)'];
+      const chosenStaff = staffNames[Math.floor(Math.random() * staffNames.length)];
+      setParticipantName(chosenStaff);
+      setParticipantRole('Field Supervisory Staff');
+      setParticipantPhone(`+91 98${Math.floor(10000000 + Math.random() * 90000000)}`);
     } else {
-      setCallDuration(0);
-    }
-    return () => clearInterval(interval);
-  }, [isInCall]);
-
-  const selectRandomTarget = (pool = projects) => {
-    if (pool.length === 0) return;
-    const randomProject = pool[Math.floor(Math.random() * pool.length)];
-    selectTarget(randomProject);
-  };
-
-  const selectTarget = (p: Project) => {
-    setSelectedProject(p);
-    const types: Array<'PROJECT_INCHARGE' | 'STAFF' | 'BENEFICIARY'> = [
-      'PROJECT_INCHARGE',
-      'STAFF',
-      'BENEFICIARY',
-    ];
-    const pickedType = types[Math.floor(Math.random() * types.length)];
-    setParticipantType(pickedType);
-
-    if (pickedType === 'PROJECT_INCHARGE') {
-      setParticipantName(p.projectIncharge);
-      setParticipantRole('Project Director / Center Head');
-    } else if (pickedType === 'STAFF') {
-      setParticipantName('Suresh Kumar, Vocational Instructor');
-      setParticipantRole('Sanctioned Staff Member');
-    } else {
-      setParticipantName('Mohd. Irfan (Beneficiary #B-104)');
-      setParticipantRole('Resident Beneficiary');
+      const benNames = ['Amit Kumar (Enrolled Student)', 'Preeti Kumari (Trainee)', 'Rahul Dev (Hostel Resident)'];
+      const chosenBen = benNames[Math.floor(Math.random() * benNames.length)];
+      setParticipantName(chosenBen);
+      setParticipantRole('Enrolled Beneficiary');
+      setParticipantPhone(`+91 94${Math.floor(10000000 + Math.random() * 90000000)}`);
     }
   };
 
-  // Start Call
-  const handleStartCall = async () => {
-    setIsInCall(true);
-
-    // Attempt to acquire real webcam if available
-    try {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: true,
-        });
-        localStreamRef.current = stream;
-        if (localVideoRef.current) {
-          localVideoRef.current.srcObject = stream;
-        }
-        setUseLocalCam(true);
-      }
-    } catch {
-      // Graceful fallback to realistic simulated video stream
-      setUseLocalCam(false);
-    }
-  };
-
-  // End and Save Call
-  const handleEndCall = async () => {
-    if (localStreamRef.current) {
-      localStreamRef.current.getTracks().forEach((track) => track.stop());
-    }
-
-    if (selectedProject) {
-      const record = await api.saveVCRecord({
-        projectId: selectedProject.id,
-        projectName: selectedProject.projectName,
-        participantType,
-        participantName,
-        callDurationSeconds: callDuration,
-        verificationResult,
-        notes: verificationNotes || 'Verification conducted via random live audio/visual session.',
-      });
-
-      setVcHistory((prev) => [record, ...prev]);
-    }
-
-    setIsInCall(false);
-    alert('Video verification session concluded and audit record logged.');
+  const handleRecordSaved = (newRecord: RandomVCRecord) => {
+    setVcHistory((prev) => [newRecord, ...prev]);
   };
 
   const formatSeconds = (sec: number) => {
@@ -164,295 +116,312 @@ export const RandomVCModule: React.FC<RandomVCModuleProps> = ({ initialProjectId
   return (
     <div className="space-y-4">
       {/* Simulation Banner */}
-      <SimulationBanner context="RANDOM VC DEMO MODE: Real-time video verification connects with project beneficiaries/staff. Supports real browser camera/microphone when allowed, or automated high-fidelity simulated feeds." />
+      <SimulationBanner
+        featureName="Random Voice Call &amp; WhatsApp Video Verification Gateway"
+        telephonyActive={true}
+        description="Official zero-charge Toll-Free Helpline (1800-XXX-XXXX) &amp; Live Video Call verification portal under DoSJE guidelines."
+      />
 
-      {/* Main VC Interface */}
-      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-          <div>
-            <div className="flex items-center gap-2">
-              <PhoneCall className="w-5 h-5 text-emerald-600" />
-              <h1 className="text-base font-bold text-slate-900">
-                Randomized Video Call Verification Engine
-              </h1>
-            </div>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Conduct unannounced audio-video check-ins directly with field beneficiaries, teachers,
-              or center in-charges.
-            </p>
-          </div>
-
-          {!isInCall && (
-            <button
-              onClick={() => selectRandomTarget()}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs transition border border-indigo-200 self-start sm:self-auto"
-            >
-              <Shuffle className="w-3.5 h-3.5" />
-              <span>Draw Random Target</span>
-            </button>
-          )}
-        </div>
-
-        {selectedProject && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {/* Target Card */}
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-2.5">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                  Target Entity
-                </span>
-                <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">
-                  {selectedProject.riskLevel} RISK
-                </span>
-              </div>
-              <div className="font-bold text-slate-900 text-sm">{selectedProject.projectName}</div>
-              <div className="text-slate-500">
-                {selectedProject.district}, {selectedProject.state} · {selectedProject.scheme.split('(')[0]}
-              </div>
-
-              <div className="pt-2 border-t border-slate-200 space-y-1">
-                <div className="text-[11px] text-slate-600">
-                  Selected Participant: <strong className="text-slate-900">{participantName}</strong>
-                </div>
-                <div className="text-[10px] text-slate-500 font-mono">
-                  Role: {participantRole} ({participantType})
-                </div>
-              </div>
-
-              {!isInCall && (
-                <button
-                  onClick={handleStartCall}
-                  className="w-full mt-2 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-xs flex items-center justify-center gap-2 transition"
-                >
-                  <PhoneCall className="w-4 h-4" />
-                  <span>Initiate Verification Video Call</span>
-                </button>
-              )}
-            </div>
-
-            {/* Video Call Stage */}
-            <div className="lg:col-span-2 bg-slate-950 rounded-xl overflow-hidden min-h-[300px] sm:min-h-[360px] flex flex-col justify-between p-4 relative text-white">
-              {isInCall ? (
-                <>
-                  {/* Top Status Bar */}
-                  <div className="flex items-center justify-between z-10">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
-                      <span className="font-mono text-xs font-bold text-emerald-400">
-                        ENCRYPTED SESSION · {formatSeconds(callDuration)}
-                      </span>
-                    </div>
-                    <span className="text-[10px] font-mono text-slate-400 bg-black/60 px-2 py-0.5 rounded">
-                      NIC SECURE WEBRTC
-                    </span>
-                  </div>
-
-                  {/* Video Stage Canvas */}
-                  <div className="my-auto flex flex-col items-center justify-center text-center p-4">
-                    {useLocalCam ? (
-                      <video
-                        ref={localVideoRef}
-                        autoPlay
-                        playsInline
-                        muted
-                        className="w-full max-w-md h-56 rounded-lg object-cover border border-slate-700"
-                      />
-                    ) : (
-                      <div className="relative w-full max-w-md h-56 bg-slate-900 rounded-lg flex flex-col items-center justify-center border border-slate-800 overflow-hidden">
-                        <img
-                          src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80"
-                          alt="Remote Participant"
-                          className="w-full h-full object-cover opacity-80"
-                        />
-                        <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/70 rounded text-[10px] font-mono text-white">
-                          {participantName} (Field Live)
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Bottom Controls Bar */}
-                  <div className="flex items-center justify-center gap-3 z-10 pt-2">
-                    <button
-                      onClick={() => setIsMicMuted(!isMicMuted)}
-                      className={`p-3 rounded-full transition ${
-                        isMicMuted ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-200'
-                      }`}
-                      title="Mute/Unmute Mic"
-                    >
-                      {isMicMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                    </button>
-
-                    <button
-                      onClick={() => setIsVideoMuted(!isVideoMuted)}
-                      className={`p-3 rounded-full transition ${
-                        isVideoMuted ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-200'
-                      }`}
-                      title="Turn Camera On/Off"
-                    >
-                      {isVideoMuted ? (
-                        <VideoOff className="w-4 h-4" />
-                      ) : (
-                        <VideoIcon className="w-4 h-4" />
-                      )}
-                    </button>
-
-                    <button
-                      onClick={handleEndCall}
-                      className="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-full flex items-center gap-2 shadow-lg transition"
-                    >
-                      <PhoneOff className="w-4 h-4" />
-                      <span>End &amp; Record Verification</span>
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <div className="m-auto text-center space-y-2 p-6">
-                  <div className="w-14 h-14 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center mx-auto text-emerald-400">
-                    <PhoneCall className="w-6 h-6" />
-                  </div>
-                  <div className="text-sm font-bold text-slate-200">
-                    Ready to Connect with Field Participant
-                  </div>
-                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                    Click "Initiate Verification Video Call" to establish a secure line. You can
-                    verify beneficiary roll calls, examine premises, and record regulatory compliance.
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Verification Checklist & Result Form */}
-        {isInCall && (
-          <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3 text-xs">
-            <h3 className="font-bold text-slate-900 uppercase tracking-wider text-[11px]">
-              Live Audit Checklist &amp; Finding Recording
-            </h3>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <label className="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-slate-200 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={idCardVerified}
-                  onChange={(e) => setIdCardVerified(e.target.checked)}
-                  className="rounded text-indigo-600"
-                />
-                <span className="font-medium text-slate-800">Aadhaar / ID Card Checked</span>
+      {/* Target Selector & Random Pick Bar */}
+      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* Project Select */}
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1 uppercase tracking-wide">
+                Target Project
               </label>
-
-              <label className="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-slate-200 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={locationConfirmed}
-                  onChange={(e) => setLocationConfirmed(e.target.checked)}
-                  className="rounded text-indigo-600"
-                />
-                <span className="font-medium text-slate-800">Physical Location Confirmed</span>
-              </label>
-
-              <label className="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-slate-200 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={physicalAttendanceMatched}
-                  onChange={(e) => setPhysicalAttendanceMatched(e.target.checked)}
-                  className="rounded text-indigo-600"
-                />
-                <span className="font-medium text-slate-800">Attendance Log Matched</span>
-              </label>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">
-                  Verification Conclusion
-                </label>
-                <select
-                  value={verificationResult}
-                  onChange={(e) => setVerificationResult(e.target.value as any)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white font-semibold"
-                >
-                  <option value="VERIFIED">✅ VERIFIED (Identity &amp; Presence Confirmed)</option>
-                  <option value="DISCREPANCY_DETECTED">
-                    ⚠️ DISCREPANCY DETECTED (Requires Audit)
+              <select
+                value={selectedProject?.id || ''}
+                onChange={(e) => {
+                  const p = projects.find((x) => x.id === e.target.value);
+                  if (p) selectTarget(p);
+                }}
+                className="w-full text-xs p-2 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:outline-hidden focus:border-emerald-500 text-slate-800 font-medium"
+              >
+                {projects.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.projectName} ({p.state})
                   </option>
-                  <option value="UNAVAILABLE">❌ UNAVAILABLE (Call Not Answered)</option>
-                </select>
-              </div>
+                ))}
+              </select>
+            </div>
 
-              <div>
-                <label className="block font-semibold text-slate-700 mb-1">Session Notes</label>
-                <input
-                  type="text"
-                  value={verificationNotes}
-                  onChange={(e) => setVerificationNotes(e.target.value)}
-                  placeholder="Record observations, responses to queries, or irregularities noted..."
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white"
-                />
-              </div>
+            {/* Target Role */}
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1 uppercase tracking-wide">
+                Participant Role
+              </label>
+              <select
+                value={participantType}
+                onChange={(e: any) => {
+                  const val = e.target.value;
+                  setParticipantType(val);
+                  if (val === 'PROJECT_INCHARGE' && selectedProject) {
+                    setParticipantName(selectedProject.projectIncharge || 'Dr. Rajesh Verma');
+                    setParticipantRole(`Project In-Charge (${selectedProject.ngoName})`);
+                    setParticipantPhone(selectedProject.contact || '+91 98101 23456');
+                  } else if (val === 'STAFF') {
+                    setParticipantName('Anita Deshmukh (Head Warden)');
+                    setParticipantRole('Field Supervisory Staff');
+                    setParticipantPhone('+91 98230 45678');
+                  } else {
+                    setParticipantName('Suresh Kumar (Student Reg #4092)');
+                    setParticipantRole('Enrolled Beneficiary');
+                    setParticipantPhone('+91 97654 32109');
+                  }
+                }}
+                className="w-full text-xs p-2 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:outline-hidden focus:border-emerald-500 text-slate-800 font-medium"
+              >
+                <option value="PROJECT_INCHARGE">Project In-Charge / Center Head</option>
+                <option value="STAFF">Field Staff / Teacher / Warden</option>
+                <option value="BENEFICIARY">Direct Beneficiary / Student</option>
+              </select>
+            </div>
+
+            {/* Phone Number (Editable) */}
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1 uppercase tracking-wide">
+                Target Phone Number
+              </label>
+              <input
+                type="text"
+                value={participantPhone}
+                onChange={(e) => setParticipantPhone(e.target.value)}
+                placeholder="+91 98101 23456"
+                className="w-full text-xs p-2 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:outline-hidden focus:border-emerald-500 font-mono text-slate-800 font-medium"
+              />
             </div>
           </div>
-        )}
+
+          {/* Random Target Shuffler Button */}
+          <button
+            onClick={() => selectRandomTarget()}
+            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition shadow-sm self-start lg:self-end cursor-pointer"
+            title="Randomly Pick Another Field Target"
+          >
+            <Shuffle className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Random Pick Target</span>
+          </button>
+        </div>
       </div>
 
-      {/* Historical VC Audit Records */}
-      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs space-y-3">
-        <h2 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-          Recent Random Video Verification Logs
-        </h2>
+      {/* Navigation Tabs */}
+      <div className="flex border-b border-slate-200 bg-white px-4 rounded-t-xl gap-2 overflow-x-auto">
+        <button
+          onClick={() => {
+            setAutoStartVoice(false);
+            setAutoStartVideo(false);
+            setActiveTab('VOICE_CALL');
+          }}
+          className={`py-3 px-3.5 border-b-2 text-xs font-bold transition flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+            activeTab === 'VOICE_CALL'
+              ? 'border-emerald-600 text-emerald-700'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Phone className="w-4 h-4 text-emerald-600" />
+          <span>Random Voice Call (Working)</span>
+          <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+            ACTIVE
+          </span>
+        </button>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold text-[10px] uppercase">
-                <th className="py-2.5 px-3">Date &amp; Time</th>
-                <th className="py-2.5 px-3">Project</th>
-                <th className="py-2.5 px-3">Participant</th>
-                <th className="py-2.5 px-3">Duration</th>
-                <th className="py-2.5 px-3">Conducted By</th>
-                <th className="py-2.5 px-3">Verification Result</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {vcHistory.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="py-4 text-center text-slate-400">
-                    No video verification sessions recorded yet.
-                  </td>
-                </tr>
-              ) : (
-                vcHistory.map((vc) => (
-                  <tr key={vc.id} className="hover:bg-slate-50/60">
-                    <td className="py-2.5 px-3 font-mono text-[11px] text-slate-600">
-                      {new Date(vc.calledAt).toLocaleString()}
-                    </td>
-                    <td className="py-2.5 px-3 font-medium text-slate-900">{vc.projectName}</td>
-                    <td className="py-2.5 px-3">
-                      <div className="font-semibold text-slate-800">{vc.participantName}</div>
-                      <div className="text-[10px] text-slate-500">{vc.participantType}</div>
-                    </td>
-                    <td className="py-2.5 px-3 font-mono">{formatSeconds(vc.callDurationSeconds)}</td>
-                    <td className="py-2.5 px-3 text-slate-700">{vc.conductedByUserName}</td>
-                    <td className="py-2.5 px-3">
-                      <span
-                        className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded ${
-                          vc.verificationResult === 'VERIFIED'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : vc.verificationResult === 'DISCREPANCY_DETECTED'
-                            ? 'bg-rose-100 text-rose-800'
-                            : 'bg-slate-100 text-slate-700'
-                        }`}
-                      >
-                        {vc.verificationResult}
-                      </span>
-                    </td>
+        <button
+          onClick={() => {
+            setAutoStartVoice(false);
+            setAutoStartVideo(false);
+            setActiveTab('VIDEO_CALL');
+          }}
+          className={`py-3 px-3.5 border-b-2 text-xs font-bold transition flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+            activeTab === 'VIDEO_CALL'
+              ? 'border-emerald-600 text-emerald-700'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Video className="w-4 h-4 text-emerald-600" />
+          <span>WhatsApp Video Call</span>
+          <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+            LIVE VC
+          </span>
+        </button>
+
+        <button
+          onClick={() => {
+            setAutoStartVoice(false);
+            setAutoStartVideo(false);
+            setActiveTab('TOLL_FREE');
+          }}
+          className={`py-3 px-3.5 border-b-2 text-xs font-bold transition flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+            activeTab === 'TOLL_FREE'
+              ? 'border-emerald-600 text-emerald-700'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Sparkles className="w-4 h-4 text-emerald-600" />
+          <span>Toll-Free Number Generator</span>
+          <span className="px-1.5 py-0.2 rounded bg-teal-100 text-teal-800 text-[10px] font-bold">
+            1800 TFN
+          </span>
+        </button>
+
+        <button
+          onClick={() => {
+            setAutoStartVoice(false);
+            setAutoStartVideo(false);
+            setActiveTab('HISTORY');
+          }}
+          className={`py-3 px-3.5 border-b-2 text-xs font-bold transition flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+            activeTab === 'HISTORY'
+              ? 'border-emerald-600 text-emerald-700'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Clock className="w-4 h-4 text-slate-500" />
+          <span>Audit Records &amp; Logs ({vcHistory.length})</span>
+        </button>
+      </div>
+
+      {/* TAB CONTENT */}
+      <div>
+        {activeTab === 'VOICE_CALL' && (
+          <RandomVoiceCall
+            selectedProject={selectedProject}
+            participantType={participantType}
+            participantName={participantName}
+            participantRole={participantRole}
+            participantPhone={participantPhone}
+            initialTollFreeNumber={tollFreeNumber}
+            initialPin={tollFreePin}
+            autoStart={autoStartVoice}
+            onUpgradeToVideoCall={() => {
+              setAutoStartVideo(true);
+              setAutoStartVoice(false);
+              setActiveTab('VIDEO_CALL');
+            }}
+            onRecordSaved={handleRecordSaved}
+          />
+        )}
+
+        {activeTab === 'VIDEO_CALL' && (
+          <WhatsAppVideoCall
+            selectedProject={selectedProject}
+            participantType={participantType}
+            participantName={participantName}
+            participantRole={participantRole}
+            participantPhone={participantPhone}
+            tollFreeNumber={tollFreeNumber}
+            tollFreePin={tollFreePin}
+            autoStart={autoStartVideo}
+            onRecordSaved={handleRecordSaved}
+            onSwitchToVoiceCall={() => {
+              setAutoStartVoice(true);
+              setAutoStartVideo(false);
+              setActiveTab('VOICE_CALL');
+            }}
+          />
+        )}
+
+        {activeTab === 'TOLL_FREE' && (
+          <TollFreeGenerator
+            selectedProject={selectedProject}
+            participantName={participantName}
+            participantPhone={participantPhone}
+            onConnectVoiceCall={(tfn, pin) => {
+              setTollFreeNumber(tfn);
+              setTollFreePin(pin);
+              setAutoStartVoice(true);
+              setAutoStartVideo(false);
+              setActiveTab('VOICE_CALL');
+            }}
+            onConnectVideoCall={(tfn, pin) => {
+              setTollFreeNumber(tfn);
+              setTollFreePin(pin);
+              setAutoStartVideo(true);
+              setAutoStartVoice(false);
+              setActiveTab('VIDEO_CALL');
+            }}
+          />
+        )}
+
+        {activeTab === 'HISTORY' && (
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">
+                  Regulatory Voice &amp; Video Audit Ledger
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Cryptographically timestamped records of all voice calls, WhatsApp video calls, and Toll-Free verifications.
+                </p>
+              </div>
+
+              <span className="text-xs text-slate-500 font-mono">
+                {vcHistory.length} Recorded Sessions
+              </span>
+            </div>
+
+            <div className="overflow-x-auto border border-slate-200 rounded-xl">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold text-[10px] uppercase">
+                    <th className="py-2.5 px-3">Date &amp; Time (IST)</th>
+                    <th className="py-2.5 px-3">Project</th>
+                    <th className="py-2.5 px-3">Participant &amp; Contact</th>
+                    <th className="py-2.5 px-3">Duration</th>
+                    <th className="py-2.5 px-3">Officer / Inspector</th>
+                    <th className="py-2.5 px-3">Status</th>
+                    <th className="py-2.5 px-3">Remarks</th>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                </thead>
+                <tbody className="divide-y divide-slate-100 bg-white">
+                  {vcHistory.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="py-8 text-center text-slate-400">
+                        No voice or video verification sessions recorded yet.
+                      </td>
+                    </tr>
+                  ) : (
+                    vcHistory.map((vc) => (
+                      <tr key={vc.id} className="hover:bg-slate-50/60">
+                        <td className="py-2.5 px-3 font-mono text-[11px] text-slate-600 whitespace-nowrap">
+                          {new Date(vc.createdAt || (vc as any).calledAt || Date.now()).toLocaleString('en-IN')}
+                        </td>
+                        <td className="py-2.5 px-3 font-medium text-slate-900">{vc.projectName}</td>
+                        <td className="py-2.5 px-3">
+                          <div className="font-semibold text-slate-800">{vc.participantName}</div>
+                          <div className="text-[10px] text-slate-500 font-mono">
+                            {vc.participantContact || vc.participantType}
+                          </div>
+                        </td>
+                        <td className="py-2.5 px-3 font-mono">
+                          {formatSeconds(vc.durationSeconds || (vc as any).callDurationSeconds || 0)}
+                        </td>
+                        <td className="py-2.5 px-3 text-slate-700">{vc.conductedByUserName || 'Field Officer'}</td>
+                        <td className="py-2.5 px-3 whitespace-nowrap">
+                          <span
+                            className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded ${
+                              vc.verificationResult === 'VERIFIED'
+                                ? 'bg-emerald-100 text-emerald-800'
+                                : vc.verificationResult === 'DISCREPANCY_DETECTED'
+                                ? 'bg-rose-100 text-rose-800'
+                                : 'bg-slate-100 text-slate-700'
+                            }`}
+                          >
+                            {vc.verificationResult}
+                          </span>
+                        </td>
+                        <td className="py-2.5 px-3 text-slate-600 text-[11px] max-w-xs truncate">
+                          {vc.verificationNotes || 'Presence confirmed.'}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

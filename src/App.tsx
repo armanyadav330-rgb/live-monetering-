@@ -20,6 +20,10 @@ import { ReportsDashboard } from './components/reports/ReportsDashboard';
 import { AuditLogsView } from './components/audit/AuditLogsView';
 import { UserManagementView } from './components/users/UserManagementView';
 import { NotificationsView } from './components/notifications/NotificationsView';
+import { PortalSettingsView } from './components/settings/PortalSettingsView';
+import { AIChatbotModal } from './components/chatbot/AIChatbotModal';
+import { AIFloatingTrigger } from './components/chatbot/AIFloatingTrigger';
+import { AIAssistantView } from './components/chatbot/AIAssistantView';
 import { User, Project, Inspection, AIAnomalyAlert } from './types';
 import { api, getStoredUser, setStoredUser } from './services/api';
 
@@ -38,6 +42,18 @@ export default function App() {
   // Modals
   const [isAddProjectModalOpen, setIsAddProjectModalOpen] = useState(false);
   const [isAssignInspectionModalOpen, setIsAssignInspectionModalOpen] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const [chatbotMode, setChatbotMode] = useState<'chat' | 'audio_call' | 'video_call' | 'tickets'>('chat');
+  const [chatbotTopic, setChatbotTopic] = useState<string | undefined>(undefined);
+
+  const handleOpenAIAssistant = (
+    mode: 'chat' | 'audio_call' | 'video_call' | 'tickets' = 'chat',
+    topic?: string
+  ) => {
+    setChatbotMode(mode);
+    setChatbotTopic(topic);
+    setIsChatbotOpen(true);
+  };
 
   // Global Data
   const [projects, setProjects] = useState<Project[]>([]);
@@ -168,6 +184,8 @@ export default function App() {
                 onOpenVC={() => handleNavigate('vc')}
                 onOpenAIAnalytics={() => handleNavigate('analytics')}
                 onOpenGISMap={() => handleNavigate('map')}
+                onOpenAIAssistant={(mode) => handleOpenAIAssistant(mode as any)}
+                onNavigate={handleNavigate}
               />
 
               {/* Risk Distribution and Analytics Charts */}
@@ -385,8 +403,33 @@ export default function App() {
               }}
             />
           )}
+
+          {/* PORTAL SETTINGS VIEW */}
+          {activeView === 'settings' && (
+            <PortalSettingsView
+              currentUser={currentUser}
+              onNavigateToView={handleNavigate}
+            />
+          )}
+
+          {/* AI ASSISTANT VIEW */}
+          {activeView === 'ai-assistant' && (
+            <AIAssistantView
+              onStartCall={(mode) => handleOpenAIAssistant(mode)}
+            />
+          )}
         </main>
       </div>
+
+      {/* AI Assistant Floating Trigger & Modal */}
+      <AIFloatingTrigger onOpen={(mode) => handleOpenAIAssistant(mode)} />
+
+      <AIChatbotModal
+        isOpen={isChatbotOpen}
+        onClose={() => setIsChatbotOpen(false)}
+        initialMode={chatbotMode}
+        initialTopic={chatbotTopic}
+      />
 
       {/* Global Modals */}
       {isAddProjectModalOpen && (

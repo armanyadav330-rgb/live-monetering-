@@ -6,7 +6,7 @@ import { portalStore } from './src/services/store';
 import { cctvProvider } from './src/services/cctvProvider';
 import { vcProvider } from './src/services/vcProvider';
 import { attendanceProvider } from './src/services/attendanceProvider';
-import { analyzeProjectWithGemini, summarizeInspectionWithGemini } from './src/services/serverGemini';
+import { analyzeProjectWithGemini, summarizeInspectionWithGemini, processAIChatbotQuery } from './src/services/serverGemini';
 import { UserRole } from './src/types';
 
 dotenv.config();
@@ -457,6 +457,105 @@ async function startServer() {
     }
   });
 
+  // AI Chatbot Oral & Video Resolution Agent API
+  app.post('/api/ai/chatbot', async (req, res) => {
+    try {
+      const user = getRequestUser(req);
+      const { message, history, mode, language, context } = req.body;
+
+      if (!message || typeof message !== 'string') {
+        return res.status(400).json({ success: false, message: 'Message is required' });
+      }
+
+      const mergedContext = {
+        userName: user.name,
+        userRole: user.role,
+        ...(context || {}),
+      };
+
+      const result = await processAIChatbotQuery({
+        message,
+        history,
+        mode: mode || 'chat',
+        language: language || 'en',
+        context: mergedContext,
+      });
+
+      // If the AI agent generated a grievance ticket, store it automatically in portalStore
+      let createdTicket: any = null;
+      if (result.ticketData) {
+        createdTicket = portalStore.createGrievance(
+          {
+            ...result.ticketData,
+            applicantName: user.name,
+            channel: mode === 'video_call' ? 'VIDEO_CALL' : mode === 'audio_call' ? 'AUDIO_CALL' : 'CHATBOT',
+          },
+          user
+        );
+      }
+
+      portalStore.addAuditLog(
+        user.id,
+        user.name,
+        user.role,
+        'SYSTEM' as any,
+        'SYSTEM',
+        createdTicket?.id,
+        `AI Chatbot Interaction (${mode || 'chat'})`,
+        { messagePreview: message.substring(0, 60), resolved: result.resolved }
+      );
+
+      res.json({
+        success: true,
+        data: {
+          ...result,
+          ticket: createdTicket,
+        },
+      });
+    } catch (err: any) {
+      console.error('Chatbot API error:', err);
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  // Grievances & Tickets API
+  app.get('/api/grievances', (req, res) => {
+    try {
+      const list = portalStore.getGrievances();
+      res.json({ success: true, count: list.length, data: list });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post('/api/grievances', (req, res) => {
+    try {
+      const user = getRequestUser(req);
+      const ticket = portalStore.createGrievance(req.body, user);
+      res.json({ success: true, data: ticket });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.put('/api/grievances/:id/resolve', (req, res) => {
+    try {
+      const user = getRequestUser(req);
+      const { resolutionNotes } = req.body;
+      const updated = portalStore.resolveGrievance(
+        req.params.id,
+        resolutionNotes || 'Resolved following verification.',
+        user
+      );
+      if (!updated) {
+        return res.status(404).json({ success: false, message: 'Ticket not found' });
+      }
+      res.json({ success: true, data: updated });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
   // Notifications API
   app.get('/api/notifications', (req, res) => {
     try {
@@ -627,6 +726,35 @@ async function startServer() {
           caption: caption || '',
         },
       });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  // Portal Settings API
+  app.get('/api/settings', (req, res) => {
+    try {
+      const settings = portalStore.getSettings();
+      res.json({ success: true, data: settings });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  app.put('/api/settings', (req, res) => {
+    try {
+      const user = getRequestUser(req);
+      const updated = portalStore.updateSettings(req.body, user);
+      res.json({ success: true, data: updated, message: 'Portal settings updated successfully' });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post('/api/settings/reset', (req, res) => {
+    try {
+      const reset = portalStore.resetSettings();
+      res.json({ success: true, data: reset, message: 'Settings reset to government default' });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }

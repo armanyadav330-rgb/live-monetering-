@@ -15,6 +15,7 @@ import {
   CheckCircle2,
   Clock,
   ExternalLink,
+  MessageCircle,
 } from 'lucide-react';
 import { Project, Inspection, CCTVCamera, AttendanceRecord, UserRole } from '../../types';
 import { api } from '../../services/api';
@@ -185,10 +186,10 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({
 
           <button
             onClick={handleVC}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 transition"
           >
-            <PhoneCall className="w-3.5 h-3.5 text-amber-600" />
-            <span>Random VC</span>
+            <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Random Call &amp; Video</span>
           </button>
         </div>
       </div>
@@ -289,9 +290,31 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({
                   <span className="text-slate-500">Project Incharge</span>
                   <span className="col-span-2 font-medium text-slate-900">{project.projectIncharge}</span>
                 </div>
-                <div className="grid grid-cols-3 gap-2 py-1.5 border-b border-slate-100">
+                <div className="grid grid-cols-3 gap-2 py-1.5 border-b border-slate-100 items-center">
                   <span className="text-slate-500">Official Phone</span>
-                  <span className="col-span-2 font-medium text-slate-900">{project.contact}</span>
+                  <div className="col-span-2 flex items-center justify-between flex-wrap gap-2">
+                    <span className="font-medium text-slate-900 font-mono">{project.contact}</span>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={handleVC}
+                        className="px-2 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[11px] font-semibold flex items-center gap-1 transition cursor-pointer"
+                        title="Start In-App WhatsApp Video Call"
+                      >
+                        <MessageCircle className="w-3 h-3 fill-current" />
+                        <span>WhatsApp VC</span>
+                      </button>
+                      <a
+                        href={`https://wa.me/${project.contact.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Namaste ${project.projectIncharge}, this is official video verification for DoSJE project: "${project.projectName}". Please join this WhatsApp video call.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold flex items-center gap-1 transition"
+                        title="Open in WhatsApp Web/App"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        <span>Chat</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
                 <div className="grid grid-cols-3 gap-2 py-1.5 border-b border-slate-100">
                   <span className="text-slate-500">Official Email</span>

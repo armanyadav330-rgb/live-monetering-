@@ -10,6 +10,8 @@ import {
   RandomVCRecord,
   UserRole,
   RiskLevel,
+  PortalSettings,
+  GrievanceTicket,
 } from '../types';
 import { portalStore } from './store';
 import { cctvProvider } from './cctvProvider';
@@ -538,5 +540,164 @@ export const api = {
     }
     const json = await res.json();
     return json.data;
+  },
+
+  // Portal Settings
+  async getSettings(): Promise<PortalSettings> {
+    try {
+      const res = await fetch('/api/settings', { headers: getAuthHeaders() });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    return portalStore.getSettings();
+  },
+
+  async updateSettings(settings: Partial<PortalSettings>): Promise<PortalSettings> {
+    try {
+      const res = await fetch('/api/settings', {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(settings),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    const u = getStoredUser();
+    return portalStore.updateSettings(settings, { id: u.id, name: u.name, role: u.role });
+  },
+
+  async resetSettings(): Promise<PortalSettings> {
+    try {
+      const res = await fetch('/api/settings/reset', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    return portalStore.resetSettings();
+  },
+
+  // AI Chatbot Oral & Video Resolution Agent
+  async sendChatbotMessage(payload: {
+    message: string;
+    history?: any[];
+    mode?: 'chat' | 'audio_call' | 'video_call';
+    language?: 'en' | 'hi' | 'auto';
+    context?: Record<string, any>;
+  }): Promise<{
+    isSimulatedFallback: boolean;
+    modelUsed: string;
+    speechText: string;
+    displayText: string;
+    actionTaken?: string;
+    resolved: boolean;
+    ticket?: GrievanceTicket;
+    suggestedQuickReplies: string[];
+  }> {
+    try {
+      const res = await fetch('/api/ai/chatbot', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback handled below
+    }
+
+    // Client-side fallback if server offline
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const mockTicket: GrievanceTicket = {
+      id: `grv_${Date.now()}`,
+      ticketNumber: `GRV-2026-${randomNum}`,
+      applicantName: getStoredUser().name,
+      category: 'GENERAL_GRIEVANCE',
+      subject: payload.message.substring(0, 60),
+      description: payload.message,
+      priority: 'HIGH',
+      status: 'OPEN',
+      resolutionNotes: 'Logged by AI Assistant Desk for immediate review.',
+      assignedOfficer: 'Dr. Rajeshwar Sharma, IAS',
+      createdAt: new Date().toISOString(),
+      channel: payload.mode === 'video_call' ? 'VIDEO_CALL' : payload.mode === 'audio_call' ? 'AUDIO_CALL' : 'CHATBOT',
+    };
+    portalStore.createGrievance(mockTicket);
+
+    return {
+      isSimulatedFallback: true,
+      modelUsed: 'DoSJE AI Local Resolver',
+      speechText: `Namaste. I have received your request and generated tracking ticket ${mockTicket.ticketNumber}. Our team will resolve your issue within forty-eight hours.`,
+      displayText: `### 🏛️ Request Processed\n\nI have registered your issue under Docket **\`${mockTicket.ticketNumber}\`**.\n\n* **Assigned Directorate:** Central Grievance Cell\n* **Status:** In Progress (Welfare Officer assigned)`,
+      actionTaken: `Logged Ticket #${mockTicket.ticketNumber}`,
+      resolved: true,
+      ticket: mockTicket,
+      suggestedQuickReplies: ['Check Ticket Status', 'Schedule Video Inspection', 'Speak to Officer'],
+    };
+  },
+
+  // Grievances
+  async getGrievances(): Promise<GrievanceTicket[]> {
+    try {
+      const res = await fetch('/api/grievances', { headers: getAuthHeaders() });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    return portalStore.getGrievances();
+  },
+
+  async createGrievance(data: Partial<GrievanceTicket>): Promise<GrievanceTicket> {
+    const user = getStoredUser();
+    try {
+      const res = await fetch('/api/grievances', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    return portalStore.createGrievance(data, user);
+  },
+
+  async resolveGrievance(id: string, resolutionNotes: string): Promise<GrievanceTicket | null> {
+    const user = getStoredUser();
+    try {
+      const res = await fetch(`/api/grievances/${id}/resolve`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ resolutionNotes }),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    return portalStore.resolveGrievance(id, resolutionNotes, user);
   },
 };

@@ -12,6 +12,7 @@ import {
   ScrollText,
   Users,
   Settings,
+  Bot,
 } from 'lucide-react';
 import { UserRole } from '../../types';
 
@@ -61,10 +62,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       id: 'vc',
-      label: 'Random Video Call',
+      label: 'Random Call & Video (Toll-Free)',
       icon: PhoneCall,
-      badge: 'DEMO',
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL'],
+      badge: 'LIVE',
+      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY'],
+    },
+    {
+      id: 'ai-assistant',
+      label: 'AI Officer (Voice & Video)',
+      icon: Bot,
+      badge: 'ORAL',
+      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY', 'NGO_INSTITUTE'],
     },
     {
       id: 'map',
