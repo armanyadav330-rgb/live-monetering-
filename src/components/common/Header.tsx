@@ -9,6 +9,7 @@ import {
   Building2,
   Menu,
   Settings,
+  Globe,
 } from 'lucide-react';
 import { User, UserRole } from '../../types';
 import { api, setStoredUser } from '../../services/api';
@@ -83,22 +84,51 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white border-b border-slate-200 shadow-xs shrink-0">
-      {/* Top Government Tricolor Stripe */}
-      <div className="h-1 w-full bg-linear-to-r from-amber-500 via-white to-emerald-600" />
+    <header className="sticky top-0 z-30 bg-white border-b border-slate-300 shadow-sm shrink-0 font-sans">
+      {/* Top Government Citizen Utility Bar (Standard on Indian Gov Portals) */}
+      <div className="bg-[#0B2545] text-slate-200 text-[11px] px-4 sm:px-6 py-1 border-b border-slate-800 flex items-center justify-between">
+        <div className="flex items-center gap-2 sm:gap-4 font-medium tracking-wide">
+          <span className="text-amber-400 font-semibold">भारत सरकार</span>
+          <span className="text-slate-400">|</span>
+          <span className="hidden xs:inline">GOVERNMENT OF INDIA</span>
+          <span className="hidden sm:inline text-slate-400">|</span>
+          <span className="hidden sm:inline text-slate-300 text-[10px]">सामाजिक न्याय और अधिकारिता मंत्रालय</span>
+        </div>
+        <div className="flex items-center gap-3 text-[10px]">
+          <span className="hidden md:inline text-slate-300 font-mono">NIC-SECURE-NODE-2026</span>
+          <div className="flex items-center gap-1 bg-[#13315C] px-1.5 py-0.5 rounded border border-slate-700 text-amber-300 font-bold">
+            <span className="cursor-pointer hover:text-white" title="Decrease Font">A-</span>
+            <span className="text-slate-500">|</span>
+            <span className="cursor-pointer hover:text-white" title="Normal Font">A</span>
+            <span className="text-slate-500">|</span>
+            <span className="cursor-pointer hover:text-white" title="Increase Font">A+</span>
+          </div>
+          <span className="font-semibold text-emerald-400 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-700/50">
+            हिंदी / English
+          </span>
+        </div>
+      </div>
 
-      <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
+      {/* Top Government Tricolor Stripe (Saffron, White, Green) */}
+      <div className="h-1 w-full grid grid-cols-3">
+        <div className="bg-[#FF9933]" />
+        <div className="bg-white" />
+        <div className="bg-[#138808]" />
+      </div>
+
+      <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4 bg-slate-50/70">
         {/* Government Identity Branding */}
         <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-          <div className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-900 text-amber-400 font-serif font-bold text-sm tracking-wider border border-slate-700 shadow-xs shrink-0">
-            🇮🇳
+          <div className="flex flex-col items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-[#0B2545] text-amber-400 border-2 border-amber-500/80 shadow-xs shrink-0 p-1">
+            <span className="text-base sm:text-lg leading-none">🏛️</span>
+            <span className="text-[8px] font-bold tracking-tighter text-amber-300 uppercase">सत्यमेव जयते</span>
           </div>
           <div className="min-w-0">
-            <div className="text-[9px] xs:text-[10px] sm:text-[11px] font-semibold text-slate-600 tracking-wider uppercase truncate max-w-[170px] sm:max-w-none">
-              Ministry of Social Justice and Empowerment
+            <div className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold text-[#0B2545] tracking-wider uppercase truncate max-w-[170px] sm:max-w-none">
+              Ministry of Social Justice and Empowerment · Government of India
             </div>
-            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-bold text-slate-900 leading-tight truncate max-w-[160px] xs:max-w-[220px] sm:max-w-md md:max-w-none">
-              DoSJE Smart Monitoring &amp; Inspection Portal
+            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-extrabold text-[#0B2545] leading-tight truncate max-w-[160px] xs:max-w-[220px] sm:max-w-md md:max-w-none">
+              National Institutional Monitoring &amp; Inspection Portal
             </h1>
           </div>
         </div>
@@ -240,6 +270,18 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label="Open Portal Settings"
             >
               <Settings className="w-4 h-4" />
+            </button>
+          )}
+
+          {/* Live Monitor Homepage Gateway */}
+          {onNavigate && (
+            <button
+              onClick={() => onNavigate('home')}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-md border border-blue-200 bg-blue-50/90 hover:bg-blue-100 text-blue-700 transition cursor-pointer"
+              title="Return to Live Monitor Homepage Gateway"
+            >
+              <Globe className="w-3.5 h-3.5 text-blue-600" />
+              <span className="hidden sm:inline">Homepage</span>
             </button>
           )}
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FileBarChart, ShieldCheck } from 'lucide-react';
 import { Header } from './components/common/Header';
 import { Sidebar } from './components/common/Sidebar';
 import { StatCards } from './components/dashboard/StatCards';
@@ -24,13 +25,14 @@ import { PortalSettingsView } from './components/settings/PortalSettingsView';
 import { AIChatbotModal } from './components/chatbot/AIChatbotModal';
 import { AIFloatingTrigger } from './components/chatbot/AIFloatingTrigger';
 import { AIAssistantView } from './components/chatbot/AIAssistantView';
+import { LandingPage } from './components/home/LandingPage';
 import { User, Project, Inspection, AIAnomalyAlert } from './types';
 import { api, getStoredUser, setStoredUser } from './services/api';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User>(getStoredUser());
   const [allUsers, setAllUsers] = useState<User[]>([]);
-  const [activeView, setActiveView] = useState<string>('dashboard');
+  const [activeView, setActiveView] = useState<string>('home');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Selected entities for deep view states
@@ -97,6 +99,9 @@ export default function App() {
   const handleUserChange = (user: User) => {
     setCurrentUser(user);
     setStoredUser(user);
+    setTimeout(() => {
+      refreshData();
+    }, 40);
   };
 
   const handleNavigate = (view: string) => {
@@ -144,6 +149,22 @@ export default function App() {
     );
   }
 
+  // PUBLIC GATEWAY & HOMEPAGE VIEW
+  if (activeView === 'home') {
+    return (
+      <LandingPage
+        currentUser={currentUser}
+        availableUsers={allUsers}
+        onEnterPortal={(user, targetView) => {
+          if (user) {
+            handleUserChange(user);
+          }
+          setActiveView(targetView || 'dashboard');
+        }}
+      />
+    );
+  }
+
   return (
     <div className="h-screen bg-slate-100/70 text-slate-900 flex flex-col font-sans antialiased overflow-hidden">
       {/* Top Header */}
@@ -151,6 +172,7 @@ export default function App() {
         currentUser={currentUser}
         allUsers={allUsers}
         onUserChange={handleUserChange}
+        onNavigate={handleNavigate}
         onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         onOpenNotifications={() => handleNavigate('notifications')}
         unreadNotificationsCount={unreadCount}
@@ -172,6 +194,49 @@ export default function App() {
           {/* DASHBOARD VIEW */}
           {activeView === 'dashboard' && (
             <div className="space-y-6">
+              {/* Government Role & Scope Banner */}
+              <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-300 border-l-4 border-l-[#0B2545] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#0B2545] text-amber-400 flex flex-col items-center justify-center font-bold text-xs border border-amber-500/50 shadow-inner shrink-0 p-1">
+                    <span className="text-base">🏛️</span>
+                    <span className="text-[7px] uppercase tracking-tighter text-amber-300">GOV.IN</span>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#0B2545] bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                        {currentUser.role.replace(/_/g, ' ')}
+                      </span>
+                      <span className="text-[10px] text-slate-500 font-mono">Dossier ID: {currentUser.id}</span>
+                    </div>
+                    <h2 className="text-sm sm:text-base font-bold text-[#0B2545] mt-0.5">
+                      {currentUser.name} · {currentUser.designation}
+                    </h2>
+                    <p className="text-xs text-slate-600">
+                      {currentUser.role === 'NGO_INSTITUTE'
+                        ? `Authorized NGO Scope: Center #${currentUser.assignedProjectId || 'FAC-01'} · Isolated Facility Metrics & Audit Feed`
+                        : currentUser.role === 'INSPECTION_OFFICER'
+                        ? `Field Inspectorate Scope: Ground Verifications & Random VC in ${currentUser.state || 'Assigned Region'}`
+                        : currentUser.role === 'STATE_DISTRICT_AUTHORITY'
+                        ? `District Administration Scope: District ${currentUser.district || 'Pune'}, State of ${currentUser.state || 'Maharashtra'}`
+                        : currentUser.role === 'DEPARTMENT_OFFICIAL'
+                        ? 'Programme Directorate: Central Sector PM-AJAY, SMILE & Adarsh Gram Oversight'
+                        : 'National Apex Central Monitoring Cell: Consolidated Master Database Oversight (All-India)'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 self-start md:self-auto shrink-0">
+                  <button
+                    onClick={() => handleNavigate('reports')}
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded bg-[#0B2545] hover:bg-[#13315C] text-white shadow-xs transition cursor-pointer"
+                    title="Open your role-specific official report"
+                  >
+                    <FileBarChart className="w-3.5 h-3.5 text-amber-400" />
+                    <span>View Role-Specific Report</span>
+                  </button>
+                </div>
+              </div>
+
               {/* Stat Cards */}
               <StatCards projects={projects} inspections={inspections} />
 
@@ -378,7 +443,10 @@ export default function App() {
 
           {/* REPORTS & MIS EXPORT */}
           {activeView === 'reports' && (
-            <ReportsDashboard onSelectInspection={handleViewInspectionDossier} />
+            <ReportsDashboard
+              currentUser={currentUser}
+              onSelectInspection={handleViewInspectionDossier}
+            />
           )}
 
           {/* AUDIT LOGS VIEW */}

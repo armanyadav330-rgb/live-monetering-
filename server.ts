@@ -22,10 +22,24 @@ async function startServer() {
 
   // Helper to extract mock/session user from header
   const getRequestUser = (req: express.Request) => {
-    const userId = (req.headers['x-user-id'] as string) || 'usr_super_admin';
+    const userId = req.headers['x-user-id'] as string;
+    if (userId) {
+      const found = portalStore.getUserById(userId);
+      if (found) return found;
+    }
     const userRole = (req.headers['x-user-role'] as UserRole) || 'SUPER_ADMIN';
     const userName = (req.headers['x-user-name'] as string) || 'Dr. Rajeshwar Sharma, IAS';
-    return { id: userId, name: decodeURIComponent(userName), role: userRole };
+    const byRole = portalStore.getUsers().find((u) => u.role === userRole);
+    if (byRole) return byRole;
+    return {
+      id: userId || 'usr_super_admin',
+      name: decodeURIComponent(userName),
+      role: userRole,
+      email: 'officer@dosje.gov.in',
+      designation: 'Authorized Officer',
+      createdAt: '2026-01-01T00:00:00.000Z',
+      isActive: true,
+    };
   };
 
   // ==========================================
@@ -45,46 +59,11 @@ async function startServer() {
   // Dashboard Stats Aggregation
   app.get('/api/dashboard/stats', (req, res) => {
     try {
-      const projects = portalStore.getProjects();
-      const inspections = portalStore.getInspections();
-      const cameras = portalStore.getCameras();
-
-      const totalProjects = projects.length;
-      const criticalProjects = projects.filter((p) => p.riskLevel === 'CRITICAL').length;
-      const highRiskProjects = projects.filter((p) => p.riskLevel === 'HIGH').length;
-      const mediumRiskProjects = projects.filter((p) => p.riskLevel === 'MEDIUM').length;
-      const lowRiskProjects = projects.filter((p) => p.riskLevel === 'LOW').length;
-
-      const totalInspections = inspections.length;
-      const completedInspections = inspections.filter((i) => i.status === 'COMPLETED').length;
-      const pendingInspections = inspections.filter((i) => i.status === 'PENDING').length;
-      const surpriseInspections = inspections.filter((i) => i.priority === 'SURPRISE').length;
-
-      const onlineCameras = cameras.filter((c) => c.status === 'ONLINE').length;
-      const totalCameras = cameras.length;
-      const cctvUptimePercent = totalCameras > 0 ? Math.round((onlineCameras / totalCameras) * 100) : 0;
-
-      const avgAttendance = projects.length > 0
-        ? Math.round(projects.reduce((acc, p) => acc + p.averageAttendancePercent, 0) / projects.length)
-        : 0;
-
+      const user = getRequestUser(req);
+      const stats = portalStore.getDashboardStats(user);
       res.json({
         success: true,
-        data: {
-          totalProjects,
-          criticalProjects,
-          highRiskProjects,
-          mediumRiskProjects,
-          lowRiskProjects,
-          totalInspections,
-          completedInspections,
-          pendingInspections,
-          surpriseInspections,
-          onlineCameras,
-          totalCameras,
-          cctvUptimePercent,
-          avgAttendance,
-        },
+        data: stats,
       });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
@@ -94,7 +73,8 @@ async function startServer() {
   // Projects API
   app.get('/api/projects', (req, res) => {
     try {
-      let projects = portalStore.getProjects();
+      const user = getRequestUser(req);
+      let projects = portalStore.getProjects(user);
       const { search, state, district, scheme, risk, cctvStatus, status } = req.query;
 
       if (search && typeof search === 'string') {
@@ -197,7 +177,8 @@ async function startServer() {
   // Inspections API
   app.get('/api/inspections', (req, res) => {
     try {
-      let list = portalStore.getInspections();
+      const user = getRequestUser(req);
+      let list = portalStore.getInspections(user);
       const { status, priority, inspectorId, projectId, search } = req.query;
 
       if (status && typeof status === 'string' && status !== 'ALL') {
@@ -279,8 +260,9 @@ async function startServer() {
   // CCTV API
   app.get('/api/cctv/cameras', async (req, res) => {
     try {
+      const user = getRequestUser(req);
       const { projectId } = req.query;
-      const cameras = await cctvProvider.getAllCameras(projectId as string | undefined);
+      const cameras = portalStore.getCameras(projectId as string | undefined, user);
       res.json({ success: true, data: cameras });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
@@ -316,7 +298,13 @@ async function startServer() {
   // Random VC API
   app.get('/api/vc/records', async (req, res) => {
     try {
+      const user = getRequestUser(req);
       const records = await vcProvider.getVCRecords(req.query.projectId as string | undefined);
+      if (user && user.role !== 'SUPER_ADMIN') {
+        const allowedProjectIds = new Set(portalStore.getProjects(user).map((p) => p.id));
+        const filtered = records.filter((r) => allowedProjectIds.has(r.projectId));
+        return res.json({ success: true, data: filtered });
+      }
       res.json({ success: true, data: records });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
@@ -325,7 +313,8 @@ async function startServer() {
 
   app.post('/api/vc/random-target', (req, res) => {
     try {
-      const projects = portalStore.getProjects();
+      const user = getRequestUser(req);
+      const projects = portalStore.getProjects(user);
       const target = vcProvider.selectRandomParticipant(projects);
       if (!target) {
         return res.status(404).json({ success: false, message: 'No eligible projects for video verification' });
@@ -365,8 +354,9 @@ async function startServer() {
   // Attendance API
   app.get('/api/attendance', async (req, res) => {
     try {
+      const user = getRequestUser(req);
       const { projectId } = req.query;
-      const records = await attendanceProvider.getAttendanceRecords(projectId as string | undefined);
+      const records = portalStore.getAttendance(projectId as string | undefined, user);
       const summary = attendanceProvider.getAttendanceSummary(records);
       res.json({ success: true, summary, data: records });
     } catch (err: any) {
@@ -441,7 +431,8 @@ async function startServer() {
 
   app.get('/api/ai/alerts', (req, res) => {
     try {
-      const alerts = portalStore.getAIAlerts();
+      const user = getRequestUser(req);
+      const alerts = portalStore.getAIAlerts(user);
       res.json({ success: true, data: alerts });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });

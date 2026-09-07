@@ -13,6 +13,7 @@ import {
   Users,
   Settings,
   Bot,
+  Globe,
 } from 'lucide-react';
 import { UserRole } from '../../types';
 
@@ -35,6 +36,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const effectiveView = currentView || activeView || 'dashboard';
   const navItems = [
+    {
+      id: 'home',
+      label: 'Homepage & Gateway',
+      icon: Globe,
+      badge: 'GATEWAY',
+      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY', 'NGO_INSTITUTE'],
+    },
     {
       id: 'dashboard',
       label: 'Main Dashboard',
@@ -91,7 +99,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'reports',
       label: 'Reports & Exports',
       icon: FileBarChart,
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'STATE_DISTRICT_AUTHORITY'],
+      badge: 'MIS',
+      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY', 'NGO_INSTITUTE'],
     },
     {
       id: 'notifications',
@@ -133,14 +142,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 text-slate-200 shrink-0 h-full flex flex-col justify-between border-r border-slate-800 overflow-hidden select-none transition-transform duration-200 ease-in-out md:static md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0B2545] text-slate-100 shrink-0 h-full flex flex-col justify-between border-r border-[#13315C] overflow-hidden select-none transition-transform duration-200 ease-in-out md:static md:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="p-2.5 space-y-0.5 flex-1 overflow-y-auto flex flex-col">
-          <div className="flex items-center justify-between px-2.5 py-1 mb-0.5">
-            <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-              Navigation
+          <div className="flex items-center justify-between px-2.5 py-1 mb-1 border-b border-[#13315C] pb-2">
+            <div className="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+              <span>🏛️</span>
+              <span>PORTAL MODULES</span>
             </div>
             {onClose && (
               <button
@@ -171,22 +181,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     onNavigate(item.id);
                     if (onClose) onClose();
                   }}
-                  className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-medium transition ${
+                  className={`w-full flex items-center justify-between px-2.5 py-2 rounded text-xs font-medium transition cursor-pointer ${
                     isActive
-                      ? 'bg-indigo-600 text-white shadow-xs font-semibold'
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                      ? 'bg-[#1E3A8A] text-white font-semibold border-l-4 border-amber-400 shadow-sm'
+                      : 'text-slate-200 hover:bg-[#13315C] hover:text-white'
                   }`}
                 >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-amber-300' : 'text-slate-400'}`} />
                     <span className="truncate">{item.label}</span>
                   </div>
                   {item.badge && (
                     <span
-                      className={`text-[9px] px-1.5 py-0.5 rounded-sm font-bold uppercase tracking-wider shrink-0 ml-1.5 ${
+                      className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider shrink-0 ml-1.5 ${
                         isActive
-                          ? 'bg-indigo-500 text-white'
-                          : 'bg-slate-800 text-amber-400 border border-slate-700'
+                          ? 'bg-amber-500 text-slate-950 font-extrabold'
+                          : 'bg-[#13315C] text-amber-300 border border-slate-600'
                       }`}
                     >
                       {item.badge}
@@ -199,16 +209,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* System Operational Status */}
-        <div className="p-2.5 border-t border-slate-800 bg-slate-950/50 text-[11px] text-slate-400 shrink-0">
+        <div className="p-2.5 border-t border-[#13315C] bg-[#07162C] text-[11px] text-slate-300 shrink-0">
           <div className="flex items-center justify-between mb-0.5">
-            <span className="text-slate-500 text-[10px]">System Gateway</span>
-            <span className="inline-flex items-center gap-1 text-emerald-400 font-semibold text-[10px]">
+            <span className="text-slate-400 text-[10px] font-medium">NIC National Cloud</span>
+            <span className="inline-flex items-center gap-1 text-emerald-400 font-bold text-[10px]">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              OPERATIONAL
+              GOV SECURE
             </span>
           </div>
-          <div className="text-[10px] text-slate-500 truncate">
-            NIC Cloud Node · DoSJE MIS v2.4
+          <div className="text-[10px] text-slate-400 font-mono truncate">
+            DoSJE-MIS-v2.4 · 256-Bit Encrypted
           </div>
         </div>
       </aside>

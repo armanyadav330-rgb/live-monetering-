@@ -1,0 +1,101 @@
+import React from 'react';
+import {
+  Zap,
+  ArrowRight,
+  ShieldCheck,
+  CheckCircle2,
+  Lock,
+  Headphones,
+} from 'lucide-react';
+
+interface CtaBannerProps {
+  isDarkMode: boolean;
+  onCreateAccount: () => void;
+  onExploreDemo: () => void;
+}
+
+export const CtaBanner: React.FC<CtaBannerProps> = ({
+  isDarkMode,
+  onCreateAccount,
+  onExploreDemo,
+}) => {
+  return (
+    <section className="py-16 sm:py-20 relative overflow-hidden border-t border-slate-200/80 dark:border-slate-800/80">
+      {/* Soft background ambient gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-indigo-500/5 to-transparent pointer-events-none" />
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div
+          className={`p-8 sm:p-12 rounded-3xl border text-center relative overflow-hidden shadow-2xl transition-all ${
+            isDarkMode
+              ? 'bg-gradient-to-tr from-[#0b2545] via-[#091e38] to-[#041224] border-slate-700 shadow-black/50'
+              : 'bg-gradient-to-tr from-[#0b2545] via-[#0e315d] to-[#133d73] border-[#0b2545] text-white shadow-slate-900/30'
+          }`}
+        >
+          {/* Top Tiranga Stripe */}
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#FF671F] via-white to-[#046A38]" />
+
+          {/* Subtle decorative shapes */}
+          <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#FF671F]/10 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-[#046A38]/10 rounded-full blur-2xl pointer-events-none" />
+
+          <div className="max-w-2xl mx-auto space-y-4 relative z-10">
+            {/* Live Indicator Pill */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/10 text-amber-300 backdrop-blur-xs border border-amber-300/30">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>राष्ट्रीय निगरानी ग्रिड • National Oversight Command</span>
+            </div>
+
+            {/* Bold Headline */}
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
+              केंद्रीय निगरानी प्रणाली से जुड़ें
+            </h2>
+            <div className="text-sm sm:text-base font-bold text-amber-300">
+              Operationalize Statutory 24/7 Live Monitoring Today
+            </div>
+
+            {/* Sub-copy */}
+            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-xl mx-auto font-normal">
+              राज्य नोडल अधिकारियों, जिला समाज कल्याण अधिकारियों (DSWO), मान्यता प्राप्त गैर-सरकारी संगठनों (NGOs) और केंद्रीय मंत्रालय के लिए एकीकृत डिजिटल मंच।
+            </p>
+
+            {/* CTAs */}
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+              <button
+                onClick={onCreateAccount}
+                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#FF671F] to-[#E65100] hover:from-[#f05e19] hover:to-[#d84800] text-white font-extrabold text-sm shadow-xl hover:shadow-2xl transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 border border-amber-300/30"
+              >
+                <Zap className="w-4 h-4 text-amber-200" />
+                <span>विभागीय पोर्टल में प्रवेश करें (Officer Login)</span>
+                <ArrowRight className="w-4 h-4 text-amber-200" />
+              </button>
+
+              <button
+                onClick={onExploreDemo}
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>लाइव निरीक्षण ग्रिड देखें (View Live Feeds)</span>
+              </button>
+            </div>
+
+            {/* Feature Checklist */}
+            <div className="pt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-200 font-medium">
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                एनआईसी मेघराज क्लाउड (NIC MeghRaj)
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-emerald-400" />
+                सुरक्षित टीएलएस 1.3 एन्क्रिप्शन (AES-256)
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Headphones className="w-3.5 h-3.5 text-emerald-400" />
+                राष्ट्रीय टोल-फ्री हेल्पलाइन: 14567
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

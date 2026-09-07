@@ -200,7 +200,38 @@ class PortalDataStore {
   }
 
   // ---- PROJECTS ----
-  public getProjects(): Project[] {
+  public getProjects(user?: User): Project[] {
+    if (!user || user.role === 'SUPER_ADMIN') {
+      return [...this.projects];
+    }
+    if (user.role === 'NGO_INSTITUTE') {
+      const targetId = user.assignedProjectId || 'proj_001';
+      return this.projects.filter((p) => p.id === targetId || p.projectId === targetId);
+    }
+    if (user.role === 'STATE_DISTRICT_AUTHORITY') {
+      return this.projects.filter((p) => {
+        if (user.district && p.district.toLowerCase() === user.district.toLowerCase()) return true;
+        if (user.state && p.state.toLowerCase() === user.state.toLowerCase()) return true;
+        return false;
+      });
+    }
+    if (user.role === 'INSPECTION_OFFICER') {
+      const assignedProjIds = new Set(
+        this.inspections.filter((i) => i.inspectorId === user.id).map((i) => i.projectId)
+      );
+      return this.projects.filter((p) => {
+        if (assignedProjIds.has(p.id) || assignedProjIds.has(p.projectId)) return true;
+        if (user.district && p.district.toLowerCase() === user.district.toLowerCase()) return true;
+        if (user.state && p.state.toLowerCase() === user.state.toLowerCase()) return true;
+        return false;
+      });
+    }
+    if (user.role === 'DEPARTMENT_OFFICIAL') {
+      return this.projects.filter((p) => {
+        const s = p.scheme.toLowerCase();
+        return s.includes('pm-ajay') || s.includes('smile') || s.includes('adarsh gram');
+      });
+    }
     return [...this.projects];
   }
 
@@ -397,10 +428,36 @@ class PortalDataStore {
   }
 
   // ---- INSPECTIONS ----
-  public getInspections(): Inspection[] {
-    return [...this.inspections].sort(
+  public getInspections(user?: User): Inspection[] {
+    const all = [...this.inspections].sort(
       (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
+    if (!user || user.role === 'SUPER_ADMIN') {
+      return all;
+    }
+    if (user.role === 'NGO_INSTITUTE') {
+      const targetProjId = user.assignedProjectId || 'proj_001';
+      return all.filter((i) => i.projectId === targetProjId);
+    }
+    if (user.role === 'INSPECTION_OFFICER') {
+      return all.filter(
+        (i) => i.inspectorId === user.id || (user.state && i.state.toLowerCase() === user.state.toLowerCase())
+      );
+    }
+    if (user.role === 'STATE_DISTRICT_AUTHORITY') {
+      return all.filter((i) => {
+        if (user.district && i.district.toLowerCase() === user.district.toLowerCase()) return true;
+        if (user.state && i.state.toLowerCase() === user.state.toLowerCase()) return true;
+        return false;
+      });
+    }
+    if (user.role === 'DEPARTMENT_OFFICIAL') {
+      return all.filter((i) => {
+        const s = (i.scheme || '').toLowerCase();
+        return s.includes('pm-ajay') || s.includes('smile') || s.includes('adarsh gram');
+      });
+    }
+    return all;
   }
 
   public getInspectionById(id: string): Inspection | undefined {
@@ -727,8 +784,12 @@ class PortalDataStore {
   }
 
   // ---- AI ANOMALY ALERTS ----
-  public getAIAlerts(): AIAnomalyAlert[] {
-    return [...this.aiAlerts];
+  public getAIAlerts(user?: User): AIAnomalyAlert[] {
+    if (!user || user.role === 'SUPER_ADMIN') {
+      return [...this.aiAlerts];
+    }
+    const allowedProjectIds = new Set(this.getProjects(user).map((p) => p.id));
+    return this.aiAlerts.filter((a) => allowedProjectIds.has(a.projectId));
   }
 
   public dismissAIAlert(id: string): boolean {
@@ -751,11 +812,16 @@ class PortalDataStore {
   }
 
   // ---- CCTV CAMERAS ----
-  public getCameras(projectId?: string): CCTVCamera[] {
-    if (projectId) {
-      return this.cameras.filter((c) => c.projectId === projectId);
+  public getCameras(projectId?: string, user?: User): CCTVCamera[] {
+    let list = this.cameras;
+    if (user && user.role !== 'SUPER_ADMIN') {
+      const allowedProjectIds = new Set(this.getProjects(user).map((p) => p.id));
+      list = list.filter((c) => allowedProjectIds.has(c.projectId));
     }
-    return [...this.cameras];
+    if (projectId && projectId !== 'ALL') {
+      return list.filter((c) => c.projectId === projectId);
+    }
+    return [...list];
   }
 
   public updateCameraStatus(cameraId: string, status: CCTVCamera['status']): CCTVCamera | null {
@@ -767,11 +833,63 @@ class PortalDataStore {
   }
 
   // ---- ATTENDANCE ----
-  public getAttendance(projectId?: string): AttendanceRecord[] {
-    if (projectId) {
-      return this.attendance.filter((a) => a.projectId === projectId);
+  public getAttendance(projectId?: string, user?: User): AttendanceRecord[] {
+    let list = this.attendance;
+    if (user && user.role !== 'SUPER_ADMIN') {
+      const allowedProjectIds = new Set(this.getProjects(user).map((p) => p.id));
+      list = list.filter((a) => allowedProjectIds.has(a.projectId));
     }
-    return [...this.attendance];
+    if (projectId && projectId !== 'ALL') {
+      return list.filter((a) => a.projectId === projectId);
+    }
+    return [...list];
+  }
+
+  // ---- DASHBOARD STATS AGGREGATION ----
+  public getDashboardStats(user?: User) {
+    const projects = this.getProjects(user);
+    const inspections = this.getInspections(user);
+    const cameras = this.getCameras(undefined, user);
+
+    const totalProjects = projects.length;
+    const criticalProjects = projects.filter((p) => p.riskLevel === 'CRITICAL').length;
+    const highRiskProjects = projects.filter((p) => p.riskLevel === 'HIGH').length;
+    const mediumRiskProjects = projects.filter((p) => p.riskLevel === 'MEDIUM').length;
+    const lowRiskProjects = projects.filter((p) => p.riskLevel === 'LOW').length;
+
+    const totalInspections = inspections.length;
+    const completedInspections = inspections.filter((i) => i.status === 'COMPLETED').length;
+    const pendingInspections = inspections.filter((i) => i.status === 'PENDING').length;
+    const surpriseInspections = inspections.filter((i) => i.priority === 'SURPRISE').length;
+
+    const onlineCameras = cameras.filter((c) => c.status === 'ONLINE').length;
+    const totalCameras = cameras.length;
+    const cctvUptimePercent = totalCameras > 0 ? Math.round((onlineCameras / totalCameras) * 100) : 0;
+
+    const avgAttendance = projects.length > 0
+      ? Math.round(projects.reduce((acc, p) => acc + p.averageAttendancePercent, 0) / projects.length)
+      : 0;
+
+    const totalBeneficiaries = projects.reduce((acc, p) => acc + p.beneficiaryCount, 0);
+    const totalStaff = projects.reduce((acc, p) => acc + p.staffCount, 0);
+
+    return {
+      totalProjects,
+      criticalProjects,
+      highRiskProjects,
+      mediumRiskProjects,
+      lowRiskProjects,
+      totalInspections,
+      completedInspections,
+      pendingInspections,
+      surpriseInspections,
+      onlineCameras,
+      totalCameras,
+      cctvUptimePercent,
+      avgAttendance,
+      totalBeneficiaries,
+      totalStaff,
+    };
   }
 
   // ---- PORTAL SETTINGS ----

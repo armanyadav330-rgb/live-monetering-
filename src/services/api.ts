@@ -48,6 +48,20 @@ export function getAuthHeaders(): Record<string, string> {
 }
 
 export const api = {
+  // Dashboard Aggregation Stats (user-aware)
+  async getDashboardStats(): Promise<any> {
+    try {
+      const res = await fetch('/api/dashboard/stats', { headers: getAuthHeaders() });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    return portalStore.getDashboardStats(getStoredUser());
+  },
+
   // Projects
   async getProjects(params?: Record<string, string>): Promise<Project[]> {
     try {
@@ -60,7 +74,7 @@ export const api = {
     } catch {
       // fallback to in-memory store
     }
-    return portalStore.getProjects();
+    return portalStore.getProjects(getStoredUser());
   },
 
   async getProject(id: string): Promise<Project | null> {
@@ -138,7 +152,7 @@ export const api = {
     } catch {
       // fallback
     }
-    return portalStore.getInspections();
+    return portalStore.getInspections(getStoredUser());
   },
 
   async getInspection(id: string): Promise<Inspection | null> {
@@ -205,7 +219,7 @@ export const api = {
     } catch {
       // fallback
     }
-    return cctvProvider.getAllCameras(projectId);
+    return portalStore.getCameras(projectId, getStoredUser());
   },
 
   async updateCameraStatus(id: string, status: CCTVCamera['status']): Promise<CCTVCamera | null> {
@@ -290,7 +304,7 @@ export const api = {
     } catch {
       // fallback
     }
-    const data = await attendanceProvider.getAttendanceRecords(projectId);
+    const data = portalStore.getAttendance(projectId, getStoredUser());
     const summary = attendanceProvider.getAttendanceSummary(data);
     return { summary, data };
   },
@@ -347,7 +361,7 @@ export const api = {
     } catch {
       // fallback
     }
-    return portalStore.getAIAlerts();
+    return portalStore.getAIAlerts(getStoredUser());
   },
 
   async dismissAIAlert(id: string): Promise<boolean> {

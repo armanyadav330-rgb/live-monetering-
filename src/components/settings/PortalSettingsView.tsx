@@ -41,6 +41,7 @@ export const PortalSettingsView: React.FC<PortalSettingsViewProps> = ({
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState<'general' | 'telephony' | 'risk' | 'inspection' | 'notifications' | 'security'>('general');
   const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [showResetConfirmModal, setShowResetConfirmModal] = useState(false);
 
   // Load Settings on Mount
   useEffect(() => {
@@ -98,18 +99,21 @@ export const PortalSettingsView: React.FC<PortalSettingsViewProps> = ({
     }
   };
 
-  const handleReset = async () => {
-    if (window.confirm('Are you sure you want to reset all portal settings to central government defaults?')) {
-      setSaving(true);
-      try {
-        const reset = await api.resetSettings();
-        setSettings(reset);
-        showToast('All settings reset to default DoSJE parameters');
-      } catch (err: any) {
-        showToast(err.message || 'Failed to reset settings', 'error');
-      } finally {
-        setSaving(false);
-      }
+  const handleReset = () => {
+    setShowResetConfirmModal(true);
+  };
+
+  const handleConfirmReset = async () => {
+    setShowResetConfirmModal(false);
+    setSaving(true);
+    try {
+      const reset = await api.resetSettings();
+      setSettings(reset);
+      showToast('All settings reset to default DoSJE parameters');
+    } catch (err: any) {
+      showToast(err.message || 'Failed to reset settings', 'error');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -918,6 +922,47 @@ export const PortalSettingsView: React.FC<PortalSettingsViewProps> = ({
           </div>
         )}
       </div>
+
+      {/* Reset Confirmation Modal (In-App, No window.confirm) */}
+      {showResetConfirmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="w-full max-w-md bg-white rounded-2xl border border-slate-200 p-6 shadow-2xl space-y-4 text-slate-900">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                <RotateCcw className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-base">Reset to Default Settings?</h3>
+                <p className="text-xs text-slate-500">
+                  Restore all DoSJE parameters to central government defaults
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-600 leading-relaxed">
+              This action will reset the 6-pillar AI risk algorithm weights, CCTV downtime thresholds, toll-free IVR gateway parameters, and geo-fencing tolerance back to default Ministry values.
+            </p>
+
+            <div className="flex items-center justify-end gap-2.5 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowResetConfirmModal(false)}
+                className="px-4 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmReset}
+                disabled={saving}
+                className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition shadow-md shadow-rose-600/20 cursor-pointer disabled:opacity-50"
+              >
+                {saving ? 'Resetting...' : 'Yes, Reset to Defaults'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

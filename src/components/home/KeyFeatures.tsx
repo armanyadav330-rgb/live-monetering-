@@ -1,0 +1,175 @@
+import React from 'react';
+import {
+  BellRing,
+  BarChart3,
+  Video,
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+  MapPin,
+  Fingerprint,
+} from 'lucide-react';
+
+interface KeyFeaturesProps {
+  isDarkMode: boolean;
+  onExploreFeature?: (featureName?: string) => void;
+}
+
+export const KeyFeatures: React.FC<KeyFeaturesProps> = ({
+  isDarkMode,
+  onExploreFeature = (_featureName?: string) => {},
+}) => {
+  const features = [
+    {
+      id: 'cctv-matrix',
+      title: '24×7 लाइव सीसीटीवी एवं औचक वीडियो कॉल',
+      subtitle: '24/7 Live CCTV Feeds & Random Video Call Verifications',
+      description:
+        'सभी संस्थाओं के डाइनिंग हॉल, मुख्य द्वार व कक्षाओं के कैमरों का सीधा लाइव प्रसारण। अधिकारी बिना पूर्व सूचना के रैंडम वीडियो कॉल द्वारा मौके पर उपस्थिति व व्यवस्था की जांच कर सकते हैं।',
+      icon: Video,
+      badge: 'लाइव टेलीमेट्री',
+      badgeClass: 'bg-[#FF671F]/10 text-[#E65100] border-[#FF671F]/30',
+      iconBg: 'bg-[#FF671F]/10 text-[#FF671F]',
+      topStripe: 'bg-[#FF671F]',
+    },
+    {
+      id: 'biometric-tracking',
+      title: 'बायोमेट्रिक उपस्थिति एवं हेडकाउंट मिलान',
+      subtitle: 'Aadhaar-Linked Biometric Attendance & Headcount',
+      description:
+        'आधार-सक्षम बायोमेट्रिक फिंगरप्रिंट व फेस स्कैनर द्वारा लाभार्थियों और कर्मचारियों की दैनिक लाइव उपस्थिति। फर्जी या डुप्लिकेट नामों (Ghost Beneficiaries) की तत्काल रोकथाम।',
+      icon: Fingerprint,
+      badge: 'आधार सत्यापित',
+      badgeClass: 'bg-[#046A38]/10 text-[#046A38] border-[#046A38]/30',
+      iconBg: 'bg-[#046A38]/10 text-[#046A38]',
+      topStripe: 'bg-[#046A38]',
+    },
+    {
+      id: 'ai-radar',
+      title: 'एआई विसंगति रडार व धोखाधड़ी रोकथाम',
+      subtitle: 'AI Predictive Anomaly Radar & Fraud Prevention',
+      description:
+        'मशीन लर्निंग मॉडल सीसीटीवी हेडकाउंट और बायोमेट्रिक डेटा का स्वतः मिलान करते हैं। कैमरे बंद होने, असामान्य समय में हलचल या दर्ज संख्या में अंतर होने पर तुरंत रिस्क स्कोर जारी होता है।',
+      icon: Sparkles,
+      badge: 'जेमिनी एआई ऑडिट',
+      badgeClass: 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30',
+      iconBg: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
+      topStripe: 'bg-purple-600',
+    },
+    {
+      id: 'automated-alerts',
+      title: 'स्वचालित अलर्ट एवं बहु-स्तरीय सूचनाएं',
+      subtitle: 'Automated Multi-Channel Escalations (SMS/Email)',
+      description:
+        'किसी भी विसंगति पर संबंधित एनजीओ, जिला समाज कल्याण अधिकारी (DSWO) और राज्य नोडल टीम को तुरंत ईमेल, एसएमएस व डैशबोर्ड अलर्ट। 24 घंटे में समाधान न होने पर स्वतः उच्च अधिकारियों को प्रेषित।',
+      icon: BellRing,
+      badge: 'एसएमएस व ईमेल अलर्ट',
+      badgeClass: 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/30',
+      iconBg: 'bg-amber-500/10 text-amber-600',
+      topStripe: 'bg-amber-500',
+    },
+    {
+      id: 'geo-tagged-inspections',
+      title: 'जियो-टैग ऑन-साइट फील्ड निरीक्षण',
+      subtitle: 'Geo-Tagged Physical Field Inspection Dossier',
+      description:
+        'निरीक्षण अधिकारियों द्वारा मौके पर जाकर जीपीएस (GPS) अक्षांश-देशांतर व समय-मुहर (Timestamp) के साथ फोटो, भोजन की गुणवत्ता, साफ-सफाई व भौतिक पंजी सत्यापन की रिपोर्ट दर्ज की जाती है।',
+      icon: MapPin,
+      badge: 'जीपीएस प्रमाणित',
+      badgeClass: 'bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30',
+      iconBg: 'bg-blue-500/10 text-blue-600',
+      topStripe: 'bg-blue-600',
+    },
+    {
+      id: 'cag-audit-reports',
+      title: 'डिजिटल ऑडिट डोजियर एवं कैग (CAG) अनुपालन',
+      subtitle: 'Statutory Compliance Reports & Direct Benefit Transfer',
+      description:
+        'एक क्लिक में संपूर्ण ऐतिहासिक ऑडिट रिपोर्ट, विसंगति लॉग, उपस्थिति प्रतिशत व सीसीटीवी स्नैपशॉट पीडीएफ/एक्सेल में डाउनलोड करें। वित्तीय अनुदान जारी करने हेतु कैग नियमों के अनुरूप।',
+      icon: BarChart3,
+      badge: 'कैग अनुरूप',
+      badgeClass: 'bg-[#0b2545]/10 text-[#0b2545] dark:text-amber-300 border-[#0b2545]/30',
+      iconBg: 'bg-[#0b2545]/10 text-[#0b2545] dark:text-white',
+      topStripe: 'bg-[#0b2545]',
+    },
+  ];
+
+  return (
+    <section id="features" className="py-14 sm:py-18 border-t border-slate-200/80 dark:border-slate-800/80 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto space-y-3 mb-10 sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0b2545]/10 text-[#0b2545] dark:bg-amber-400/10 dark:text-amber-400 border border-[#0b2545]/20 dark:border-amber-400/30">
+            <ShieldCheck className="w-4 h-4 text-[#FF671F]" />
+            <span>केंद्रीय निगरानी प्रणाली के 6 प्रमुख स्तंभ • Core Statutory Pillars</span>
+          </div>
+
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#0b2545] dark:text-white">
+            सरकारी निगरानी एवं पारदर्शिता के मुख्य मॉड्यूल
+          </h2>
+
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+            देश भर के सामाजिक न्याय संस्थानों में निष्पक्षता, सुरक्षा व वित्तीय अनुशासन सुनिश्चित करने हेतु तैयार किया गया व्यापक सरकारी ढांचा।
+          </p>
+        </div>
+
+        {/* Features Grid (Responsive 1, 2, or 3 columns) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          {features.map((item) => {
+            const IconComponent = item.icon;
+            return (
+              <div
+                key={item.id}
+                onClick={() => onExploreFeature(item.subtitle)}
+                className={`group p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-between cursor-pointer relative overflow-hidden ${
+                  isDarkMode
+                    ? 'bg-slate-900/60 border-slate-800 hover:bg-slate-800/80 hover:border-slate-700 hover:shadow-xl hover:shadow-black/40'
+                    : 'bg-white border-slate-200 hover:border-[#0b2545]/40 hover:shadow-lg hover:shadow-slate-200/60'
+                }`}
+              >
+                {/* Top Colored Accent Stripe */}
+                <div className={`absolute top-0 left-0 right-0 h-1 ${item.topStripe}`} />
+
+                <div>
+                  {/* Top Bar: Icon & Badge */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center ${item.iconBg} border border-current/10 shadow-xs group-hover:scale-105 transition-transform`}
+                    >
+                      <IconComponent className="w-6 h-6" />
+                    </div>
+
+                    <span
+                      className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${item.badgeClass}`}
+                    >
+                      {item.badge}
+                    </span>
+                  </div>
+
+                  {/* Title and Subtitle */}
+                  <h3 className="text-base font-bold text-[#0b2545] dark:text-white group-hover:text-[#FF671F] transition-colors leading-snug">
+                    {item.title}
+                  </h3>
+                  <div className="text-[11px] font-semibold text-slate-400 mt-0.5">
+                    {item.subtitle}
+                  </div>
+
+                  {/* Description */}
+                  <p className="mt-2.5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                    {item.description}
+                  </p>
+                </div>
+
+                {/* Footer Action */}
+                <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-[#0b2545] dark:text-amber-300 group-hover:text-[#FF671F] transition-colors">
+                  <span>मॉड्यूल देखें (Open Module)</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-[#FF671F]" />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
