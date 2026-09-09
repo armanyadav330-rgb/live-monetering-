@@ -79,7 +79,7 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
         </div>
 
         {/* Status Counters */}
-        <div className="flex items-center gap-3 text-xs">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs">
           <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             {onlineCount} Online

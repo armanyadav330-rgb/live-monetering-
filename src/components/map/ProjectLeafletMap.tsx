@@ -154,12 +154,12 @@ export const ProjectLeafletMap: React.FC<ProjectLeafletMapProps> = ({ onSelectPr
       </div>
 
       {/* Map Canvas with Sidebar Selected Card */}
-      <div className="relative bg-slate-100 rounded-xl overflow-hidden border border-slate-200 shadow-md h-[550px]">
+      <div className="relative bg-slate-100 rounded-xl overflow-hidden border border-slate-200 shadow-md h-[400px] sm:h-[520px] lg:h-[580px]">
         <div ref={mapContainerRef} className="w-full h-full z-0" />
 
         {/* Legend Overlay */}
-        <div className="absolute top-3 right-3 z-10 bg-white/95 backdrop-blur-xs p-3 rounded-lg shadow-md border border-slate-200 text-[11px] space-y-1.5 pointer-events-auto">
-          <div className="font-bold text-slate-800 uppercase tracking-wider text-[10px]">
+        <div className="absolute top-3 right-3 z-10 bg-white/95 backdrop-blur-xs p-2 sm:p-3 rounded-lg shadow-md border border-slate-200 text-[9px] sm:text-[11px] space-y-1 sm:space-y-1.5 pointer-events-auto">
+          <div className="font-bold text-slate-800 uppercase tracking-wider text-[9px] sm:text-[10px]">
             Risk Legend
           </div>
           <div className="flex items-center gap-2">

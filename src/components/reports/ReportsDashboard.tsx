@@ -415,7 +415,7 @@ export const ReportsDashboard: React.FC<ReportsDashboardProps> = ({
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
+          <table className="w-full text-left text-xs border-collapse min-w-[760px]">
             <thead>
               <tr className="bg-slate-100 border-b border-slate-300 text-slate-700 font-bold uppercase text-[10px]">
                 <th className="py-2.5 px-3 border-r border-slate-200">Order Ref</th>

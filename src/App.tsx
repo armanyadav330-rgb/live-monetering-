@@ -166,7 +166,7 @@ export default function App() {
   }
 
   return (
-    <div className="h-screen bg-slate-100/70 text-slate-900 flex flex-col font-sans antialiased overflow-hidden">
+    <div className="min-h-screen min-h-[100dvh] h-screen h-[100dvh] bg-slate-100/70 text-slate-900 flex flex-col font-sans antialiased overflow-hidden">
       {/* Top Header */}
       <Header
         currentUser={currentUser}
@@ -178,7 +178,7 @@ export default function App() {
         unreadNotificationsCount={unreadCount}
       />
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden min-h-0">
         {/* Navigation Sidebar */}
         <Sidebar
           activeView={activeView}
@@ -190,28 +190,28 @@ export default function App() {
         />
 
         {/* Main Content View Container */}
-        <main className="flex-1 overflow-y-auto p-3 sm:p-6 max-w-7xl mx-auto w-full space-y-4 sm:space-y-6">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-5 lg:p-6 max-w-7xl mx-auto w-full space-y-4 sm:space-y-6">
           {/* DASHBOARD VIEW */}
           {activeView === 'dashboard' && (
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Government Role & Scope Banner */}
               <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-300 border-l-4 border-l-[#0B2545] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
+                <div className="flex items-start sm:items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-[#0B2545] text-amber-400 flex flex-col items-center justify-center font-bold text-xs border border-amber-500/50 shadow-inner shrink-0 p-1">
                     <span className="text-base">🏛️</span>
                     <span className="text-[7px] uppercase tracking-tighter text-amber-300">GOV.IN</span>
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#0B2545] bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
                         {currentUser.role.replace(/_/g, ' ')}
                       </span>
                       <span className="text-[10px] text-slate-500 font-mono">Dossier ID: {currentUser.id}</span>
                     </div>
-                    <h2 className="text-sm sm:text-base font-bold text-[#0B2545] mt-0.5">
+                    <h2 className="text-sm sm:text-base font-bold text-[#0B2545] mt-0.5 truncate">
                       {currentUser.name} · {currentUser.designation}
                     </h2>
-                    <p className="text-xs text-slate-600">
+                    <p className="text-xs text-slate-600 line-clamp-2 sm:line-clamp-none">
                       {currentUser.role === 'NGO_INSTITUTE'
                         ? `Authorized NGO Scope: Center #${currentUser.assignedProjectId || 'FAC-01'} · Isolated Facility Metrics & Audit Feed`
                         : currentUser.role === 'INSPECTION_OFFICER'

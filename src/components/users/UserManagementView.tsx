@@ -78,7 +78,7 @@ export const UserManagementView: React.FC<{ currentUser: User }> = ({ currentUse
       {/* Users Table */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
+          <table className="w-full text-left text-xs border-collapse min-w-[620px]">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase text-[10px]">
                 <th className="py-2.5 px-3">Official Name</th>

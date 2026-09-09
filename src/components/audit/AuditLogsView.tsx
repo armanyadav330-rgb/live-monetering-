@@ -644,7 +644,7 @@ export const AuditLogsView: React.FC<AuditLogsViewProps> = ({
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+            <table className="w-full text-left text-xs border-collapse min-w-[720px]">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase text-[10px] tracking-wider">
                   <th className="py-2.5 px-3">Timestamp (IST)</th>

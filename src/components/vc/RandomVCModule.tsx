@@ -197,7 +197,7 @@ export const RandomVCModule: React.FC<RandomVCModuleProps> = ({ initialProjectId
           {/* Random Target Shuffler Button */}
           <button
             onClick={() => selectRandomTarget()}
-            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition shadow-sm self-start lg:self-end cursor-pointer"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition shadow-sm self-stretch lg:self-end cursor-pointer"
             title="Randomly Pick Another Field Target"
           >
             <Shuffle className="w-3.5 h-3.5 text-emerald-400" />
@@ -207,7 +207,7 @@ export const RandomVCModule: React.FC<RandomVCModuleProps> = ({ initialProjectId
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex border-b border-slate-200 bg-white px-4 rounded-t-xl gap-2 overflow-x-auto">
+      <div className="flex border-b border-slate-200 bg-white px-3 sm:px-4 rounded-t-xl gap-1 sm:gap-2 overflow-x-auto scrollbar-none">
         <button
           onClick={() => {
             setAutoStartVoice(false);

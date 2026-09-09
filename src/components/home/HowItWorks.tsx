@@ -15,11 +15,13 @@ import {
 
 interface HowItWorksProps {
   isDarkMode: boolean;
+  lang: 'EN' | 'HI';
   onLaunchDashboard: () => void;
 }
 
 export const HowItWorks: React.FC<HowItWorksProps> = ({
   isDarkMode: _isDarkMode,
+  lang,
   onLaunchDashboard,
 }) => {
   const [activeStep, setActiveStep] = useState<1 | 2 | 3>(1);
@@ -27,26 +29,32 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
   const steps = [
     {
       num: 1,
-      title: 'संस्थान पंजीकरण एवं जियो-टैगिंग',
-      subtitle: 'Facility Registration & Geo-Tagging',
+      title: lang === 'HI' ? 'संस्थान पंजीकरण एवं जियो-टैगिंग' : 'Facility Registration & Geo-Tagging',
+      subtitle: lang === 'HI' ? 'संस्थान ऑनबोर्डिंग व जीपीएस सत्यापन' : 'Institution Onboarding & GPS Verification',
       description:
-        'प्रत्येक अनुदान-प्राप्त वृद्धाश्रम, नशा मुक्ति केंद्र व दिव्यांगजन विद्यालय का एनआईसी पोर्टल पर पंजीकरण, नोडल अधिकारी नियुक्ति व अक्षांश-देशांतर (GPS) सत्यापन।',
+        lang === 'HI'
+          ? 'प्रत्येक अनुदान-प्राप्त वृद्धाश्रम, नशा मुक्ति केंद्र व दिव्यांगजन विद्यालय का एनआईसी पोर्टल पर पंजीकरण, नोडल अधिकारी नियुक्ति व अक्षांश-देशांतर (GPS) सत्यापन।'
+          : 'Registration of every grant-in-aid senior home, de-addiction center, and special institute on the NIC portal, nodal officer assignment, and verified geo-coordinates.',
       icon: Building2,
     },
     {
       num: 2,
-      title: '24×7 सीसीटीवी एवं बायोमेट्रिक उपस्थिति एकीकरण',
-      subtitle: '24/7 Live CCTV & Biometric Integration',
+      title: lang === 'HI' ? '24×7 सीसीटीवी एवं बायोमेट्रिक उपस्थिति एकीकरण' : '24/7 CCTV & Biometric Integration',
+      subtitle: lang === 'HI' ? 'लाइव सीसीटीवी व आधार उपस्थिति' : 'Live CCTV Feeds & Aadhaar Biometric Muster',
       description:
-        'डाइनिंग हॉल, मुख्य द्वार व कक्षाओं के कैमरों का सीधा क्लाउड लिंक तथा आधार-सत्यापित बायोमेट्रिक मशीन द्वारा सभी लाभार्थियों व स्टाफ की दैनिक लाइव उपस्थिति।',
+        lang === 'HI'
+          ? 'डाइनिंग हॉल, मुख्य द्वार व कक्षाओं के कैमरों का सीधा क्लाउड लिंक तथा आधार-सत्यापित बायोमेट्रिक मशीन द्वारा सभी लाभार्थियों व स्टाफ की दैनिक लाइव उपस्थिति।'
+          : 'Encrypted direct cloud feeds from dining halls, entry points, and activity rooms paired with daily Aadhaar-verified biometric check-ins for residents and staff.',
       icon: Video,
     },
     {
       num: 3,
-      title: 'औचक वीडियो कॉल निरीक्षण एवं पारदर्शी अनुदान संवितरण',
-      subtitle: 'Surprise Video Audit & Direct Fund Clearance',
+      title: lang === 'HI' ? 'औचक वीडियो कॉल निरीक्षण एवं पारदर्शी अनुदान संवितरण' : 'Surprise Video Audit & Grant Clearance',
+      subtitle: lang === 'HI' ? 'औचक निरीक्षण व डीबीटी फंड संवितरण' : 'Spot Auditing & Direct Benefit Transfer',
       description:
-        'निरीक्षण अधिकारियों द्वारा बिना पूर्व सूचना औचक वीडियो कॉल द्वारा मौके पर सत्यापन। एआई विसंगति जांच के उपरांत कैग (CAG) मानकों पर सीधा फंड ट्रांसफर।',
+        lang === 'HI'
+          ? 'निरीक्षण अधिकारियों द्वारा बिना पूर्व सूचना औचक वीडियो कॉल द्वारा मौके पर सत्यापन। एआई विसंगति जांच के उपरांत कैग (CAG) मानकों पर सीधा फंड ट्रांसफर।'
+          : 'Random, unannounced live video inspections by designated officers. Automatic AI census cross-validation leading to CAG-compliant DBT fund releases.',
       icon: FileCheck2,
     },
   ];
@@ -63,10 +71,14 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
 
           <div className="text-center max-w-xl mx-auto mb-6">
             <span className="text-xs font-black uppercase tracking-widest text-black">
-              राष्ट्रीय निगरानी सांख्यिकी • National Grid Operations
+              {lang === 'HI'
+                ? 'राष्ट्रीय निगरानी सांख्यिकी • National Grid Operations'
+                : 'National Surveillance Operations • Key Performance Metrics'}
             </span>
             <h3 className="text-xl sm:text-2xl font-black mt-1 text-black">
-              केंद्रीय सामाजिक न्याय एवं अधिकारिता कमान ग्रिड
+              {lang === 'HI'
+                ? 'केंद्रीय सामाजिक न्याय एवं अधिकारिता कमान ग्रिड'
+                : 'Central Social Justice Institutional Command Grid'}
             </h3>
           </div>
 
@@ -76,9 +88,11 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                 99.9%
               </div>
               <div className="text-xs sm:text-sm font-black text-black mt-1">
-                लाइव अपटाइम (SLA Met)
+                {lang === 'HI' ? 'लाइव अपटाइम (SLA Met)' : 'Live Uptime (SLA Met)'}
               </div>
-              <div className="text-[11px] font-bold text-black mt-0.5">एनआईसी क्लाउड सर्वर</div>
+              <div className="text-[11px] font-bold text-black mt-0.5">
+                {lang === 'HI' ? 'एनआईसी क्लाउड सर्वर' : 'NIC Cloud Data Centers'}
+              </div>
             </div>
 
             <div className="pt-4 sm:pt-0 sm:pl-4">
@@ -86,9 +100,11 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                 &lt; 10ms
               </div>
               <div className="text-xs sm:text-sm font-black text-black mt-1">
-                टेलीमेट्री विलंबता (Latency)
+                {lang === 'HI' ? 'टेलीमेट्री विलंबता (Latency)' : 'Telemetry Latency'}
               </div>
-              <div className="text-[11px] font-bold text-black mt-0.5">वास्तविक समय डेटा स्ट्रीम</div>
+              <div className="text-[11px] font-bold text-black mt-0.5">
+                {lang === 'HI' ? 'वास्तविक समय डेटा स्ट्रीम' : 'Edge-Accelerated Pipeline'}
+              </div>
             </div>
 
             <div className="pt-4 sm:pt-0 sm:pl-4">
@@ -96,9 +112,11 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                 24×7
               </div>
               <div className="text-xs sm:text-sm font-black text-black mt-1">
-                सतत निगरानी कमान
+                {lang === 'HI' ? 'सतत निगरानी कमान' : 'Continuous Surveillance'}
               </div>
-              <div className="text-[11px] font-bold text-black mt-0.5">स्वचालित एआई विसंगति रडार</div>
+              <div className="text-[11px] font-bold text-black mt-0.5">
+                {lang === 'HI' ? 'स्वचालित एआई विसंगति रडार' : 'AI Anomaly & Risk Engine'}
+              </div>
             </div>
 
             <div className="pt-4 sm:pt-0 sm:pl-4">
@@ -106,9 +124,11 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                 1,200+
               </div>
               <div className="text-xs sm:text-sm font-black text-black mt-1">
-                पंजीकृत संस्थाएं एवं केंद्र
+                {lang === 'HI' ? 'पंजीकृत संस्थाएं एवं केंद्र' : 'Monitored Institutions'}
               </div>
-              <div className="text-[11px] font-bold text-black mt-0.5">सभी 28 राज्य एवं 8 केंद्रशासित प्रदेश</div>
+              <div className="text-[11px] font-bold text-black mt-0.5">
+                {lang === 'HI' ? 'सभी 28 राज्य एवं 8 केंद्रशासित प्रदेश' : 'Across 28 States & 8 UTs'}
+              </div>
             </div>
           </div>
         </div>
@@ -117,15 +137,21 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
         <div className="text-center max-w-2xl mx-auto space-y-3 mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-slate-100 text-black border border-slate-300">
             <Radio className="w-3.5 h-3.5 text-black" />
-            <span>कार्यप्रणाली • Statutory 3-Step Verification Pipeline</span>
+            <span>
+              {lang === 'HI'
+                ? 'कार्यप्रणाली • Statutory 3-Step Verification Pipeline'
+                : 'Standard Operating Procedure • 3-Step Verification'}
+            </span>
           </div>
 
           <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-black">
-            यह पोर्टल कैसे कार्य करता है? (How It Works)
+            {lang === 'HI' ? 'यह पोर्टल कैसे कार्य करता है?' : 'How the Surveillance Grid Operates'}
           </h2>
 
           <p className="text-sm sm:text-base text-black leading-relaxed font-semibold">
-            संस्थान ऑनबोर्डिंग से लेकर 24×7 सीसीटीवी प्रसारण, औचक वीडियो निरीक्षण और कैग (CAG) अनुपालन आधारित फंड संवितरण की पारदर्शी प्रक्रिया।
+            {lang === 'HI'
+              ? 'संस्थान ऑनबोर्डिंग से लेकर 24×7 सीसीटीवी प्रसारण, औचक वीडियो निरीक्षण और कैग (CAG) अनुपालन आधारित फंड संवितरण की पारदर्शी प्रक्रिया।'
+              : 'A transparent end-to-end statutory process from institutional onboarding to 24/7 CCTV surveillance, spot video audits, and CAG-cleared DBT disbursement.'}
           </p>
         </div>
 
@@ -161,11 +187,11 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span className="text-[11px] font-black uppercase tracking-wider text-black">
-                            चरण {s.num} • STEP {s.num}
+                            {lang === 'HI' ? `चरण ${s.num}` : `STEP ${s.num}`}
                           </span>
                           {isActive && (
                             <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-slate-100 text-black border border-slate-300">
-                              सक्रिय दृश्य
+                              {lang === 'HI' ? 'सक्रिय दृश्य' : 'Active View'}
                             </span>
                           )}
                         </div>
@@ -190,7 +216,7 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                 onClick={onLaunchDashboard}
                 className="w-full py-3.5 rounded-xl bg-black hover:bg-slate-800 text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer border border-black"
               >
-                <span>कमांड पोर्टल खोलें (Open Official Command Portal)</span>
+                <span>{lang === 'HI' ? 'कमांड पोर्टल खोलें' : 'Open Official Command Portal'}</span>
                 <ArrowRight className="w-4 h-4 text-white" />
               </button>
             </div>
@@ -210,17 +236,19 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                     </div>
                     <div>
                       <div className="font-black text-xs text-black">
-                        राष्ट्रीय निरीक्षण एवं सत्यापन रिकॉर्ड (Statutory Dossier)
+                        {lang === 'HI'
+                          ? 'राष्ट्रीय निरीक्षण एवं सत्यापन रिकॉर्ड'
+                          : 'National Inspection & Verification Dossier'}
                       </div>
                       <div className="text-[10px] text-black font-mono font-bold">
-                        DoSJE-REF-2026-DL-8842 • एनआईसी प्रमाणित
+                        DoSJE-REF-2026-DL-8842 • {lang === 'HI' ? 'एनआईसी प्रमाणित' : 'NIC Certified'}
                       </div>
                     </div>
                   </div>
 
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black bg-slate-100 text-black border border-slate-300">
                     <BadgeCheck className="w-3.5 h-3.5 text-emerald-600" />
-                    सत्यापित नोड
+                    {lang === 'HI' ? 'सत्यापित नोड' : 'Verified Node'}
                   </span>
                 </div>
 
@@ -229,24 +257,42 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                   <div className="mt-4 space-y-4">
                     <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs">
                       <div className="text-xs font-black text-black mb-2 flex items-center justify-between">
-                        <span>🏢 पंजीकृत संस्थान विवरण (Facility Profile)</span>
-                        <span className="text-[10px] font-mono text-black font-bold">● सक्रिय (Active)</span>
+                        <span>
+                          {lang === 'HI' ? '🏢 पंजीकृत संस्थान विवरण' : '🏢 Facility Profile & Verification'}
+                        </span>
+                        <span className="text-[10px] font-mono text-black font-bold">
+                          ● {lang === 'HI' ? 'सक्रिय' : 'Active'}
+                        </span>
                       </div>
                       <div className="grid grid-cols-2 gap-3 text-xs">
                         <div>
-                          <span className="text-[10px] text-black font-semibold block">संस्थान का नाम</span>
-                          <span className="font-bold text-black">सुरक्षा सीनियर केयर होम</span>
+                          <span className="text-[10px] text-black font-semibold block">
+                            {lang === 'HI' ? 'संस्थान का नाम' : 'Institution Name'}
+                          </span>
+                          <span className="font-bold text-black">
+                            {lang === 'HI' ? 'सुरक्षा सीनियर केयर होम' : 'Suraksha Senior Care Home'}
+                          </span>
                         </div>
                         <div>
-                          <span className="text-[10px] text-black font-semibold block">जिला एवं राज्य</span>
-                          <span className="font-bold text-black">नई दिल्ली (केंद्रीय जोन)</span>
+                          <span className="text-[10px] text-black font-semibold block">
+                            {lang === 'HI' ? 'जिला एवं राज्य' : 'District & State'}
+                          </span>
+                          <span className="font-bold text-black">
+                            {lang === 'HI' ? 'नई दिल्ली (केंद्रीय जोन)' : 'New Delhi (Central Zone)'}
+                          </span>
                         </div>
                         <div>
-                          <span className="text-[10px] text-black font-semibold block">स्वीकृत क्षमता</span>
-                          <span className="font-bold text-black">50 वृद्धजन (Senior Citizens)</span>
+                          <span className="text-[10px] text-black font-semibold block">
+                            {lang === 'HI' ? 'स्वीकृत क्षमता' : 'Sanctioned Capacity'}
+                          </span>
+                          <span className="font-bold text-black">
+                            {lang === 'HI' ? '50 वृद्धजन' : '50 Senior Citizens'}
+                          </span>
                         </div>
                         <div>
-                          <span className="text-[10px] text-black font-semibold block">जीपीएस अक्षांश/देशांतर</span>
+                          <span className="text-[10px] text-black font-semibold block">
+                            {lang === 'HI' ? 'जीपीएस अक्षांश/देशांतर' : 'GPS Coordinates'}
+                          </span>
                           <span className="font-mono font-bold text-black">28.6139° N, 77.2090° E</span>
                         </div>
                       </div>
@@ -255,10 +301,16 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                     <div className="p-3.5 rounded-xl bg-white border border-slate-300 shadow-xs">
                       <div className="text-xs font-black text-black mb-1 flex items-center gap-1.5">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                        <span>जियो-फेंसिंग एवं नोडल सत्यापन पूर्ण</span>
+                        <span>
+                          {lang === 'HI'
+                            ? 'जियो-फेंसिंग एवं नोडल सत्यापन पूर्ण'
+                            : 'Geo-Fencing & Nodal Verification Complete'}
+                        </span>
                       </div>
                       <p className="text-[11px] text-black font-medium">
-                        जिला समाज कल्याण अधिकारी (DSWO) द्वारा ऑन-साइट भौतिक निरीक्षण एवं डिजिटल हस्ताक्षर से सत्यापित।
+                        {lang === 'HI'
+                          ? 'जिला समाज कल्याण अधिकारी (DSWO) द्वारा ऑन-साइट भौतिक निरीक्षण एवं डिजिटल हस्ताक्षर से सत्यापित।'
+                          : 'On-site physical inspection and digital signature authentication verified by the District Social Welfare Officer (DSWO).'}
                       </p>
                     </div>
                   </div>
@@ -269,24 +321,40 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                   <div className="mt-4 space-y-4">
                     <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs">
                       <div className="text-xs font-black text-black mb-2 flex items-center justify-between">
-                        <span>📹 लाइव कैमरा व बायोमेट्रिक मिलान (Headcount AI)</span>
-                        <span className="text-[10px] font-mono text-black font-bold">🟢 लाइव 30 FPS</span>
+                        <span>
+                          {lang === 'HI'
+                            ? '📹 लाइव कैमरा व बायोमेट्रिक मिलान'
+                            : '📹 Live CCTV & Biometric Headcount Reconciliation'}
+                        </span>
+                        <span className="text-[10px] font-mono text-black font-bold">🟢 LIVE 30 FPS</span>
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
                         <div className="p-2.5 rounded-lg bg-white border border-slate-200 text-center">
-                          <span className="text-[10px] text-black font-semibold block">बायोमेट्रिक पंच</span>
+                          <span className="text-[10px] text-black font-semibold block">
+                            {lang === 'HI' ? 'बायोमेट्रिक पंच' : 'Biometric Census'}
+                          </span>
                           <span className="text-lg font-black text-black font-mono">48 / 50</span>
-                          <span className="text-[9px] text-black font-bold block mt-0.5">उपस्थित (96%)</span>
+                          <span className="text-[9px] text-black font-bold block mt-0.5">
+                            {lang === 'HI' ? 'उपस्थित (96%)' : 'Present (96%)'}
+                          </span>
                         </div>
                         <div className="p-2.5 rounded-lg bg-white border border-slate-200 text-center">
-                          <span className="text-[10px] text-black font-semibold block">सीसीटीवी एआई काउंट</span>
+                          <span className="text-[10px] text-black font-semibold block">
+                            {lang === 'HI' ? 'सीसीटीवी एआई काउंट' : 'CCTV Visual Count'}
+                          </span>
                           <span className="text-lg font-black text-black font-mono">48</span>
-                          <span className="text-[9px] text-black block mt-0.5 font-bold">सटीक मिलान (100%)</span>
+                          <span className="text-[9px] text-black block mt-0.5 font-bold">
+                            {lang === 'HI' ? 'सटीक मिलान (100%)' : 'Exact Match (100%)'}
+                          </span>
                         </div>
                         <div className="col-span-2 sm:col-span-1 p-2.5 rounded-lg bg-white border border-slate-200 text-center">
-                          <span className="text-[10px] text-black font-semibold block">एआई विसंगति स्कोर</span>
+                          <span className="text-[10px] text-black font-semibold block">
+                            {lang === 'HI' ? 'एआई विसंगति स्कोर' : 'Anomaly Risk Index'}
+                          </span>
                           <span className="text-lg font-black text-black font-mono">0 / 100</span>
-                          <span className="text-[9px] text-black block mt-0.5 font-bold">शून्य विसंगति</span>
+                          <span className="text-[9px] text-black block mt-0.5 font-bold">
+                            {lang === 'HI' ? 'शून्य विसंगति' : 'Zero Discrepancy'}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -294,10 +362,16 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                     <div className="p-3.5 rounded-xl bg-white border border-slate-300 shadow-xs">
                       <div className="text-xs font-black text-black mb-1 flex items-center gap-1.5">
                         <ShieldCheck className="w-4 h-4 text-black" />
-                        <span>लाइव टेलीमेट्री एवं एनआईसी वॉल्ट एन्क्रिप्शन</span>
+                        <span>
+                          {lang === 'HI'
+                            ? 'लाइव टेलीमेट्री एवं एनआईसी वॉल्ट एन्क्रिप्शन'
+                            : 'Live Telemetry & NIC Vault Encryption'}
+                        </span>
                       </div>
                       <p className="text-[11px] text-black font-medium">
-                        प्रत्येक फ्रेम को 256-बिट टीएलएस एन्क्रिप्शन के साथ एनआईसी डेटा सेंटर में सुरक्षित रूप से दर्ज किया जाता है।
+                        {lang === 'HI'
+                          ? 'प्रत्येक फ्रेम को 256-बिट टीएलएस एन्क्रिप्शन के साथ एनआईसी डेटा सेंटर में सुरक्षित रूप से दर्ज किया जाता है।'
+                          : 'Every camera frame and biometric timestamp is cryptographically secured with 256-bit TLS encryption in the NIC Government Cloud.'}
                       </p>
                     </div>
                   </div>
@@ -308,22 +382,42 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                   <div className="mt-4 space-y-4">
                     <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs">
                       <div className="text-xs font-black text-black mb-2 flex items-center justify-between">
-                        <span>📞 औचक वीडियो कॉल सत्यापन परिणाम (Spot Verification)</span>
-                        <span className="text-[10px] font-mono text-black font-bold">संपन्न (Completed)</span>
+                        <span>
+                          {lang === 'HI'
+                            ? '📞 औचक वीडियो कॉल सत्यापन परिणाम'
+                            : '📞 Spot Video Inspection Audit Result'}
+                        </span>
+                        <span className="text-[10px] font-mono text-black font-bold">
+                          {lang === 'HI' ? 'संपन्न' : 'Completed'}
+                        </span>
                       </div>
                       <div className="space-y-2 text-xs">
                         <div className="flex items-center justify-between py-1 border-b border-slate-200">
-                          <span className="text-black font-medium">निरीक्षण अधिकारी:</span>
-                          <span className="font-bold text-black">श्री अनुराग शर्मा (वरिष्ठ निरीक्षण अधिकारी, DoSJE)</span>
+                          <span className="text-black font-medium">
+                            {lang === 'HI' ? 'निरीक्षण अधिकारी:' : 'Inspecting Officer:'}
+                          </span>
+                          <span className="font-bold text-black">
+                            {lang === 'HI'
+                              ? 'श्री अनुराग शर्मा (वरिष्ठ निरीक्षण अधिकारी, DoSJE)'
+                              : 'Shri Anurag Sharma (Senior Inspection Officer, DoSJE)'}
+                          </span>
                         </div>
                         <div className="flex items-center justify-between py-1 border-b border-slate-200">
-                          <span className="text-black font-medium">कॉल समय व माध्यम:</span>
-                          <span className="font-bold font-mono text-black">11:42 AM • सुरक्षित टोल-फ्री वीडियो ब्रिज</span>
+                          <span className="text-black font-medium">
+                            {lang === 'HI' ? 'कॉल समय व माध्यम:' : 'Call Timestamp & Gateway:'}
+                          </span>
+                          <span className="font-bold font-mono text-black">
+                            11:42 AM • {lang === 'HI' ? 'सुरक्षित टोल-फ्री वीडियो ब्रिज' : 'Secure Toll-Free Video Bridge'}
+                          </span>
                         </div>
                         <div className="flex items-center justify-between py-1">
-                          <span className="text-black font-medium">अधिकारी टिप्पणी:</span>
+                          <span className="text-black font-medium">
+                            {lang === 'HI' ? 'अधिकारी टिप्पणी:' : 'Officer Remarks:'}
+                          </span>
                           <span className="font-bold text-black">
-                            लाभार्थी उपस्थिति, भोजन गुणवत्ता व चिकित्सा रिकॉर्ड पूर्णतया संतोषजनक।
+                            {lang === 'HI'
+                              ? 'लाभार्थी उपस्थिति, भोजन गुणवत्ता व चिकित्सा रिकॉर्ड पूर्णतया संतोषजनक।'
+                              : 'Resident attendance, meal quality, and physical registers fully satisfactory.'}
                           </span>
                         </div>
                       </div>
@@ -333,14 +427,20 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
                       <div className="text-xs font-black text-black mb-1 flex items-center justify-between">
                         <span className="flex items-center gap-1.5">
                           <BadgeCheck className="w-4 h-4 text-emerald-600" />
-                          <span>कैग (CAG) अनुपालन संवितरण प्रमाण पत्र</span>
+                          <span>
+                            {lang === 'HI'
+                              ? 'कैग (CAG) अनुपालन संवितरण प्रमाण पत्र'
+                              : 'CAG Compliance & Grant Clearance Certificate'}
+                          </span>
                         </span>
                         <span className="text-[10px] font-black px-2 py-0.5 rounded bg-black text-white">
-                          अनुमोदित (APPROVED)
+                          {lang === 'HI' ? 'अनुमोदित' : 'APPROVED'}
                         </span>
                       </div>
                       <p className="text-[11px] text-black font-medium">
-                        प्रत्यक्ष लाभ अंतरण (DBT) के अंतर्गत त्रैमासिक वित्तीय सहायता सीधे संस्थान के पीएफएमएस (PFMS) बैंक खाते में जारी करने हेतु अनुमोदित।
+                        {lang === 'HI'
+                          ? 'प्रत्यक्ष लाभ अंतरण (DBT) के अंतर्गत त्रैमासिक वित्तीय सहायता सीधे संस्थान के पीएफएमएस (PFMS) बैंक खाते में जारी करने हेतु अनुमोदित।'
+                          : 'Quarterly grant-in-aid disbursement approved for direct DBT release to the institutional PFMS bank account under CAG guidelines.'}
                       </p>
                     </div>
                   </div>
@@ -351,10 +451,10 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({
               <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between text-xs text-black font-bold">
                 <span className="flex items-center gap-1.5">
                   <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  डिजिटल इंडिया ई-गवर्नेंस मानक 3.0
+                  {lang === 'HI' ? 'डिजिटल इंडिया ई-गवर्नेंस मानक 3.0' : 'Digital India e-Governance Standard 3.0'}
                 </span>
                 <span className="font-mono text-[10px] text-black font-black">
-                  24×7 स्वचालित निगरानी सक्रिय
+                  {lang === 'HI' ? '24×7 स्वचालित निगरानी सक्रिय' : '24×7 Automated Surveillance Grid Active'}
                 </span>
               </div>
             </div>

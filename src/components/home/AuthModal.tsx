@@ -20,6 +20,7 @@ interface AuthModalProps {
   onSelectUserAndEnter: (user: User) => void;
   isDarkMode: boolean;
   initialMode?: 'login' | 'signup';
+  lang?: 'EN' | 'HI';
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({
@@ -29,6 +30,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   onSelectUserAndEnter,
   isDarkMode,
   initialMode = 'login',
+  lang = 'EN',
 }) => {
   const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
   const [selectedRole, setSelectedRole] = useState<UserRole>('SUPER_ADMIN');
@@ -40,33 +42,33 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const roleProfiles: { role: UserRole; title: string; desc: string; badge: string }[] = [
     {
       role: 'SUPER_ADMIN',
-      title: 'Dr. Rajesh Sharma',
-      desc: 'Central Ministry Director · Full Global Oversight',
-      badge: 'Super Admin',
+      title: lang === 'HI' ? 'डॉ. राजेश शर्मा' : 'Dr. Rajesh Sharma',
+      desc: lang === 'HI' ? 'केंद्रीय मंत्रालय निदेशक · पूर्ण राष्ट्रीय निगरानी' : 'Central Ministry Director · Full Global Oversight',
+      badge: lang === 'HI' ? 'सुपर एडमिन' : 'Super Admin',
     },
     {
       role: 'DEPARTMENT_OFFICIAL',
-      title: 'Ananya Verma',
-      desc: 'Joint Secretary · National CCTV & AI Alerts',
-      badge: 'Dept Official',
+      title: lang === 'HI' ? 'अनन्या वर्मा' : 'Ananya Verma',
+      desc: lang === 'HI' ? 'संयुक्त सचिव · राष्ट्रीय सीसीटीवी एवं एआई अलर्ट' : 'Joint Secretary · National CCTV & AI Alerts',
+      badge: lang === 'HI' ? 'विभागीय अधिकारी' : 'Dept Official',
     },
     {
       role: 'INSPECTION_OFFICER',
-      title: 'Vikram Singh',
-      desc: 'Senior Field Auditor · Offline Reports & GPS Dossiers',
-      badge: 'Inspector',
+      title: lang === 'HI' ? 'विक्रम सिंह' : 'Vikram Singh',
+      desc: lang === 'HI' ? 'वरिष्ठ फील्ड ऑडिटर · ऑफलाइन रिपोर्ट एवं जीपीएस डॉजियर' : 'Senior Field Auditor · Offline Reports & GPS Dossiers',
+      badge: lang === 'HI' ? 'निरीक्षक' : 'Inspector',
     },
     {
       role: 'STATE_DISTRICT_AUTHORITY',
-      title: 'Pooja Iyer',
-      desc: 'District Magistrate Office · Regional Compliance',
-      badge: 'District Officer',
+      title: lang === 'HI' ? 'पूजा अय्यर' : 'Pooja Iyer',
+      desc: lang === 'HI' ? 'जिला मजिस्ट्रेट कार्यालय · क्षेत्रीय अनुपालन' : 'District Magistrate Office · Regional Compliance',
+      badge: lang === 'HI' ? 'जिला अधिकारी' : 'District Officer',
     },
     {
       role: 'NGO_INSTITUTE',
-      title: 'Prerana Social Trust Admin',
-      desc: 'Facility Warden · Live Feed & Attendance Desk',
-      badge: 'Facility Admin',
+      title: lang === 'HI' ? 'प्रेरणा सोशल ट्रस्ट प्रबंधक' : 'Prerana Social Trust Admin',
+      desc: lang === 'HI' ? 'संस्था वार्डन · लाइव फीड व उपस्थिति डेस्क' : 'Facility Warden · Live Feed & Attendance Desk',
+      badge: lang === 'HI' ? 'संस्था व्यवस्थापक' : 'Facility Admin',
     },
   ];
 
@@ -101,10 +103,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-bold">
-                {mode === 'login' ? 'Access Live Monitoring Portal' : 'Create Free Evaluation Account'}
+                {mode === 'login'
+                  ? lang === 'HI'
+                    ? 'लाइव निगरानी पोर्टल में प्रवेश'
+                    : 'Access Live Monitoring Portal'
+                  : lang === 'HI'
+                  ? 'मूल्यांकन खाता बनाएं'
+                  : 'Create Free Evaluation Account'}
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Single sign-on for government officials &amp; monitoring personnel
+                {lang === 'HI'
+                  ? 'सरकारी अधिकारियों एवं निगरानी कर्मियों के लिए सिंगल साइन-ऑन'
+                  : 'Single sign-on for government officials & monitoring personnel'}
               </p>
             </div>
           </div>
@@ -129,7 +139,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   : 'text-slate-600 dark:text-slate-400'
               }`}
             >
-              Sign In (Demo Profiles)
+              {lang === 'HI' ? 'साइन इन (डेमो प्रोफ़ाइल)' : 'Sign In (Demo Profiles)'}
             </button>
             <button
               onClick={() => setMode('signup')}
@@ -139,14 +149,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   : 'text-slate-600 dark:text-slate-400'
               }`}
             >
-              Custom Access
+              {lang === 'HI' ? 'कस्टम प्रवेश' : 'Custom Access'}
             </button>
           </div>
 
           {mode === 'login' ? (
             <div className="space-y-3">
               <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                Select Persona to Launch Live Dashboard:
+                {lang === 'HI' ? 'लाइव डैशबोर्ड खोलने हेतु प्रोफ़ाइल चुनें:' : 'Select Persona to Launch Live Dashboard:'}
               </div>
 
               <div className="space-y-2">
@@ -203,7 +213,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition cursor-pointer"
               >
                 <Zap className="w-4 h-4" />
-                <span>Launch Live Dashboard as {roleProfiles.find(r => r.role === selectedRole)?.badge}</span>
+                <span>
+                  {lang === 'HI'
+                    ? `${roleProfiles.find((r) => r.role === selectedRole)?.badge} के रूप में डैशबोर्ड खोलें`
+                    : `Launch Live Dashboard as ${roleProfiles.find((r) => r.role === selectedRole)?.badge}`}
+                </span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -211,7 +225,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <form onSubmit={handleFormSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Official Email Address
+                  {lang === 'HI' ? 'आधिकारिक ईमेल पता' : 'Official Email Address'}
                 </label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -232,7 +246,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Password / PIN
+                  {lang === 'HI' ? 'पासवर्ड / पिन' : 'Password / PIN'}
                 </label>
                 <div className="relative">
                   <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -253,7 +267,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Operational Role Assignment
+                  {lang === 'HI' ? 'परिचालन भूमिका निर्धारण' : 'Operational Role Assignment'}
                 </label>
                 <select
                   value={selectedRole}
@@ -264,11 +278,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       : 'bg-white border-slate-200 text-slate-900'
                   }`}
                 >
-                  <option value="SUPER_ADMIN">Central Super Admin (Ministry Level)</option>
-                  <option value="DEPARTMENT_OFFICIAL">Department Monitoring Official</option>
-                  <option value="INSPECTION_OFFICER">Field Inspection Officer</option>
-                  <option value="STATE_DISTRICT_AUTHORITY">State &amp; District Magistrate</option>
-                  <option value="NGO_INSTITUTE">NGO / Institution Warden</option>
+                  <option value="SUPER_ADMIN">
+                    {lang === 'HI' ? 'केंद्रीय सुपर एडमिन (मंत्रालय स्तर)' : 'Central Super Admin (Ministry Level)'}
+                  </option>
+                  <option value="DEPARTMENT_OFFICIAL">
+                    {lang === 'HI' ? 'विभागीय निगरानी अधिकारी' : 'Department Monitoring Official'}
+                  </option>
+                  <option value="INSPECTION_OFFICER">
+                    {lang === 'HI' ? 'फील्ड निरीक्षण अधिकारी' : 'Field Inspection Officer'}
+                  </option>
+                  <option value="STATE_DISTRICT_AUTHORITY">
+                    {lang === 'HI' ? 'राज्य एवं जिला मजिस्ट्रेट' : 'State & District Magistrate'}
+                  </option>
+                  <option value="NGO_INSTITUTE">
+                    {lang === 'HI' ? 'एनजीओ / संस्था वार्डन' : 'NGO / Institution Warden'}
+                  </option>
                 </select>
               </div>
 
@@ -277,7 +301,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition cursor-pointer"
               >
                 <Zap className="w-4 h-4" />
-                <span>Create Account &amp; Access Grid</span>
+                <span>{lang === 'HI' ? 'खाता बनाएं एवं ग्रिड में प्रवेश करें' : 'Create Account & Access Grid'}</span>
               </button>
             </form>
           )}
@@ -285,7 +309,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           {/* Privacy Note */}
           <div className="text-[11px] text-slate-400 text-center flex items-center justify-center gap-1.5">
             <Lock className="w-3.5 h-3.5 text-emerald-500" />
-            <span>Encrypted with National Sovereign Security Standard</span>
+            <span>
+              {lang === 'HI'
+                ? 'राष्ट्रीय संप्रभु सुरक्षा मानक द्वारा एन्क्रिप्टेड'
+                : 'Encrypted with National Sovereign Security Standard'}
+            </span>
           </div>
         </div>
       </div>

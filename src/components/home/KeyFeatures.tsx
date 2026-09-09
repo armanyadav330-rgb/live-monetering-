@@ -12,82 +12,96 @@ import {
 
 interface KeyFeaturesProps {
   isDarkMode: boolean;
+  lang: 'EN' | 'HI';
   onExploreFeature?: (featureName?: string) => void;
 }
 
 export const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   isDarkMode,
+  lang,
   onExploreFeature = (_featureName?: string) => {},
 }) => {
   const features = [
     {
       id: 'cctv-matrix',
-      title: '24×7 लाइव सीसीटीवी एवं औचक वीडियो कॉल',
-      subtitle: '24/7 Live CCTV Feeds & Random Video Call Verifications',
+      title: lang === 'HI' ? '24×7 लाइव सीसीटीवी एवं औचक वीडियो कॉल' : '24/7 Live CCTV Feeds & Random Video Calls',
+      subtitle: lang === 'HI' ? 'लाइव सीसीटीवी फीड व औचक सत्यापन' : 'Live CCTV Feeds & Random Video Call Verifications',
       description:
-        'सभी संस्थाओं के डाइनिंग हॉल, मुख्य द्वार व कक्षाओं के कैमरों का सीधा लाइव प्रसारण। अधिकारी बिना पूर्व सूचना के रैंडम वीडियो कॉल द्वारा मौके पर उपस्थिति व व्यवस्था की जांच कर सकते हैं।',
+        lang === 'HI'
+          ? 'सभी संस्थाओं के डाइनिंग हॉल, मुख्य द्वार व कक्षाओं के कैमरों का सीधा लाइव प्रसारण। अधिकारी बिना पूर्व सूचना के रैंडम वीडियो कॉल द्वारा मौके पर उपस्थिति व व्यवस्था की जांच कर सकते हैं।'
+          : 'Direct live streaming from dining halls, main gates, and classrooms across all institutions. Authorized officers can initiate surprise video calls without prior notice to verify on-site operations.',
       icon: Video,
-      badge: 'लाइव टेलीमेट्री',
+      badge: lang === 'HI' ? 'लाइव टेलीमेट्री' : 'Live Telemetry',
       badgeClass: 'bg-[#FF671F]/10 text-[#E65100] border-[#FF671F]/30',
       iconBg: 'bg-[#FF671F]/10 text-[#FF671F]',
       topStripe: 'bg-[#FF671F]',
     },
     {
       id: 'biometric-tracking',
-      title: 'बायोमेट्रिक उपस्थिति एवं हेडकाउंट मिलान',
-      subtitle: 'Aadhaar-Linked Biometric Attendance & Headcount',
+      title: lang === 'HI' ? 'बायोमेट्रिक उपस्थिति एवं हेडकाउंट मिलान' : 'Biometric Attendance & Headcount Audit',
+      subtitle: lang === 'HI' ? 'आधार से जुड़ी बायोमेट्रिक उपस्थिति' : 'Aadhaar-Linked Biometric Attendance & Headcount',
       description:
-        'आधार-सक्षम बायोमेट्रिक फिंगरप्रिंट व फेस स्कैनर द्वारा लाभार्थियों और कर्मचारियों की दैनिक लाइव उपस्थिति। फर्जी या डुप्लिकेट नामों (Ghost Beneficiaries) की तत्काल रोकथाम।',
+        lang === 'HI'
+          ? 'आधार-सक्षम बायोमेट्रिक फिंगरप्रिंट व फेस स्कैनर द्वारा लाभार्थियों और कर्मचारियों की दैनिक लाइव उपस्थिति। फर्जी या डुप्लिकेट नामों (Ghost Beneficiaries) की तत्काल रोकथाम।'
+          : 'Daily biometric fingerprint and facial verification for beneficiaries and staff. Instant detection and prevention of ghost beneficiaries and duplicate records.',
       icon: Fingerprint,
-      badge: 'आधार सत्यापित',
+      badge: lang === 'HI' ? 'आधार सत्यापित' : 'Aadhaar Verified',
       badgeClass: 'bg-[#046A38]/10 text-[#046A38] border-[#046A38]/30',
       iconBg: 'bg-[#046A38]/10 text-[#046A38]',
       topStripe: 'bg-[#046A38]',
     },
     {
       id: 'ai-radar',
-      title: 'एआई विसंगति रडार व धोखाधड़ी रोकथाम',
-      subtitle: 'AI Predictive Anomaly Radar & Fraud Prevention',
+      title: lang === 'HI' ? 'एआई विसंगति रडार व धोखाधड़ी रोकथाम' : 'AI Anomaly Radar & Fraud Prevention',
+      subtitle: lang === 'HI' ? 'एआई पूर्वानुमान विसंगति रडार' : 'AI Predictive Anomaly Radar & Fraud Detection',
       description:
-        'मशीन लर्निंग मॉडल सीसीटीवी हेडकाउंट और बायोमेट्रिक डेटा का स्वतः मिलान करते हैं। कैमरे बंद होने, असामान्य समय में हलचल या दर्ज संख्या में अंतर होने पर तुरंत रिस्क स्कोर जारी होता है।',
+        lang === 'HI'
+          ? 'मशीन लर्निंग मॉडल सीसीटीवी हेडकाउंट और बायोमेट्रिक डेटा का स्वतः मिलान करते हैं। कैमरे बंद होने, असामान्य समय में हलचल या दर्ज संख्या में अंतर होने पर तुरंत रिस्क स्कोर जारी होता है।'
+          : 'Automated reconciliation of CCTV visual headcount with registered biometric data. Instant risk scoring for offline cameras, off-hours movement, or census discrepancies.',
       icon: Sparkles,
-      badge: 'जेमिनी एआई ऑडिट',
+      badge: lang === 'HI' ? 'जेमिनी एआई ऑडिट' : 'Gemini AI Audit',
       badgeClass: 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30',
       iconBg: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
       topStripe: 'bg-purple-600',
     },
     {
       id: 'automated-alerts',
-      title: 'स्वचालित अलर्ट एवं बहु-स्तरीय सूचनाएं',
-      subtitle: 'Automated Multi-Channel Escalations (SMS/Email)',
+      title: lang === 'HI' ? 'स्वचालित अलर्ट एवं बहु-स्तरीय सूचनाएं' : 'Automated Alerts & Escalation Matrix',
+      subtitle: lang === 'HI' ? 'एसएमएस व ईमेल अलर्ट प्रणाली' : 'Automated Multi-Channel Escalations (SMS/Email)',
       description:
-        'किसी भी विसंगति पर संबंधित एनजीओ, जिला समाज कल्याण अधिकारी (DSWO) और राज्य नोडल टीम को तुरंत ईमेल, एसएमएस व डैशबोर्ड अलर्ट। 24 घंटे में समाधान न होने पर स्वतः उच्च अधिकारियों को प्रेषित।',
+        lang === 'HI'
+          ? 'किसी भी विसंगति पर संबंधित एनजीओ, जिला समाज कल्याण अधिकारी (DSWO) और राज्य नोडल टीम को तुरंत ईमेल, एसएमएस व डैशबोर्ड अलर्ट। 24 घंटे में समाधान न होने पर स्वतः उच्च अधिकारियों को प्रेषित।'
+          : 'Instant SMS, email, and dashboard alerts dispatched to NGOs, District Social Welfare Officers (DSWO), and State Nodal officers with SLA-driven automated escalations.',
       icon: BellRing,
-      badge: 'एसएमएस व ईमेल अलर्ट',
+      badge: lang === 'HI' ? 'एसएमएस व ईमेल अलर्ट' : 'SMS & Email Alerts',
       badgeClass: 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/30',
       iconBg: 'bg-amber-500/10 text-amber-600',
       topStripe: 'bg-amber-500',
     },
     {
       id: 'geo-tagged-inspections',
-      title: 'जियो-टैग ऑन-साइट फील्ड निरीक्षण',
-      subtitle: 'Geo-Tagged Physical Field Inspection Dossier',
+      title: lang === 'HI' ? 'जियो-टैग ऑन-साइट फील्ड निरीक्षण' : 'Geo-Tagged Field Inspections',
+      subtitle: lang === 'HI' ? 'जीपीएस प्रमाणित फील्ड निरीक्षण' : 'Geo-Tagged Physical Field Inspection Dossier',
       description:
-        'निरीक्षण अधिकारियों द्वारा मौके पर जाकर जीपीएस (GPS) अक्षांश-देशांतर व समय-मुहर (Timestamp) के साथ फोटो, भोजन की गुणवत्ता, साफ-सफाई व भौतिक पंजी सत्यापन की रिपोर्ट दर्ज की जाती है।',
+        lang === 'HI'
+          ? 'निरीक्षण अधिकारियों द्वारा मौके पर जाकर जीपीएस (GPS) अक्षांश-देशांतर व समय-मुहर (Timestamp) के साथ फोटो, भोजन की गुणवत्ता, साफ-सफाई व भौतिक पंजी सत्यापन की रिपोर्ट दर्ज की जाती है।'
+          : 'Field officers conduct on-site audits with tamper-proof GPS coordinates and timestamps, submitting photo evidence, meal quality logs, and physical muster checks.',
       icon: MapPin,
-      badge: 'जीपीएस प्रमाणित',
+      badge: lang === 'HI' ? 'जीपीएस प्रमाणित' : 'GPS Verified',
       badgeClass: 'bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30',
       iconBg: 'bg-blue-500/10 text-blue-600',
       topStripe: 'bg-blue-600',
     },
     {
       id: 'cag-audit-reports',
-      title: 'डिजिटल ऑडिट डोजियर एवं कैग (CAG) अनुपालन',
-      subtitle: 'Statutory Compliance Reports & Direct Benefit Transfer',
+      title: lang === 'HI' ? 'डिजिटल ऑडिट डोजियर एवं कैग (CAG) अनुपालन' : 'Statutory Compliance & CAG Audit Dossier',
+      subtitle: lang === 'HI' ? 'कैग अनुपालन व डीबीटी रिपोर्ट्स' : 'Statutory Compliance Reports & Direct Benefit Transfer',
       description:
-        'एक क्लिक में संपूर्ण ऐतिहासिक ऑडिट रिपोर्ट, विसंगति लॉग, उपस्थिति प्रतिशत व सीसीटीवी स्नैपशॉट पीडीएफ/एक्सेल में डाउनलोड करें। वित्तीय अनुदान जारी करने हेतु कैग नियमों के अनुरूप।',
+        lang === 'HI'
+          ? 'एक क्लिक में संपूर्ण ऐतिहासिक ऑडिट रिपोर्ट, विसंगति लॉग, उपस्थिति प्रतिशत व सीसीटीवी स्नैपशॉट पीडीएफ/एक्सेल में डाउनलोड करें। वित्तीय अनुदान जारी करने हेतु कैग नियमों के अनुरूप।'
+          : 'Download complete historical audit trails, anomaly registers, and CCTV visual snapshots in PDF/Excel compliant with CAG and DBT grant-in-aid release requirements.',
       icon: BarChart3,
-      badge: 'कैग अनुरूप',
+      badge: lang === 'HI' ? 'कैग अनुरूप' : 'CAG Compliant',
       badgeClass: 'bg-[#0b2545]/10 text-[#0b2545] dark:text-amber-300 border-[#0b2545]/30',
       iconBg: 'bg-[#0b2545]/10 text-[#0b2545] dark:text-white',
       topStripe: 'bg-[#0b2545]',
@@ -101,15 +115,23 @@ export const KeyFeatures: React.FC<KeyFeaturesProps> = ({
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-slate-100 text-black border border-slate-300">
             <ShieldCheck className="w-4 h-4 text-black" />
-            <span>केंद्रीय निगरानी प्रणाली के 6 प्रमुख स्तंभ • Core Statutory Pillars</span>
+            <span>
+              {lang === 'HI'
+                ? 'केंद्रीय निगरानी प्रणाली के 6 प्रमुख स्तंभ • Core Statutory Pillars'
+                : 'Central Surveillance System • 6 Core Statutory Pillars'}
+            </span>
           </div>
 
           <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-black">
-            सरकारी निगरानी एवं पारदर्शिता के मुख्य मॉड्यूल
+            {lang === 'HI'
+              ? 'सरकारी निगरानी एवं पारदर्शिता के मुख्य मॉड्यूल'
+              : 'Institutional Oversight & Governance Modules'}
           </h2>
 
           <p className="text-sm sm:text-base text-black leading-relaxed font-semibold">
-            देश भर के सामाजिक न्याय संस्थानों में निष्पक्षता, सुरक्षा व वित्तीय अनुशासन सुनिश्चित करने हेतु तैयार किया गया व्यापक सरकारी ढांचा।
+            {lang === 'HI'
+              ? 'देश भर के सामाजिक न्याय संस्थानों में निष्पक्षता, सुरक्षा व वित्तीय अनुशासन सुनिश्चित करने हेतु तैयार किया गया व्यापक सरकारी ढांचा।'
+              : 'Comprehensive digital infrastructure ensuring accountability, safety, and financial discipline across social welfare institutions nationwide.'}
           </p>
         </div>
 
@@ -158,7 +180,7 @@ export const KeyFeatures: React.FC<KeyFeaturesProps> = ({
 
                 {/* Footer Action */}
                 <div className="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between text-xs font-black text-black transition-colors">
-                  <span>मॉड्यूल देखें (Open Module)</span>
+                  <span>{lang === 'HI' ? 'मॉड्यूल देखें' : 'View Module'}</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-black" />
                 </div>
               </div>

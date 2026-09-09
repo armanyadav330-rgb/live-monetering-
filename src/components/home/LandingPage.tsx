@@ -23,10 +23,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 }) => {
   // Default to official Government light theme for authentic GOI portal appearance
   const [isDarkMode, setIsDarkMode] = useState(false);
+  // Default language is English (EN) with Hindi (HI) toggle
+  const [lang, setLang] = useState<'EN' | 'HI'>('EN');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [isPolicyModalOpen, setIsPolicyModalOpen] = useState(false);
   const [selectedPolicy, setSelectedPolicy] = useState<PolicyType>('privacy');
+
+  const handleToggleLang = () => {
+    setLang((prev) => (prev === 'EN' ? 'HI' : 'EN'));
+  };
 
   const handleOpenLogin = () => {
     setAuthMode('login');
@@ -84,6 +90,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* 1. Header / Navigation Bar (Sticky & Fully Responsive) */}
       <LandingNav
         isDarkMode={isDarkMode}
+        lang={lang}
+        onToggleLang={handleToggleLang}
         onToggleTheme={() => setIsDarkMode(!isDarkMode)}
         onLoginClick={handleOpenLogin}
         onLaunchDashboard={() => onEnterPortal(undefined, 'dashboard')}
@@ -92,6 +100,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* 2. Hero Section with Interactive Live Visual Mockup */}
       <HeroSection
         isDarkMode={isDarkMode}
+        lang={lang}
         onStartMonitoring={() => onEnterPortal(undefined, 'dashboard')}
         onExploreDemo={() => onEnterPortal(undefined, 'cctv')}
       />
@@ -99,18 +108,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* 3. Key Features Section (Grid / Card Layout) */}
       <KeyFeatures
         isDarkMode={isDarkMode}
+        lang={lang}
         onExploreFeature={handleFeatureNavigate}
       />
 
       {/* 4. Social Proof / Statistics Banner & How It Works (Step 1, 2, 3) */}
       <HowItWorks
         isDarkMode={isDarkMode}
+        lang={lang}
         onLaunchDashboard={() => onEnterPortal(undefined, 'dashboard')}
       />
 
       {/* 5. Live Status Overview (Regional Grid) & Pricing / Docs */}
       <LiveStatusOverview
         isDarkMode={isDarkMode}
+        lang={lang}
         onLaunchDashboard={() => onEnterPortal(undefined, 'dashboard')}
         onOpenDocs={() => scrollToSection('features')}
       />
@@ -118,6 +130,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* 6. Call to Action (CTA Banner) */}
       <CtaBanner
         isDarkMode={isDarkMode}
+        lang={lang}
         onCreateAccount={handleOpenSignup}
         onExploreDemo={() => onEnterPortal(undefined, 'cctv')}
       />
@@ -125,6 +138,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* 7. Multi-Column Footer with System Status Indicator */}
       <LandingFooter
         isDarkMode={isDarkMode}
+        lang={lang}
         onNavigateSection={scrollToSection}
         onLaunchDashboard={() => onEnterPortal(undefined, 'dashboard')}
         onOpenPrivacy={() => handleOpenPolicy('privacy')}
@@ -139,6 +153,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         onSelectUserAndEnter={handleSelectUserAndEnter}
         isDarkMode={isDarkMode}
         initialMode={authMode}
+        lang={lang}
       />
 
       {/* Statutory Governance & Policy Charter Modal */}
@@ -147,6 +162,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         onClose={() => setIsPolicyModalOpen(false)}
         initialPolicy={selectedPolicy}
         isDarkMode={isDarkMode}
+        lang={lang}
       />
     </div>
   );
