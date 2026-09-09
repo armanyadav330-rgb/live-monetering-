@@ -95,59 +95,87 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   }, [isSimulating]);
 
   return (
-    <section className="relative overflow-hidden pt-8 sm:pt-12 pb-16 lg:pb-20">
-      {/* Ambient background subtle wash */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl bg-gradient-to-b from-amber-500/5 via-slate-500/5 to-transparent pointer-events-none -z-10" />
-
+    <section className="relative overflow-hidden pt-8 sm:pt-12 pb-16 lg:pb-20 bg-white text-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Header with Authentic Government Identity */}
+        {/* Hero Header with Authentic Government Identity & DigiLocker Clean Style */}
         <div className="text-center max-w-4xl mx-auto space-y-4">
           {/* Official GOI Emblem & Ministry Banner */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-extrabold bg-[#0b2545]/10 dark:bg-white/10 text-[#0b2545] dark:text-amber-300 border border-[#0b2545]/20 dark:border-amber-400/30 shadow-xs">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black bg-white text-black border border-slate-300 shadow-2xs">
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF671F] opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF671F]" />
             </span>
-            <span>भारत सरकार • सामाजिक न्याय और अधिकारिता मंत्रालय | Department of Social Justice &amp; Empowerment</span>
+            <span className="text-black font-bold">भारत सरकार • सामाजिक न्याय और अधिकारिता मंत्रालय | Department of Social Justice &amp; Empowerment</span>
           </div>
 
-          {/* Bilingual Main Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-[#0b2545] dark:text-white">
+          {/* Bilingual Main Headline in Solid High-Contrast Black */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-black">
             राष्ट्रीय संस्थागत निगरानी एवं{' '}
-            <span className="bg-gradient-to-r from-[#FF671F] via-[#c94500] to-[#046A38] bg-clip-text text-transparent">
+            <span className="text-black underline decoration-[#FF671F] decoration-4 underline-offset-8">
               निरीक्षण कमान
             </span>
           </h1>
-          <div className="text-sm sm:text-base font-bold text-[#FF671F] uppercase tracking-wider">
+          <div className="text-xs sm:text-sm font-black text-black uppercase tracking-wider">
             National Institutional Live Surveillance &amp; Audit Command Grid
           </div>
 
-          {/* Simple, Understandable Citizen Explanation */}
-          <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal">
-            देश भर के <strong>1,200+ अनुदान-प्राप्त वृद्धाश्रमों, नशा मुक्ति केंद्रों (IRCAs) और दिव्यांगजन पुनर्वास संस्थानों</strong> में 24×7 लाइव सीसीटीवी टेलीमेट्री, बायोमेट्रिक उपस्थिति मिलान, औचक वीडियो कॉल और एआई विसंगति ऑडिट की केंद्रीय प्रणाली। पारदर्शी शासन एवं सीधे लाभार्थियों तक सरकारी सहायता।
+          {/* Simple, Understandable Citizen Explanation in Crisp Black Text */}
+          <p className="text-sm sm:text-base text-black max-w-3xl mx-auto leading-relaxed font-semibold">
+            देश भर के <strong>1,200+ अनुदान-प्राप्त वृद्धाश्रमों, नशा मुक्ति केंद्रों (IRCAs) और दिव्यांगजन पुनर्वास संस्थानों</strong> में 24×7 लाइव सीसीटीवी टेलीमेट्री, बायोमेट्रिक उपस्थिति मिलान, औचक वीडियो कॉल और एआई विसंगति ऑडिट की केंद्रीय डिजिटल प्रणाली।
           </p>
 
-          {/* Flagship Government Schemes Tags */}
-          <div className="pt-1 flex flex-wrap items-center justify-center gap-2 text-[11px] sm:text-xs">
-            <span className="px-3 py-1 rounded-full font-bold bg-[#FF671F]/10 text-[#E65100] border border-[#FF671F]/30">
-              🏛️ PM-AJAY (पीएम-अजय)
-            </span>
-            <span className="px-3 py-1 rounded-full font-bold bg-blue-500/10 text-[#0b2545] dark:text-blue-300 border border-blue-500/20">
-              👴 AVAY (अटल वयो अभ्युदय - वृद्धाश्रम)
-            </span>
-            <span className="px-3 py-1 rounded-full font-bold bg-emerald-500/10 text-[#046A38] dark:text-emerald-400 border border-emerald-500/30">
-              🚭 NMBA (नशा मुक्त भारत अभियान)
-            </span>
-            <span className="px-3 py-1 rounded-full font-bold bg-purple-500/10 text-purple-800 dark:text-purple-300 border border-purple-500/20">
-              ♿ DDRS (दिव्यांगजन पुनर्वास योजना)
-            </span>
+          {/* DigiLocker-Style Quick Search / Verification Bar */}
+          <div className="pt-2 max-w-2xl mx-auto">
+            <div className="p-2 rounded-2xl border border-slate-300 bg-white transition-all shadow-md flex flex-col sm:flex-row items-center gap-2">
+              <div className="flex items-center gap-2.5 px-3 py-2 w-full text-black">
+                <span className="text-lg">🔍</span>
+                <input
+                  type="text"
+                  placeholder="संस्थान, जिला या विशिष्ट पहचान संख्या खोजें (e.g. Suraksha Home, Delhi, NGO-102)..."
+                  className="w-full bg-transparent text-xs sm:text-sm text-black placeholder:text-slate-600 font-bold focus:outline-none"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') onStartMonitoring();
+                  }}
+                />
+              </div>
+              <button
+                onClick={onStartMonitoring}
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-black hover:bg-slate-800 text-white font-bold text-xs sm:text-sm shrink-0 transition flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-95"
+              >
+                <span>सत्यापित करें (Search)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* DigiLocker Quick Filter Badges */}
+            <div className="pt-2.5 flex flex-wrap items-center justify-center gap-2 text-[11px] sm:text-xs font-bold text-black">
+              <span className="text-black text-[10px] sm:text-xs font-bold">त्वरित श्रेणियां:</span>
+              <button
+                onClick={onExploreDemo}
+                className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-black border border-slate-300 transition cursor-pointer font-bold"
+              >
+                👴 वृद्धाश्रम (Senior Homes)
+              </button>
+              <button
+                onClick={onExploreDemo}
+                className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-black border border-slate-300 transition cursor-pointer font-bold"
+              >
+                🚭 नशा मुक्ति केंद्र (IRCAs)
+              </button>
+              <button
+                onClick={onExploreDemo}
+                className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-black border border-slate-300 transition cursor-pointer font-bold"
+              >
+                ♿ दिव्यांगजन केंद्र (DDRS)
+              </button>
+            </div>
           </div>
 
           {/* Action CTAs in Sovereign Colors */}
           <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3.5">
             <button
               onClick={onStartMonitoring}
-              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#FF671F] to-[#E65100] hover:from-[#e55917] hover:to-[#c94500] text-white font-bold text-sm shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 border border-amber-300/40"
+              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#FF671F] to-[#E65100] hover:from-[#e55917] hover:to-[#c94500] text-white font-black text-xs sm:text-sm shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 border border-amber-300/40"
             >
               <Zap className="w-4 h-4 text-amber-200" />
               <span>कमांड पोर्टल में प्रवेश करें (Enter Command Portal)</span>
@@ -156,83 +184,63 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
             <button
               onClick={onExploreDemo}
-              className={`w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm border-2 transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                isDarkMode
-                  ? 'border-slate-700 bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:border-slate-600'
-                  : 'border-[#0b2545]/40 bg-white hover:bg-slate-50 text-[#0b2545] hover:border-[#0b2545] shadow-xs'
-              }`}
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-black text-xs sm:text-sm border-2 border-slate-300 bg-white hover:bg-slate-50 text-black hover:border-black shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Play className="w-4 h-4 text-[#FF671F] fill-[#FF671F]" />
+              <Play className="w-4 h-4 text-black fill-black" />
               <span>लाइव सीसीटीवी ग्रिड देखें (View Live CCTV Grid)</span>
             </button>
           </div>
 
-          {/* Quick Role-based Access Guide (Very User Friendly & Understandable) */}
+          {/* Quick Role-based Access Guide (DigiLocker High-Contrast Cards with Solid Black Text) */}
           <div className="pt-6 grid grid-cols-2 md:grid-cols-4 gap-3 text-left">
             <div
               onClick={onStartMonitoring}
-              className={`p-3 rounded-xl border transition cursor-pointer group ${
-                isDarkMode
-                  ? 'bg-slate-900/70 border-slate-800 hover:border-amber-500/50'
-                  : 'bg-white border-slate-200 hover:border-[#0b2545] shadow-xs'
-              }`}
+              className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-black shadow-xs transition cursor-pointer group"
             >
-              <div className="text-lg">🏢</div>
-              <div className="font-bold text-xs text-[#0b2545] dark:text-white mt-1 group-hover:text-[#FF671F] transition">
+              <div className="text-xl">🏢</div>
+              <div className="font-black text-xs sm:text-sm text-black mt-1 group-hover:underline transition">
                 संस्थान एवं एनजीओ (NGOs)
               </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">
+              <div className="text-[11px] text-black mt-1 font-bold leading-tight">
                 कैमरे व बायोमेट्रिक उपस्थिति जोड़ें
               </div>
             </div>
 
             <div
               onClick={onStartMonitoring}
-              className={`p-3 rounded-xl border transition cursor-pointer group ${
-                isDarkMode
-                  ? 'bg-slate-900/70 border-slate-800 hover:border-amber-500/50'
-                  : 'bg-white border-slate-200 hover:border-[#0b2545] shadow-xs'
-              }`}
+              className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-black shadow-xs transition cursor-pointer group"
             >
-              <div className="text-lg">🕵️‍♂️</div>
-              <div className="font-bold text-xs text-[#0b2545] dark:text-white mt-1 group-hover:text-[#FF671F] transition">
+              <div className="text-xl">🕵️‍♂️</div>
+              <div className="font-black text-xs sm:text-sm text-black mt-1 group-hover:underline transition">
                 निरीक्षण अधिकारी (Inspectors)
               </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">
+              <div className="text-[11px] text-black mt-1 font-bold leading-tight">
                 सरप्राइज वीडियो कॉल व ऑन-साइट रिपोर्ट
               </div>
             </div>
 
             <div
               onClick={onStartMonitoring}
-              className={`p-3 rounded-xl border transition cursor-pointer group ${
-                isDarkMode
-                  ? 'bg-slate-900/70 border-slate-800 hover:border-amber-500/50'
-                  : 'bg-white border-slate-200 hover:border-[#0b2545] shadow-xs'
-              }`}
+              className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-black shadow-xs transition cursor-pointer group"
             >
-              <div className="text-lg">🏛️</div>
-              <div className="font-bold text-xs text-[#0b2545] dark:text-white mt-1 group-hover:text-[#FF671F] transition">
+              <div className="text-xl">🏛️</div>
+              <div className="font-black text-xs sm:text-sm text-black mt-1 group-hover:underline transition">
                 जिला कल्याण प्रशासन (DSWO)
               </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">
+              <div className="text-[11px] text-black mt-1 font-bold leading-tight">
                 क्षेत्रीय विसंगतियां व सत्यापन स्थिति
               </div>
             </div>
 
             <div
               onClick={onStartMonitoring}
-              className={`p-3 rounded-xl border transition cursor-pointer group ${
-                isDarkMode
-                  ? 'bg-slate-900/70 border-slate-800 hover:border-amber-500/50'
-                  : 'bg-white border-slate-200 hover:border-[#0b2545] shadow-xs'
-              }`}
+              className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-black shadow-xs transition cursor-pointer group"
             >
-              <div className="text-lg">🇮🇳</div>
-              <div className="font-bold text-xs text-[#0b2545] dark:text-white mt-1 group-hover:text-[#FF671F] transition">
+              <div className="text-xl">🇮🇳</div>
+              <div className="font-black text-xs sm:text-sm text-black mt-1 group-hover:underline transition">
                 केंद्रीय मंत्रालय (Ministry Apex)
               </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">
+              <div className="text-[11px] text-black mt-1 font-bold leading-tight">
                 राष्ट्रीय ऑडिट, बजट व कैग अनुमोदन
               </div>
             </div>
@@ -242,14 +250,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* HERO VISUAL / INTERACTIVE MOCKUP */}
         <div id="preview" className="mt-10 sm:mt-12 max-w-5xl mx-auto scroll-mt-24">
           <div
-            className={`rounded-2xl border p-3 sm:p-5 shadow-2xl transition-all ${
-              isDarkMode
-                ? 'bg-slate-900/90 border-slate-700/80 shadow-black/50 backdrop-blur-xl'
-                : 'bg-white/95 border-slate-200 shadow-slate-200/80 backdrop-blur-xl'
-            }`}
+            className="rounded-2xl border border-slate-200 p-3 sm:p-5 shadow-2xl transition-all bg-white text-black"
           >
             {/* Mockup Window Top Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
               <div className="flex items-center gap-2.5 flex-wrap min-w-0">
                 {/* Traffic lights */}
                 <div className="flex items-center gap-1.5 shrink-0">
@@ -257,24 +261,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   <span className="w-3 h-3 rounded-full bg-amber-500/80" />
                   <span className="w-3 h-3 rounded-full bg-emerald-500/80" />
                 </div>
-                <span className="text-xs font-mono font-bold text-slate-500 dark:text-slate-400 pl-1 truncate max-w-[200px] xs:max-w-none">
+                <span className="text-xs font-mono font-bold text-black pl-1 truncate max-w-[200px] xs:max-w-none">
                   live-cluster-01.monitoring.dosje.gov.in
                 </span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 text-black border border-slate-300 shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
                   CONNECTED
                 </span>
               </div>
 
               {/* View Switcher Tabs & Live Sim Toggle */}
               <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
-                <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-lg text-xs font-semibold overflow-x-auto scrollbar-none">
+                <div className="flex items-center bg-slate-100 p-1 rounded-lg text-xs font-bold border border-slate-300 overflow-x-auto scrollbar-none">
                   <button
                     onClick={() => setActiveTab('metrics')}
                     className={`px-2.5 py-1 rounded-md transition whitespace-nowrap cursor-pointer ${
                       activeTab === 'metrics'
-                        ? 'bg-[#0b2545] text-amber-300 dark:bg-slate-900 dark:text-amber-400 shadow-xs'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                        ? 'bg-black text-white shadow-xs'
+                        : 'text-black hover:bg-slate-200'
                     }`}
                   >
                     Telemetry
@@ -283,8 +287,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     onClick={() => setActiveTab('cctv')}
                     className={`px-2.5 py-1 rounded-md transition flex items-center gap-1 whitespace-nowrap cursor-pointer ${
                       activeTab === 'cctv'
-                        ? 'bg-[#0b2545] text-amber-300 dark:bg-slate-900 dark:text-amber-400 shadow-xs'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                        ? 'bg-black text-white shadow-xs'
+                        : 'text-black hover:bg-slate-200'
                     }`}
                   >
                     <Video className="w-3 h-3" />
@@ -294,8 +298,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     onClick={() => setActiveTab('anomalies')}
                     className={`px-2.5 py-1 rounded-md transition flex items-center gap-1 whitespace-nowrap cursor-pointer ${
                       activeTab === 'anomalies'
-                        ? 'bg-[#0b2545] text-amber-300 dark:bg-slate-900 dark:text-amber-400 shadow-xs'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                        ? 'bg-black text-white shadow-xs'
+                        : 'text-black hover:bg-slate-200'
                     }`}
                   >
                     <AlertTriangle className="w-3 h-3 text-amber-500" />
@@ -307,37 +311,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   onClick={() => setIsSimulating(!isSimulating)}
                   className={`p-1.5 rounded-lg border text-xs flex items-center gap-1 transition shrink-0 cursor-pointer ${
                     isSimulating
-                      ? 'border-emerald-500/30 text-emerald-500 bg-emerald-500/10'
-                      : 'border-slate-300 dark:border-slate-700 text-slate-400'
+                      ? 'border-black text-black bg-slate-100'
+                      : 'border-slate-300 text-slate-500 bg-white'
                   }`}
                   title={isSimulating ? 'Simulation Active (Click to pause)' : 'Simulation Paused'}
                 >
-                  <RefreshCw className={`w-3.5 h-3.5 ${isSimulating ? 'animate-spin' : ''}`} />
+                  <RefreshCw className={`w-3.5 h-3.5 ${isSimulating ? 'animate-spin text-black' : 'text-slate-500'}`} />
                 </button>
               </div>
             </div>
 
             {/* LIVE ALERT BANNER (Dismissable / Interactive) */}
             {!alertDismissed && (
-              <div className="mt-3 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 flex items-center justify-between text-xs">
+              <div className="mt-3 p-2.5 rounded-xl bg-white border border-slate-300 text-black shadow-xs flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
-                  <span className="p-1 rounded-md bg-amber-500/20 text-amber-600 dark:text-amber-400">
+                  <span className="p-1 rounded-md bg-amber-100 text-amber-800 border border-amber-300">
                     <AlertTriangle className="w-3.5 h-3.5" />
                   </span>
-                  <span className="font-semibold">
+                  <span className="font-bold text-black">
                     Automated Alert: CCTV Feed Node-07 (Dehradun Shelter) packet latency spiked to 24ms. AI Re-routed via Backup Gateway.
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={onExploreDemo}
-                    className="px-2 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 font-bold text-[11px] cursor-pointer"
+                    className="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 border border-slate-300 font-bold text-[11px] text-black cursor-pointer"
                   >
                     Inspect
                   </button>
                   <button
                     onClick={() => setAlertDismissed(true)}
-                    className="text-slate-400 hover:text-slate-600 text-xs px-1"
+                    className="text-black font-bold hover:underline text-xs px-1 cursor-pointer"
                   >
                     Dismiss
                   </button>
@@ -345,105 +349,97 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </div>
             )}
 
-            {/* QUICK STATS STRIP (CPU, Latency, Streams, Uptime) */}
+            {/* QUICK STATS STRIP (CPU, Latency, Streams, Uptime) - DigiLocker Pure White & Black Typography */}
             <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div
-                className={`p-3 rounded-xl border transition ${
-                  isDarkMode ? 'bg-slate-800/60 border-slate-700/60' : 'bg-slate-50 border-slate-200'
-                }`}
+                className="p-3.5 rounded-xl border border-slate-200 bg-white shadow-xs text-black"
               >
-                <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
+                <div className="flex items-center justify-between text-xs text-black font-bold">
                   <span>System CPU</span>
-                  <Cpu className="w-3.5 h-3.5 text-blue-500" />
+                  <Cpu className="w-3.5 h-3.5 text-black" />
                 </div>
                 <div className="mt-1 flex items-baseline justify-between">
-                  <span className="text-xl font-extrabold text-slate-900 dark:text-white">
+                  <span className="text-xl sm:text-2xl font-black text-black">
                     {telemetry.cpu}%
                   </span>
-                  <span className="text-[10px] font-bold text-emerald-500">Normal</span>
+                  <span className="text-[10px] font-bold text-black bg-slate-100 px-1.5 py-0.2 rounded border border-slate-300">सामान्य</span>
                 </div>
-                <div className="mt-1.5 w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                <div className="mt-2 w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
                   <div
-                    className="bg-blue-500 h-full rounded-full transition-all duration-500"
+                    className="bg-black h-full rounded-full transition-all duration-500"
                     style={{ width: `${telemetry.cpu}%` }}
                   />
                 </div>
               </div>
 
               <div
-                className={`p-3 rounded-xl border transition ${
-                  isDarkMode ? 'bg-slate-800/60 border-slate-700/60' : 'bg-slate-50 border-slate-200'
-                }`}
+                className="p-3.5 rounded-xl border border-slate-200 bg-white shadow-xs text-black"
               >
-                <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  <span>Active Live Streams</span>
-                  <Radio className="w-3.5 h-3.5 text-emerald-500" />
+                <div className="flex items-center justify-between text-xs text-black font-bold">
+                  <span>सक्रिय सीसीटीवी (Streams)</span>
+                  <Radio className="w-3.5 h-3.5 text-black" />
                 </div>
                 <div className="mt-1 flex items-baseline justify-between">
-                  <span className="text-xl font-extrabold text-slate-900 dark:text-white">
+                  <span className="text-xl sm:text-2xl font-black text-black">
                     {telemetry.activeStreams}
                   </span>
-                  <span className="text-[10px] font-bold text-emerald-500 flex items-center gap-0.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Online
+                  <span className="text-[10px] font-bold text-black flex items-center gap-0.5 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                    लाइव
                   </span>
                 </div>
-                <div className="mt-1.5 text-[10px] text-slate-400">
-                  {telemetry.throughput} processed
+                <div className="mt-1.5 text-[10px] font-bold text-black">
+                  {telemetry.throughput} वास्तविक समय
                 </div>
               </div>
 
               <div
-                className={`p-3 rounded-xl border transition ${
-                  isDarkMode ? 'bg-slate-800/60 border-slate-700/60' : 'bg-slate-50 border-slate-200'
-                }`}
+                className="p-3.5 rounded-xl border border-slate-200 bg-white shadow-xs text-black"
               >
-                <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  <span>Packet Latency</span>
-                  <Activity className="w-3.5 h-3.5 text-indigo-500" />
+                <div className="flex items-center justify-between text-xs text-black font-bold">
+                  <span>नेटवर्क विलंबता (Latency)</span>
+                  <Activity className="w-3.5 h-3.5 text-black" />
                 </div>
                 <div className="mt-1 flex items-baseline justify-between">
-                  <span className="text-xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">
+                  <span className="text-xl sm:text-2xl font-black text-black font-mono">
                     {telemetry.latency} ms
                   </span>
-                  <span className="text-[10px] font-bold text-emerald-500">Ultra-Low</span>
+                  <span className="text-[10px] font-bold text-black bg-slate-100 px-1.5 py-0.2 rounded border border-slate-300">उत्कृष्ट</span>
                 </div>
-                <div className="mt-1.5 text-[10px] text-slate-400">
-                  Global edge pings
+                <div className="mt-1.5 text-[10px] font-bold text-black">
+                  एनआईसी क्लाउड एज पिंग
                 </div>
               </div>
 
               <div
-                className={`p-3 rounded-xl border transition ${
-                  isDarkMode ? 'bg-slate-800/60 border-slate-700/60' : 'bg-slate-50 border-slate-200'
-                }`}
+                className="p-3.5 rounded-xl border border-slate-200 bg-white shadow-xs text-black"
               >
-                <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  <span>Cluster Uptime</span>
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                <div className="flex items-center justify-between text-xs text-black font-bold">
+                  <span>क्लस्टर अपटाइम (Uptime)</span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-black" />
                 </div>
                 <div className="mt-1 flex items-baseline justify-between">
-                  <span className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">
+                  <span className="text-xl sm:text-2xl font-black text-black font-mono">
                     {telemetry.uptime}
                   </span>
-                  <span className="text-[10px] font-bold text-emerald-500">SLA Met</span>
+                  <span className="text-[10px] font-bold text-black bg-slate-100 px-1.5 py-0.2 rounded border border-slate-300">100% SLA</span>
                 </div>
-                <div className="mt-1.5 text-[10px] text-slate-400">
-                  365 days monitored
+                <div className="mt-1.5 text-[10px] font-bold text-black">
+                  365 दिवस अविरत सेवा
                 </div>
               </div>
             </div>
 
             {/* TAB CONTENT: REAL-TIME CHARTS & FEEDS */}
-            <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800">
+            <div className="mt-4 pt-3 border-t border-slate-200">
               {activeTab === 'metrics' && (
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2 font-bold text-slate-800 dark:text-slate-200">
-                      <TrendingUp className="w-4 h-4 text-blue-500" />
+                  <div className="flex items-center justify-between text-xs text-black">
+                    <div className="flex items-center gap-2 font-black text-black">
+                      <TrendingUp className="w-4 h-4 text-black" />
                       <span>Live Cluster Throughput &amp; Load Index</span>
                     </div>
-                    <span className="font-mono text-[10px] text-slate-400">
+                    <span className="font-mono text-[10px] text-black font-bold">
                       Updated: Just now (Interval 2.8s)
                     </span>
                   </div>
@@ -454,34 +450,36 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
                         <defs>
                           <linearGradient id="heroLoadGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
-                            <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.0} />
+                            <stop offset="5%" stopColor="#000000" stopOpacity={0.25} />
+                            <stop offset="95%" stopColor="#000000" stopOpacity={0.0} />
                           </linearGradient>
                         </defs>
                         <XAxis
                           dataKey="time"
-                          stroke={isDarkMode ? '#64748b' : '#94a3b8'}
+                          stroke="#000000"
                           fontSize={10}
                           tickLine={false}
                         />
                         <YAxis
-                          stroke={isDarkMode ? '#64748b' : '#94a3b8'}
+                          stroke="#000000"
                           fontSize={10}
                           domain={[0, 100]}
                           tickLine={false}
                         />
                         <Tooltip
                           contentStyle={{
-                            backgroundColor: isDarkMode ? '#0f172a' : '#ffffff',
-                            borderColor: isDarkMode ? '#334155' : '#e2e8f0',
+                            backgroundColor: '#ffffff',
+                            borderColor: '#000000',
                             borderRadius: '0.5rem',
                             fontSize: '11px',
+                            color: '#000000',
+                            fontWeight: 'bold',
                           }}
                         />
                         <Area
                           type="monotone"
                           dataKey="load"
-                          stroke="#3b82f6"
+                          stroke="#000000"
                           strokeWidth={2.5}
                           fillOpacity={1}
                           fill="url(#heroLoadGrad)"
@@ -503,7 +501,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     <div
                       key={cam.id}
                       onClick={onExploreDemo}
-                      className="p-3 rounded-xl bg-slate-950 text-white relative overflow-hidden border border-slate-800 hover:border-blue-500/70 hover:shadow-lg hover:shadow-blue-500/10 transition-all flex flex-col justify-between h-40 cursor-pointer group"
+                      className="p-3 rounded-xl bg-black text-white relative overflow-hidden border border-black hover:shadow-lg transition-all flex flex-col justify-between h-40 cursor-pointer group"
                       title="Click to launch interactive CCTV Monitor"
                     >
                       <div className="flex items-center justify-between text-[10px]">
@@ -511,17 +509,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                           <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
                           {cam.status}
                         </span>
-                        <span className="font-mono text-slate-400">{cam.fps} · {cam.latency}</span>
+                        <span className="font-mono text-slate-300 font-bold">{cam.fps} · {cam.latency}</span>
                       </div>
 
                       <div className="text-center py-2">
-                        <Video className="w-8 h-8 text-slate-500 group-hover:text-blue-400 mx-auto opacity-70 group-hover:opacity-100 transition-colors" />
-                        <div className="text-xs font-bold mt-1 text-slate-200 group-hover:text-white transition-colors">{cam.id}</div>
-                        <div className="text-[10px] text-slate-400 truncate">{cam.name}</div>
-                        <div className="text-[9px] text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity font-bold mt-0.5">Click to expand stream &rarr;</div>
+                        <Video className="w-8 h-8 text-slate-400 group-hover:text-white mx-auto transition-colors" />
+                        <div className="text-xs font-bold mt-1 text-white transition-colors">{cam.id}</div>
+                        <div className="text-[10px] text-slate-300 truncate font-semibold">{cam.name}</div>
+                        <div className="text-[9px] text-amber-300 opacity-0 group-hover:opacity-100 transition-opacity font-bold mt-0.5">Click to expand stream &rarr;</div>
                       </div>
 
-                      <div className="flex items-center justify-between text-[9px] text-emerald-400 border-t border-slate-800 pt-1 font-mono">
+                      <div className="flex items-center justify-between text-[9px] text-emerald-400 border-t border-slate-800 pt-1 font-mono font-bold">
                         <span>AI Motion: Normal</span>
                         <span>Stream 1080p</span>
                       </div>
@@ -539,31 +537,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   ].map((item, idx) => (
                     <div
                       key={idx}
-                      className={`p-3 rounded-xl border flex items-center justify-between gap-3 ${
-                        isDarkMode ? 'bg-slate-800/50 border-slate-700/70' : 'bg-slate-50 border-slate-200'
-                      }`}
+                      className="p-3 rounded-xl border border-slate-200 bg-white text-black flex items-center justify-between gap-3 shadow-2xs"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="p-2 rounded-lg bg-rose-500/10 text-rose-500 shrink-0">
+                        <div className="p-2 rounded-lg bg-rose-50 text-rose-600 border border-rose-200 shrink-0">
                           <AlertTriangle className="w-4 h-4" />
                         </div>
                         <div className="truncate">
-                          <div className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                          <div className="text-xs font-black text-black truncate">
                             {item.title}
                           </div>
-                          <div className="text-[10px] text-slate-500 truncate">
+                          <div className="text-[10px] text-black font-semibold truncate">
                             {item.entity}
                           </div>
                         </div>
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400">
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded bg-slate-100 text-black border border-slate-300">
                           Risk {item.score}/100
                         </span>
                         <button
                           onClick={onExploreDemo}
-                          className="text-xs font-bold text-blue-500 hover:text-blue-400"
+                          className="text-xs font-black text-black hover:underline cursor-pointer"
                         >
                           View &rarr;
                         </button>
@@ -575,15 +571,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
 
             {/* Bottom Bar: Action to Launch Full Portal */}
-            <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-              <div className="flex items-center gap-2 text-slate-500">
-                <Radio className="w-3.5 h-3.5 text-blue-500 animate-pulse" />
+            <div className="mt-4 pt-3 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-black">
+              <div className="flex items-center gap-2 text-black font-bold">
+                <Radio className="w-3.5 h-3.5 text-black animate-pulse" />
                 <span>Synchronized with National Ministry Monitoring Grid</span>
               </div>
 
               <button
                 onClick={onStartMonitoring}
-                className="font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 cursor-pointer"
+                className="font-black text-black hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>Launch Full Operational Dashboard</span>
                 <ArrowRight className="w-3.5 h-3.5" />

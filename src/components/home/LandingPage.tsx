@@ -79,9 +79,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 font-sans selection:bg-[#FF671F] selection:text-white ${
-        isDarkMode ? 'dark bg-slate-950 text-slate-100' : 'bg-white text-slate-900'
-      }`}
+      className="min-h-screen bg-white text-black font-sans selection:bg-[#FF671F] selection:text-white"
     >
       {/* 1. Header / Navigation Bar (Sticky & Fully Responsive) */}
       <LandingNav

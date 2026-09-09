@@ -95,20 +95,20 @@ export const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   ];
 
   return (
-    <section id="features" className="py-14 sm:py-18 border-t border-slate-200/80 dark:border-slate-800/80 relative">
+    <section id="features" className="py-14 sm:py-18 bg-white border-t border-slate-200 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0b2545]/10 text-[#0b2545] dark:bg-amber-400/10 dark:text-amber-400 border border-[#0b2545]/20 dark:border-amber-400/30">
-            <ShieldCheck className="w-4 h-4 text-[#FF671F]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-slate-100 text-black border border-slate-300">
+            <ShieldCheck className="w-4 h-4 text-black" />
             <span>केंद्रीय निगरानी प्रणाली के 6 प्रमुख स्तंभ • Core Statutory Pillars</span>
           </div>
 
-          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#0b2545] dark:text-white">
+          <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-black">
             सरकारी निगरानी एवं पारदर्शिता के मुख्य मॉड्यूल
           </h2>
 
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+          <p className="text-sm sm:text-base text-black leading-relaxed font-semibold">
             देश भर के सामाजिक न्याय संस्थानों में निष्पक्षता, सुरक्षा व वित्तीय अनुशासन सुनिश्चित करने हेतु तैयार किया गया व्यापक सरकारी ढांचा।
           </p>
         </div>
@@ -121,11 +121,7 @@ export const KeyFeatures: React.FC<KeyFeaturesProps> = ({
               <div
                 key={item.id}
                 onClick={() => onExploreFeature(item.subtitle)}
-                className={`group p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-between cursor-pointer relative overflow-hidden ${
-                  isDarkMode
-                    ? 'bg-slate-900/60 border-slate-800 hover:bg-slate-800/80 hover:border-slate-700 hover:shadow-xl hover:shadow-black/40'
-                    : 'bg-white border-slate-200 hover:border-[#0b2545]/40 hover:shadow-lg hover:shadow-slate-200/60'
-                }`}
+                className="group p-6 rounded-2xl border border-slate-200 bg-white hover:border-black hover:shadow-lg transition-all duration-300 flex flex-col justify-between cursor-pointer relative overflow-hidden"
               >
                 {/* Top Colored Accent Stripe */}
                 <div className={`absolute top-0 left-0 right-0 h-1 ${item.topStripe}`} />
@@ -140,30 +136,30 @@ export const KeyFeatures: React.FC<KeyFeaturesProps> = ({
                     </div>
 
                     <span
-                      className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${item.badgeClass}`}
+                      className="text-[11px] font-black px-2.5 py-0.5 rounded-full border border-slate-300 bg-slate-100 text-black"
                     >
                       {item.badge}
                     </span>
                   </div>
 
-                  {/* Title and Subtitle */}
-                  <h3 className="text-base font-bold text-[#0b2545] dark:text-white group-hover:text-[#FF671F] transition-colors leading-snug">
+                  {/* Title and Subtitle in Crisp Black */}
+                  <h3 className="text-base font-black text-black transition-colors leading-snug">
                     {item.title}
                   </h3>
-                  <div className="text-[11px] font-semibold text-slate-400 mt-0.5">
+                  <div className="text-[11px] font-black text-black mt-0.5">
                     {item.subtitle}
                   </div>
 
-                  {/* Description */}
-                  <p className="mt-2.5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                  {/* Description in Solid Black */}
+                  <p className="mt-2.5 text-xs sm:text-sm text-black leading-relaxed font-medium">
                     {item.description}
                   </p>
                 </div>
 
                 {/* Footer Action */}
-                <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-[#0b2545] dark:text-amber-300 group-hover:text-[#FF671F] transition-colors">
+                <div className="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between text-xs font-black text-black transition-colors">
                   <span>मॉड्यूल देखें (Open Module)</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-[#FF671F]" />
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-black" />
                 </div>
               </div>
             );
