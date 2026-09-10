@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Bell,
   User as UserIcon,
@@ -37,9 +37,9 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const [availableUsers, setAvailableUsers] = useState<User[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showNotifMenu, setShowNotifMenu] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
+  const notifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (propUsers && propUsers.length > 0) {
@@ -50,6 +50,21 @@ export const Header: React.FC<HeaderProps> = ({
     fetchNotifications();
   }, [currentUser, propUsers]);
 
+  // Handle outside clicks to close dropdowns reliably
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setShowNotifMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('touchstart', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('touchstart', handleOutsideClick);
+    };
+  }, []);
+
   const fetchNotifications = () => {
     api.getNotifications().then((list) => {
       setNotifications(list.slice(0, 5));
@@ -58,12 +73,40 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   const handleRoleSelect = (role: UserRole) => {
-    const match = availableUsers.find((u) => u.role === role);
-    if (match) {
-      setStoredUser(match);
-      onUserChange(match);
-      setShowRoleMenu(false);
+    let match = availableUsers.find((u) => u.role === role);
+    if (!match) {
+      match = {
+        id: `usr_${role.toLowerCase()}`,
+        email: `${role.toLowerCase()}@dosje.gov.in`,
+        name:
+          role === 'SUPER_ADMIN'
+            ? 'Dr. Rajeshwar Sharma, IAS'
+            : role === 'INSPECTION_OFFICER'
+            ? 'Vikramaditya Rao'
+            : role === 'DEPARTMENT_OFFICIAL'
+            ? 'Smt. Anjali Meena'
+            : role === 'NGO_INSTITUTE'
+            ? 'Sister Nirmala Joseph'
+            : 'Pradeep Kulkarni',
+        role: role,
+        designation:
+          role === 'SUPER_ADMIN'
+            ? 'Joint Secretary (Monitoring)'
+            : role === 'INSPECTION_OFFICER'
+            ? 'Senior Social Welfare Officer'
+            : role === 'DEPARTMENT_OFFICIAL'
+            ? 'Director (PM-AJAY Schemes)'
+            : role === 'NGO_INSTITUTE'
+            ? 'Project Director'
+            : 'District Social Welfare Officer',
+        department: 'Ministry of Social Justice and Empowerment',
+        phone: '+91 98101 23456',
+        createdAt: new Date().toISOString(),
+        isActive: true,
+      };
     }
+    setStoredUser(match);
+    onUserChange(match);
   };
 
   const getRoleBadgeColor = (role: UserRole) => {
@@ -84,13 +127,13 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white border-b border-slate-300 shadow-xs shrink-0 font-sans w-full max-w-full">
+    <header className="sticky top-0 z-[60] bg-white border-b border-slate-300 shadow-xs shrink-0 font-sans w-full max-w-full">
       {/* Top Government Citizen Utility Bar (Standard on Indian Gov Portals) */}
-      <div className="bg-[#0B2545] text-slate-200 text-[10px] sm:text-[11px] px-3 sm:px-6 py-1 border-b border-slate-800 flex items-center justify-between gap-2">
+      <div className="bg-[#0B2545] text-slate-200 text-[10px] sm:text-[11px] px-3 sm:px-6 py-1 border-b border-slate-800 flex items-center justify-between gap-2 w-full max-w-full">
         <div className="flex items-center gap-1.5 sm:gap-3 font-medium tracking-wide min-w-0">
           <span className="text-amber-400 font-semibold truncate shrink-0">भारत सरकार</span>
-          <span className="text-slate-400 hidden xs:inline">|</span>
-          <span className="hidden xs:inline text-slate-300 truncate">GOVERNMENT OF INDIA</span>
+          <span className="text-slate-400 hidden sm:inline">|</span>
+          <span className="hidden sm:inline text-slate-300 truncate">GOVERNMENT OF INDIA</span>
           <span className="hidden md:inline text-slate-400">|</span>
           <span className="hidden md:inline text-slate-300 text-[10px] truncate">सामाजिक न्याय और अधिकारिता मंत्रालय</span>
         </div>
@@ -103,7 +146,7 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="text-slate-500">|</span>
             <span className="cursor-pointer hover:text-white px-0.5" title="Increase Font">A+</span>
           </div>
-          <span className="font-semibold text-emerald-300 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-700/50 text-[10px]">
+          <span className="font-semibold text-emerald-300 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-700/50 text-[10px] shrink-0">
             हिन्दी / EN
           </span>
         </div>
@@ -116,18 +159,17 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="bg-[#138808]" />
       </div>
 
-      <div className="px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4 bg-slate-50/70">
+      <div className="px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4 bg-slate-50/70 w-full max-w-full">
         {/* Government Identity Branding */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="flex flex-col items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#0B2545] text-amber-400 border-2 border-amber-500/80 shadow-2xs shrink-0 p-1">
-            <span className="text-xs sm:text-base leading-none">🏛️</span>
-            <span className="text-[6px] sm:text-[7px] font-bold tracking-tighter text-amber-300 uppercase">सत्यमेव जयते</span>
+          <div className="flex items-center justify-center w-8 h-8 min-[360px]:w-9 min-[360px]:h-9 sm:w-10 sm:h-10 rounded-lg bg-[#0B2545] text-amber-400 border-2 border-amber-500/80 shadow-2xs shrink-0 text-center">
+            <span className="text-base sm:text-xl leading-none text-center block select-none">🏛️</span>
           </div>
           <div className="min-w-0">
-            <div className="text-[8px] xs:text-[9px] sm:text-[11px] font-bold text-[#0B2545] tracking-wider uppercase truncate max-w-[110px] xs:max-w-[160px] sm:max-w-none">
+            <div className="text-[8px] sm:text-[11px] font-bold text-[#0B2545] tracking-wider uppercase truncate max-w-[100px] sm:max-w-none">
               Ministry of Social Justice and Empowerment
             </div>
-            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-black text-[#0B2545] leading-tight truncate">
+            <h1 className="text-xs sm:text-base md:text-lg font-black text-[#0B2545] leading-tight truncate">
               Satya Nirakshak
             </h1>
           </div>
@@ -135,61 +177,10 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Right Action Controls */}
         <div className="flex items-center gap-1 sm:gap-2 md:gap-2.5 shrink-0">
-          {/* Quick Role Switcher for Evaluators */}
-          <div className="relative">
-            <button
-              onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2.5 py-1.5 text-xs font-medium rounded-md border border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 transition cursor-pointer"
-              title="Switch user role for testing"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-              <span className="hidden md:inline text-slate-500">Role:</span>
-              <span className="font-semibold text-slate-900 truncate max-w-[55px] xs:max-w-[85px] sm:max-w-[140px]">
-                {currentUser.role.replace('_', ' ')}
-              </span>
-              <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
-            </button>
-
-            {showRoleMenu && (
-              <div className="absolute right-0 mt-1 w-64 max-w-[calc(100vw-1.5rem)] bg-white rounded-lg shadow-xl border border-slate-200 p-2 z-50 text-xs">
-                <div className="px-2 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100">
-                  Switch Active Role Profile
-                </div>
-                {[
-                  { role: 'SUPER_ADMIN' as UserRole, label: 'Admin (System-Wide)', badge: 'ADMIN' },
-                  { role: 'INSPECTION_OFFICER' as UserRole, label: 'Inspection Officer', badge: 'INSPECTOR' },
-                  { role: 'DEPARTMENT_OFFICIAL' as UserRole, label: 'Supervisor / Senior Officer', badge: 'SUPERVISOR' },
-                  { role: 'NGO_INSTITUTE' as UserRole, label: 'Field Staff / Officer', badge: 'FIELD' },
-                  { role: 'STATE_DISTRICT_AUTHORITY' as UserRole, label: 'Viewer / General User', badge: 'VIEWER' },
-                ].map(({ role: r, label, badge }) => (
-                  <button
-                    key={r}
-                    onClick={() => handleRoleSelect(r)}
-                    className={`w-full text-left px-2.5 py-2 my-0.5 rounded-md flex items-center justify-between transition cursor-pointer ${
-                      currentUser.role === r
-                        ? 'bg-indigo-50 text-indigo-900 font-semibold'
-                        : 'hover:bg-slate-50 text-slate-700'
-                    }`}
-                  >
-                    <div className="min-w-0">
-                      <div className="truncate text-xs font-semibold">{label}</div>
-                      <div className="text-[10px] text-slate-400 font-mono">{r}</div>
-                    </div>
-                    {currentUser.role === r ? (
-                      <span className="w-2 h-2 rounded-full bg-indigo-600 shrink-0" />
-                    ) : (
-                      <span className="text-[9px] font-mono text-slate-400 uppercase">{badge}</span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
           {/* Reset Demo Data Button */}
           <button
             onClick={onResetDemo}
-            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border border-slate-300 bg-white hover:bg-slate-50 text-slate-600 transition"
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md border border-slate-300 bg-white hover:bg-slate-50 text-slate-600 transition shrink-0"
             title="Reset database to initial seed dataset"
           >
             <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
@@ -197,10 +188,13 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Notifications Bell */}
-          <div className="relative">
+          <div className="relative" ref={notifRef}>
             <button
-              onClick={() => setShowNotifMenu(!showNotifMenu)}
-              className="relative p-1.5 sm:p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer"
+              onClick={() => setShowNotifMenu((prev) => !prev)}
+              aria-expanded={showNotifMenu}
+              className={`relative p-1.5 sm:p-2 rounded-md transition cursor-pointer shrink-0 ${
+                showNotifMenu ? 'bg-slate-200 text-slate-900' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
               title="Notifications"
             >
               <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -212,7 +206,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {showNotifMenu && (
-              <div className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-1.5rem)] bg-white rounded-lg shadow-xl border border-slate-200 z-50 overflow-hidden text-xs">
+              <div className="fixed right-2 top-16 sm:absolute sm:top-full sm:mt-2 sm:right-0 sm:left-auto w-80 max-w-[calc(100vw-1rem)] bg-white rounded-lg shadow-2xl border border-slate-200 z-[70] overflow-hidden text-xs max-h-[calc(100vh-5rem)]">
                 <div className="px-3 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
                   <span className="font-semibold text-slate-800">Notifications</span>
                   <button
@@ -220,7 +214,7 @@ export const Header: React.FC<HeaderProps> = ({
                       api.markAllNotificationsRead();
                       setUnreadCount(0);
                     }}
-                    className="text-[11px] text-indigo-600 hover:underline"
+                    className="text-[11px] text-indigo-600 hover:underline cursor-pointer"
                   >
                     Mark all read
                   </button>
@@ -256,7 +250,7 @@ export const Header: React.FC<HeaderProps> = ({
                       onNavigate('notifications');
                     }
                   }}
-                  className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-center font-medium text-indigo-600 border-t border-slate-100"
+                  className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-center font-medium text-indigo-600 border-t border-slate-100 cursor-pointer"
                 >
                   View all notifications
                 </button>
@@ -268,7 +262,7 @@ export const Header: React.FC<HeaderProps> = ({
           {onNavigate && (
             <button
               onClick={() => onNavigate('settings')}
-              className="p-1.5 sm:p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer"
+              className="hidden sm:flex p-1.5 sm:p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer shrink-0"
               title="Portal Settings"
               aria-label="Open Portal Settings"
             >
@@ -280,16 +274,16 @@ export const Header: React.FC<HeaderProps> = ({
           {onNavigate && (
             <button
               onClick={() => onNavigate('home')}
-              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 text-xs font-semibold rounded-md border border-blue-200 bg-blue-50/90 hover:bg-blue-100 text-blue-700 transition cursor-pointer shrink-0"
+              className="hidden sm:flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 text-xs font-semibold rounded-md border border-blue-200 bg-blue-50/90 hover:bg-blue-100 text-blue-700 transition cursor-pointer shrink-0"
               title="Return to Live Monitor Homepage Gateway"
             >
               <Globe className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-              <span className="hidden sm:inline">Homepage</span>
+              <span>Homepage</span>
             </button>
           )}
 
           {/* Current User Badge */}
-          <div className="flex items-center gap-1.5 sm:gap-2 pl-1.5 sm:pl-2 border-l border-slate-200">
+          <div className="flex items-center gap-1.5 sm:gap-2 pl-1.5 sm:pl-2 border-l border-slate-200 shrink-0">
             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-semibold text-[11px] sm:text-xs shrink-0">
               {currentUser.name
                 .split(' ')
@@ -315,7 +309,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="Open Navigation Menu"
               aria-label="Toggle navigation menu"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
             </button>
           )}
         </div>

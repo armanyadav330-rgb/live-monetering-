@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ArrowRight } from 'lucide-react';
 import { LandingNav } from './LandingNav';
 import { HeroSection } from './HeroSection';
 import { LandingFooter } from './LandingFooter';
@@ -94,48 +95,120 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             <div id="status" className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
               {/* Pillar 1 */}
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs">
-                <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-800 flex items-center justify-center text-lg mb-3">
-                  📹
+              <div
+                onClick={() => onEnterPortal(undefined, 'cctv')}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onEnterPortal(undefined, 'cctv');
+                  }
+                }}
+                className="bg-white p-5 rounded-xl border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col justify-between text-left select-none transform hover:-translate-y-0.5"
+                title={lang === 'HI' ? 'लाइव सीसीटीवी मॉनिटरिंग खोलें' : 'Click to launch 24x7 Live CCTV Monitoring'}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-800 flex items-center justify-center text-xl group-hover:scale-105 transition-transform">
+                      📹
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      {lang === 'HI' ? 'लाइव सक्रिय' : 'Live Feeds Active'}
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-bold text-[#0B2545] mb-1.5 group-hover:text-blue-700 transition-colors">
+                    {lang === 'HI' ? '24×7 लाइव सीसीटीवी निगरानी' : '24×7 Live CCTV Monitoring'}
+                  </h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    {lang === 'HI'
+                      ? 'वृद्धाश्रमों और नशा मुक्ति केंद्रों से सुरक्षित लाइव फीड व विसंगति रडार अलर्ट।'
+                      : 'Secure real-time camera streams and automated anomaly detection across assisted institutions.'}
+                  </p>
                 </div>
-                <h3 className="text-sm font-bold text-[#0B2545] mb-1.5">
-                  {lang === 'HI' ? '24×7 लाइव सीसीटीवी निगरानी' : '24×7 Live CCTV Monitoring'}
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {lang === 'HI'
-                    ? 'वृद्धाश्रमों और नशा मुक्ति केंद्रों से सुरक्षित लाइव फीड व विसंगति रडार अलर्ट।'
-                    : 'Secure real-time camera streams and automated anomaly detection across assisted institutions.'}
-                </p>
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-700 group-hover:text-blue-800">
+                  <span>{lang === 'HI' ? 'लाइव फीड खोलें' : 'Launch CCTV Monitor'}</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
 
               {/* Pillar 2 */}
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs">
-                <div className="w-9 h-9 rounded-lg bg-amber-50 text-amber-800 flex items-center justify-center text-lg mb-3">
-                  📋
+              <div
+                onClick={() => onEnterPortal(undefined, 'inspections')}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onEnterPortal(undefined, 'inspections');
+                  }
+                }}
+                className="bg-white p-5 rounded-xl border border-slate-200 hover:border-amber-500 shadow-2xs hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col justify-between text-left select-none transform hover:-translate-y-0.5"
+                title={lang === 'HI' ? 'निरीक्षण डॉजियर और फील्ड ऑडिट देखें' : 'Click to view Digital Field Inspections'}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-800 flex items-center justify-center text-xl group-hover:scale-105 transition-transform">
+                      📋
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                      {lang === 'HI' ? 'ऑडिट तैयार' : 'Field Audits Ready'}
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-bold text-[#0B2545] mb-1.5 group-hover:text-amber-700 transition-colors">
+                    {lang === 'HI' ? 'डिजिटल ऑन-साइट निरीक्षण' : 'On-Site Field Inspections'}
+                  </h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    {lang === 'HI'
+                      ? 'जियो-टैग फोटो साक्ष्य, डिजिटल चेकलिस्ट और ऑन-साइट निरीक्षण डॉजियर।'
+                      : 'Standardized field audit checklists, GPS-stamped photo evidence, and digital inspection dossiers.'}
+                  </p>
                 </div>
-                <h3 className="text-sm font-bold text-[#0B2545] mb-1.5">
-                  {lang === 'HI' ? 'डिजिटल ऑन-साइट निरीक्षण' : 'On-Site Field Inspections'}
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {lang === 'HI'
-                    ? 'जियो-टैग फोटो साक्ष्य, डिजिटल चेकलिस्ट और ऑन-साइट निरीक्षण डॉजियर।'
-                    : 'Standardized field audit checklists, GPS-stamped photo evidence, and digital inspection dossiers.'}
-                </p>
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-amber-700 group-hover:text-amber-800">
+                  <span>{lang === 'HI' ? 'निरीक्षण सूची देखें' : 'View Field Inspections'}</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
 
               {/* Pillar 3 */}
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs">
-                <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center text-lg mb-3">
-                  👥
+              <div
+                onClick={() => onEnterPortal(undefined, 'analytics')}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onEnterPortal(undefined, 'analytics');
+                  }
+                }}
+                className="bg-white p-5 rounded-xl border border-slate-200 hover:border-emerald-500 shadow-2xs hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col justify-between text-left select-none transform hover:-translate-y-0.5"
+                title={lang === 'HI' ? 'बायोमेट्रिक सत्यापन और कैग ऑडिट एनालिटिक्स खोलें' : 'Click to open Biometric Audit & Analytics'}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center text-xl group-hover:scale-105 transition-transform">
+                      👥
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      {lang === 'HI' ? 'कैग अनुपालन' : 'CAG Compliant'}
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-bold text-[#0B2545] mb-1.5 group-hover:text-emerald-700 transition-colors">
+                    {lang === 'HI' ? 'बायोमेट्रिक सत्यापन एवं ऑडिट' : 'Biometric Attendance Audit'}
+                  </h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    {lang === 'HI'
+                      ? 'आधार-सत्यापित उपस्थिति मिलान और कैग अनुपालन हेतु पारदर्शी डिजिटल रिकॉर्ड।'
+                      : 'Aadhaar-authenticated beneficiary headcount reconciliation and CAG-compliant audit trails.'}
+                  </p>
                 </div>
-                <h3 className="text-sm font-bold text-[#0B2545] mb-1.5">
-                  {lang === 'HI' ? 'बायोमेट्रिक सत्यापन एवं ऑडिट' : 'Biometric Attendance Audit'}
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {lang === 'HI'
-                    ? 'आधार-सत्यापित उपस्थिति मिलान और कैग अनुपालन हेतु पारदर्शी डिजिटल रिकॉर्ड।'
-                    : 'Aadhaar-authenticated beneficiary headcount reconciliation and CAG-compliant audit trails.'}
-                </p>
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-emerald-700 group-hover:text-emerald-800">
+                  <span>{lang === 'HI' ? 'ऑडिट एनालिटिक्स देखें' : 'Explore Audit Analytics'}</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
             </div>
           </div>

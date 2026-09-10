@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Bot, Phone, Video, MessageSquare, Sparkles, X, ChevronUp } from 'lucide-react';
 import { AIOfficerAvatar } from './AIOfficerAvatar';
+import { Robot3DAvatar } from './Robot3DAvatar';
 
 interface AIFloatingTriggerProps {
   onOpen: (mode?: 'chat' | 'audio_call' | 'video_call' | 'tickets') => void;
@@ -89,31 +90,29 @@ export const AIFloatingTrigger: React.FC<AIFloatingTriggerProps> = ({ onOpen }) 
       {/* Main Floating Trigger Button */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="group relative flex items-center space-x-2.5 px-4 py-2.5 rounded-full bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 hover:from-blue-600 hover:to-purple-600 text-white shadow-xl shadow-blue-900/40 border border-white/20 transition-all transform hover:scale-105 active:scale-95"
+        className="group relative flex items-center space-x-3 pl-2 pr-4 py-2 rounded-full bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 hover:from-slate-800 hover:to-indigo-900 text-white shadow-2xl shadow-indigo-950/60 border border-indigo-400/40 transition-all transform hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-md"
       >
-        {/* Animated Avatar Dot */}
-        <div className="relative">
-          <div className="w-7 h-7 rounded-full bg-slate-900 border border-amber-400/80 flex items-center justify-center overflow-hidden">
-            <Bot className="w-4 h-4 text-amber-300" />
-          </div>
-          <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
+        {/* 3D Robot Avatar Character Image */}
+        <div className="relative flex items-center justify-center">
+          <Robot3DAvatar size={42} />
+          <span className="absolute bottom-0 right-0 flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500 border-2 border-slate-900"></span>
           </span>
         </div>
 
         <div className="text-left">
-          <div className="text-xs font-bold tracking-wide flex items-center space-x-1">
-            <span>AI Officer Call</span>
-            <Sparkles className="w-3 h-3 text-amber-300" />
+          <div className="text-xs font-bold tracking-wide flex items-center space-x-1.5 text-white">
+            <span>AI Officer</span>
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
           </div>
-          <div className="text-[9px] text-blue-200 font-medium">
+          <div className="text-[10px] text-blue-200 font-medium">
             Voice & Video Resolution
           </div>
         </div>
 
         <ChevronUp
-          className={`w-4 h-4 text-blue-200 transition-transform duration-200 ${
+          className={`w-4 h-4 text-blue-300 transition-transform duration-200 ${
             expanded ? 'rotate-180' : ''
           }`}
         />

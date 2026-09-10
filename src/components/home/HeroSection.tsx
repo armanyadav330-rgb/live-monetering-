@@ -34,7 +34,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.2] text-[#0B2545]">
+          <h1 className="text-lg sm:text-2xl lg:text-3xl font-extrabold tracking-tight leading-snug text-[#0B2545]">
             {lang === 'HI' ? (
               <>
                 सत्य निरीक्षक ·{' '}

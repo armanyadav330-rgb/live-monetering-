@@ -2,27 +2,25 @@ import React, { useState } from 'react';
 import {
   Menu,
   X,
-  Sun,
-  Moon,
   ArrowRight,
   LogIn,
   Zap,
 } from 'lucide-react';
 
 interface LandingNavProps {
-  isDarkMode: boolean;
+  isDarkMode?: boolean;
   lang: 'EN' | 'HI';
   onToggleLang: () => void;
-  onToggleTheme: () => void;
+  onToggleTheme?: () => void;
   onLoginClick: () => void;
   onLaunchDashboard: () => void;
 }
 
 export const LandingNav: React.FC<LandingNavProps> = ({
-  isDarkMode,
+  isDarkMode: _isDarkMode,
   lang,
   onToggleLang,
-  onToggleTheme,
+  onToggleTheme: _onToggleTheme,
   onLoginClick,
   onLaunchDashboard,
 }) => {
@@ -40,13 +38,13 @@ export const LandingNav: React.FC<LandingNavProps> = ({
   return (
     <header id="landing-header" className="sticky top-0 z-50 bg-white border-b border-slate-300 shadow-xs shrink-0 font-sans transition-colors duration-300 w-full max-w-full">
       {/* 1. TOP CITIZEN UTILITY BAR */}
-      <div className="bg-[#0B2545] text-slate-200 text-[10px] sm:text-[11px] px-3 sm:px-6 lg:px-8 py-1 border-b border-slate-800 flex items-center justify-between gap-2">
+      <div className="bg-[#0B2545] text-slate-200 text-[10px] sm:text-[11px] px-3 sm:px-6 lg:px-8 py-1 border-b border-slate-800 flex items-center justify-between gap-2 w-full max-w-full">
         <div className="flex items-center gap-1.5 sm:gap-3 font-medium tracking-wide min-w-0">
           <span className="text-amber-400 font-semibold truncate shrink-0">
             {lang === 'HI' ? 'भारत सरकार' : 'GOVT. OF INDIA'}
           </span>
-          <span className="text-slate-400 hidden xs:inline">|</span>
-          <span className="text-slate-300 text-[9px] sm:text-[10px] truncate hidden xs:inline">
+          <span className="text-slate-400 hidden sm:inline">|</span>
+          <span className="text-slate-300 text-[9px] sm:text-[10px] truncate hidden sm:inline">
             {lang === 'HI' ? 'सामाजिक न्याय और अधिकारिता मंत्रालय' : 'Ministry of Social Justice & Empowerment'}
           </span>
         </div>
@@ -55,7 +53,7 @@ export const LandingNav: React.FC<LandingNavProps> = ({
         <div className="flex items-center gap-1.5 sm:gap-2.5 text-[10px] shrink-0">
           <span className="hidden lg:inline text-slate-400 font-mono text-[9px]">NIC-SECURE-NODE-2026</span>
           
-          {/* Font Controls (Hidden on ultra-small screens, accessible via mobile drawer) */}
+          {/* Font Controls (Hidden on mobile, accessible in mobile drawer) */}
           <div className="hidden sm:flex items-center gap-1 bg-[#13315C] px-1.5 py-0.5 rounded border border-slate-700 text-amber-300 font-bold text-[10px]">
             <button
               onClick={() => setFontSize('normal')}
@@ -84,7 +82,7 @@ export const LandingNav: React.FC<LandingNavProps> = ({
 
           <button
             onClick={onToggleLang}
-            className="font-semibold text-emerald-300 bg-emerald-950/80 hover:bg-emerald-900/90 px-1.5 sm:px-2 py-0.5 rounded border border-emerald-700/50 cursor-pointer transition flex items-center gap-1 text-[10px] active:scale-95"
+            className="font-semibold text-emerald-300 bg-emerald-950/80 hover:bg-emerald-900/90 px-1.5 sm:px-2 py-0.5 rounded border border-emerald-700/50 cursor-pointer transition flex items-center gap-1 text-[10px] active:scale-95 shrink-0"
             title={lang === 'EN' ? 'हिंदी में स्विच करें (Switch to Hindi)' : 'Switch to English'}
           >
             <span>🌐</span>
@@ -107,26 +105,25 @@ export const LandingNav: React.FC<LandingNavProps> = ({
       </div>
 
       {/* 3. MAIN EMBLEM & IDENTITY BAR */}
-      <div className="px-3 sm:px-6 lg:px-8 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4 bg-slate-50/70 border-b border-slate-200">
+      <div className="px-3 sm:px-6 lg:px-8 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4 bg-slate-50/70 border-b border-slate-200 w-full max-w-full">
         {/* Government Identity Branding */}
         <div
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="flex items-center gap-2 sm:gap-3 cursor-pointer group min-w-0"
         >
           {/* Official Emblem Badge */}
-          <div className="flex flex-col items-center justify-center w-9 h-9 sm:w-11 sm:h-11 rounded-lg bg-[#0B2545] text-amber-400 border-2 border-amber-500/80 shadow-2xs shrink-0 p-1 group-hover:scale-105 transition-transform">
-            <span className="text-sm sm:text-base leading-none">🏛️</span>
-            <span className="text-[7px] sm:text-[8px] font-bold tracking-tighter text-amber-300 uppercase">सत्यमेव जयते</span>
+          <div className="flex items-center justify-center w-8 h-8 min-[360px]:w-9 min-[360px]:h-9 sm:w-11 sm:h-11 rounded-lg bg-[#0B2545] text-amber-400 border-2 border-amber-500/80 shadow-2xs shrink-0 group-hover:scale-105 transition-transform text-center">
+            <span className="text-base sm:text-xl leading-none text-center block select-none">🏛️</span>
           </div>
 
           <div className="min-w-0">
-            <div className="text-[9px] sm:text-[11px] font-bold text-[#0B2545] tracking-wider uppercase truncate max-w-[135px] xs:max-w-[200px] sm:max-w-md lg:max-w-none">
+            <div className="text-[8px] sm:text-[11px] font-bold text-[#0B2545] tracking-wider uppercase truncate max-w-[120px] sm:max-w-md lg:max-w-none">
               {lang === 'HI'
                 ? 'सामाजिक न्याय और अधिकारिता मंत्रालय'
                 : 'Ministry of Social Justice and Empowerment'}
             </div>
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-black text-[#0B2545] leading-tight truncate">
+              <h1 className="text-xs sm:text-base md:text-lg font-black text-[#0B2545] leading-tight truncate">
                 Satya Nirakshak
               </h1>
               <span className="hidden xl:inline-block text-[9px] font-mono font-bold text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-300">
@@ -137,28 +134,28 @@ export const LandingNav: React.FC<LandingNavProps> = ({
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-semibold text-slate-700">
+        <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 text-xs font-semibold text-slate-700">
           <button
             onClick={() => scrollToSection('features')}
-            className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-100 transition cursor-pointer"
+            className="px-2 xl:px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-100 transition cursor-pointer whitespace-nowrap"
           >
             {lang === 'HI' ? 'प्रमुख मॉड्यूल' : 'Key Modules'}
           </button>
           <button
             onClick={() => scrollToSection('how-it-works')}
-            className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-100 transition cursor-pointer"
+            className="px-2 xl:px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-100 transition cursor-pointer whitespace-nowrap"
           >
             {lang === 'HI' ? 'कार्यप्रणाली' : 'How It Works'}
           </button>
           <button
             onClick={() => scrollToSection('preview')}
-            className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-100 transition cursor-pointer"
+            className="px-2 xl:px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-100 transition cursor-pointer whitespace-nowrap"
           >
             {lang === 'HI' ? 'निगरानी ग्रिड' : 'Surveillance Grid'}
           </button>
           <button
             onClick={() => scrollToSection('status')}
-            className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-100 transition cursor-pointer flex items-center gap-1.5"
+            className="px-2 xl:px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-100 transition cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
           >
             <span>{lang === 'HI' ? 'क्लस्टर स्थिति' : 'Cluster Status'}</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -167,16 +164,6 @@ export const LandingNav: React.FC<LandingNavProps> = ({
 
         {/* Right Action Controls */}
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-          {/* Dark / Light Mode Toggle */}
-          <button
-            onClick={onToggleTheme}
-            className="p-1.5 sm:p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer"
-            title={isDarkMode ? 'Switch to Official Light Mode' : 'Switch to NOC Dark Mode'}
-            aria-label="Toggle theme"
-          >
-            {isDarkMode ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4 text-slate-600" />}
-          </button>
-
           {/* Official Log In Button - visible from md+ screens */}
           <button
             onClick={onLoginClick}
@@ -189,12 +176,12 @@ export const LandingNav: React.FC<LandingNavProps> = ({
           {/* Launch Live Dashboard Button */}
           <button
             onClick={onLaunchDashboard}
-            className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded-md bg-[#0B2545] hover:bg-[#13315C] text-white shadow-xs transition cursor-pointer active:scale-95 shrink-0"
+            className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold rounded-md bg-[#0B2545] hover:bg-[#13315C] text-white shadow-xs transition cursor-pointer active:scale-95 shrink-0"
           >
             <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
             <span className="hidden sm:inline">{lang === 'HI' ? 'कमांड पोर्टल' : 'Command Portal'}</span>
             <span className="sm:hidden">{lang === 'HI' ? 'पोर्टल' : 'Portal'}</span>
-            <ArrowRight className="w-3 h-3 text-slate-300 shrink-0 hidden xs:inline" />
+            <ArrowRight className="w-3 h-3 text-slate-300 shrink-0 hidden sm:inline" />
           </button>
 
           {/* Mobile Hamburger Button */}

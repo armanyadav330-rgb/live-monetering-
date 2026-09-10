@@ -89,20 +89,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
       <div
-        className={`w-full max-w-lg rounded-3xl border shadow-2xl overflow-hidden transition-all relative ${
-          isDarkMode
-            ? 'bg-slate-900 border-slate-700 text-white'
-            : 'bg-white border-slate-200 text-slate-900'
-        }`}
+        className="w-full max-w-lg rounded-3xl border border-slate-200 shadow-2xl overflow-hidden transition-all relative bg-white text-black"
       >
         {/* Header Bar */}
-        <div className="px-6 py-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div className="px-6 py-5 border-b border-slate-200 bg-white text-black flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-md">
+            <div className="w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center text-white font-bold text-xs shadow-xs">
               <Shield className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-base font-bold">
+              <h3 className="text-base font-bold text-black">
                 {mode === 'login'
                   ? lang === 'HI'
                     ? 'लाइव निगरानी पोर्टल में प्रवेश'
@@ -111,7 +107,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   ? 'मूल्यांकन खाता बनाएं'
                   : 'Create Free Evaluation Account'}
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-black font-medium">
                 {lang === 'HI'
                   ? 'सरकारी अधिकारियों एवं निगरानी कर्मियों के लिए सिंगल साइन-ऑन'
                   : 'Single sign-on for government officials & monitoring personnel'}
@@ -121,22 +117,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            className="p-1.5 rounded-lg text-black hover:text-black hover:bg-slate-100 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
+        <div className="p-6 space-y-5 max-h-[80vh] overflow-y-auto bg-white text-black">
           {/* Mode Switcher */}
-          <div className="grid grid-cols-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-semibold">
+          <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl text-xs font-semibold">
             <button
               onClick={() => setMode('login')}
               className={`py-2 rounded-lg transition ${
                 mode === 'login'
-                  ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400'
+                  ? 'bg-white text-black font-bold shadow-xs'
+                  : 'text-slate-600'
               }`}
             >
               {lang === 'HI' ? 'साइन इन (डेमो प्रोफ़ाइल)' : 'Sign In (Demo Profiles)'}
@@ -145,8 +141,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               onClick={() => setMode('signup')}
               className={`py-2 rounded-lg transition ${
                 mode === 'signup'
-                  ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400'
+                  ? 'bg-white text-black font-bold shadow-xs'
+                  : 'text-slate-600'
               }`}
             >
               {lang === 'HI' ? 'कस्टम प्रवेश' : 'Custom Access'}
@@ -155,7 +151,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           {mode === 'login' ? (
             <div className="space-y-3">
-              <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              <div className="text-xs font-bold uppercase tracking-wider text-black">
                 {lang === 'HI' ? 'लाइव डैशबोर्ड खोलने हेतु प्रोफ़ाइल चुनें:' : 'Select Persona to Launch Live Dashboard:'}
               </div>
 
@@ -166,39 +162,37 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     <div
                       key={p.role}
                       onClick={() => setSelectedRole(p.role)}
-                      className={`p-3.5 rounded-2xl border transition cursor-pointer flex items-center justify-between ${
+                      className={`p-3.5 rounded-2xl border transition cursor-pointer flex items-center justify-between bg-white text-black ${
                         isSelected
-                          ? 'border-blue-500 bg-blue-50/70 dark:bg-blue-950/40 ring-1 ring-blue-500'
-                          : isDarkMode
-                          ? 'border-slate-800 bg-slate-800/40 hover:bg-slate-800/80'
-                          : 'border-slate-200 bg-slate-50/60 hover:bg-slate-100'
+                          ? 'border-2 border-black ring-1 ring-black/10'
+                          : 'border border-slate-200 hover:border-slate-400'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <div
                           className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs ${
                             isSelected
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+                              ? 'bg-black text-white'
+                              : 'bg-slate-100 text-black border border-slate-200'
                           }`}
                         >
                           <UserCheck className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-slate-900 dark:text-white">
+                          <div className="text-xs font-bold text-black">
                             {p.title}
                           </div>
-                          <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                          <div className="text-[11px] text-black font-medium">
                             {p.desc}
                           </div>
                         </div>
                       </div>
 
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
                           isSelected
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
+                            ? 'bg-black text-white'
+                            : 'bg-slate-100 text-black border border-slate-300'
                         }`}
                       >
                         {p.badge}
