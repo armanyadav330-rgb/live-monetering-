@@ -1,21 +1,18 @@
 import React from 'react';
 import {
-  LayoutDashboard,
-  FolderKanban,
-  Video,
-  PhoneCall,
-  ClipboardCheck,
-  MapPin,
-  Sparkles,
-  FileBarChart,
-  Bell,
-  ScrollText,
-  Users,
-  Settings,
-  Bot,
   Globe,
+  LogOut,
+  UserCircle,
+  Shield,
 } from 'lucide-react';
 import { UserRole } from '../../types';
+import {
+  getRoleCategory,
+  getRoleDisplayName,
+  getRoleBadge,
+  ROLE_SIDEBAR_MENUS,
+  RoleMenuItem,
+} from '../../utils/rbac';
 
 interface SidebarProps {
   currentView?: string;
@@ -24,6 +21,7 @@ interface SidebarProps {
   userRole: UserRole;
   isOpen?: boolean;
   onClose?: () => void;
+  onLogout?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -33,102 +31,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
   userRole,
   isOpen = false,
   onClose,
+  onLogout,
 }) => {
   const effectiveView = currentView || activeView || 'dashboard';
-  const navItems = [
-    {
-      id: 'home',
-      label: 'Homepage & Gateway',
-      icon: Globe,
-      badge: 'GATEWAY',
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY', 'NGO_INSTITUTE'],
-    },
-    {
-      id: 'dashboard',
-      label: 'Main Dashboard',
-      icon: LayoutDashboard,
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY', 'NGO_INSTITUTE'],
-    },
-    {
-      id: 'projects',
-      label: 'Project Management',
-      icon: FolderKanban,
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'STATE_DISTRICT_AUTHORITY', 'NGO_INSTITUTE'],
-    },
-    {
-      id: 'inspections',
-      label: 'Inspections & Audits',
-      icon: ClipboardCheck,
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY', 'NGO_INSTITUTE'],
-    },
-    {
-      id: 'cctv',
-      label: 'CCTV Monitoring',
-      icon: Video,
-      badge: 'SIM',
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL'],
-    },
-    {
-      id: 'vc',
-      label: 'Random Call & Video (Toll-Free)',
-      icon: PhoneCall,
-      badge: 'LIVE',
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY'],
-    },
-    {
-      id: 'ai-assistant',
-      label: 'AI Officer (Voice & Video)',
-      icon: Bot,
-      badge: 'ORAL',
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY', 'NGO_INSTITUTE'],
-    },
-    {
-      id: 'map',
-      label: 'GIS Project Map',
-      icon: MapPin,
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY'],
-    },
-    {
-      id: 'analytics',
-      label: 'AI & Attendance',
-      icon: Sparkles,
-      badge: 'AI',
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'STATE_DISTRICT_AUTHORITY'],
-    },
-    {
-      id: 'reports',
-      label: 'Reports & Exports',
-      icon: FileBarChart,
-      badge: 'MIS',
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY', 'NGO_INSTITUTE'],
-    },
-    {
-      id: 'notifications',
-      label: 'Notifications',
-      icon: Bell,
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY', 'NGO_INSTITUTE'],
-    },
-    {
-      id: 'audit-logs',
-      label: 'Audit Trail',
-      icon: ScrollText,
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'STATE_DISTRICT_AUTHORITY', 'INSPECTION_OFFICER'],
-    },
-    {
-      id: 'users',
-      label: 'User Management',
-      icon: Users,
-      roles: ['SUPER_ADMIN'],
-    },
-    {
-      id: 'settings',
-      label: 'Portal Settings',
-      icon: Settings,
-      roles: ['SUPER_ADMIN', 'DEPARTMENT_OFFICIAL', 'INSPECTION_OFFICER', 'STATE_DISTRICT_AUTHORITY', 'NGO_INSTITUTE'],
-    },
-  ];
+  const roleCategory = getRoleCategory(userRole);
+  const roleBadge = getRoleBadge(userRole);
+  const roleTitle = getRoleDisplayName(userRole);
 
-  const allowedItems = navItems.filter((item) => item.roles.includes(userRole));
+  // Retrieve the dedicated role-specific menu items
+  const roleMenuItems: RoleMenuItem[] = ROLE_SIDEBAR_MENUS[roleCategory] || ROLE_SIDEBAR_MENUS.VIEWER;
 
   return (
     <>
@@ -146,24 +57,57 @@ export const Sidebar: React.FC<SidebarProps> = ({
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="p-2.5 space-y-0.5 flex-1 overflow-y-auto flex flex-col">
-          <div className="flex items-center justify-between px-2.5 py-1 mb-1 border-b border-[#13315C] pb-2">
-            <div className="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-              <span>🏛️</span>
-              <span>PORTAL MODULES</span>
+        <div className="p-2.5 space-y-2 flex-1 overflow-y-auto flex flex-col">
+          {/* Header Bar with Role Indication */}
+          <div className="px-2 py-1.5 border-b border-[#13315C] pb-2 space-y-1.5">
+            <div className="flex items-center justify-between">
+              <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                <Shield className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <span>ROLE-BASED WORKFLOW</span>
+              </div>
+              {onClose && (
+                <button
+                  onClick={onClose}
+                  className="md:hidden text-slate-400 hover:text-white p-1 rounded-sm cursor-pointer"
+                  aria-label="Close navigation menu"
+                >
+                  ✕
+                </button>
+              )}
             </div>
-            {onClose && (
-              <button
-                onClick={onClose}
-                className="md:hidden text-slate-400 hover:text-white p-1 rounded-sm"
-                aria-label="Close sidebar"
-              >
-                ✕
-              </button>
-            )}
+
+            {/* Role Badge Indicator */}
+            <div className="flex items-center justify-between bg-[#07162C] px-2 py-1.5 rounded-lg border border-[#13315C]">
+              <div className="min-w-0">
+                <span className={`text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded border inline-block ${roleBadge.bg} ${roleBadge.textCol}`}>
+                  {roleBadge.text}
+                </span>
+                <div className="text-[11px] font-bold text-slate-200 truncate mt-0.5" title={roleTitle}>
+                  {roleTitle}
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="space-y-0.5">
-            {allowedItems.map((item) => {
+
+          {/* Quick Gateway Link */}
+          <button
+            onClick={() => {
+              onNavigate('home');
+              if (onClose) onClose();
+            }}
+            className="w-full flex items-center justify-between px-2.5 py-1.5 rounded text-xs font-semibold text-sky-200 hover:bg-[#13315C] hover:text-white border border-dashed border-[#1E3A8A] transition cursor-pointer"
+            title="Public Homepage Gateway"
+          >
+            <div className="flex items-center gap-2">
+              <Globe className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+              <span>Homepage Gateway</span>
+            </div>
+            <span className="text-[9px] font-mono text-sky-300 uppercase">GOV.IN</span>
+          </button>
+
+          {/* Dynamic Role-Based Menu Items */}
+          <div className="space-y-0.5 pt-1">
+            {roleMenuItems.map((item) => {
               const Icon = item.icon;
               const viewStr = effectiveView || '';
               const isActive =
@@ -172,7 +116,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 (item.id === 'inspections' &&
                   (viewStr.startsWith('inspections/') ||
                     viewStr === 'inspection-form' ||
-                    viewStr === 'inspection-report'));
+                    viewStr === 'inspection-report')) ||
+                (item.id === 'alerts' && viewStr === 'analytics');
 
               return (
                 <button
@@ -208,17 +153,44 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
-        {/* System Operational Status */}
-        <div className="p-2.5 border-t border-[#13315C] bg-[#07162C] text-[11px] text-slate-300 shrink-0">
-          <div className="flex items-center justify-between mb-0.5">
-            <span className="text-slate-400 text-[10px] font-medium">NIC National Cloud</span>
-            <span className="inline-flex items-center gap-1 text-emerald-400 font-bold text-[10px]">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              GOV SECURE
-            </span>
+        {/* Footer Area: Profile, Logout & System Integrity */}
+        <div className="p-2.5 border-t border-[#13315C] bg-[#07162C] space-y-2 shrink-0">
+          {/* Common Profile & Logout buttons */}
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => {
+                onNavigate('profile');
+                if (onClose) onClose();
+              }}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded text-[11px] font-semibold transition cursor-pointer ${
+                effectiveView === 'profile'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-[#0B2545] hover:bg-[#13315C] text-slate-200 border border-[#1E3A8A]'
+              }`}
+              title="Official Profile"
+            >
+              <UserCircle className="w-3.5 h-3.5 text-indigo-300" />
+              <span>Profile</span>
+            </button>
+
+            {onLogout && (
+              <button
+                onClick={onLogout}
+                className="flex items-center justify-center gap-1 py-1.5 px-2.5 rounded bg-rose-900/40 hover:bg-rose-700 text-rose-200 hover:text-white text-[11px] font-semibold border border-rose-800 transition cursor-pointer"
+                title="Sign Out / Logout"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Exit</span>
+              </button>
+            )}
           </div>
-          <div className="text-[10px] text-slate-400 font-mono truncate">
-            DoSJE-MIS-v2.4 · 256-Bit Encrypted
+
+          <div className="flex items-center justify-between pt-1 border-t border-[#13315C]/60 text-[10px] text-slate-400">
+            <span className="truncate">NIC Sovereign Grid</span>
+            <span className="inline-flex items-center gap-1 text-emerald-400 font-bold">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              ACTIVE
+            </span>
           </div>
         </div>
       </aside>

@@ -3,7 +3,10 @@ export type UserRole =
   | 'DEPARTMENT_OFFICIAL'
   | 'INSPECTION_OFFICER'
   | 'STATE_DISTRICT_AUTHORITY'
-  | 'NGO_INSTITUTE';
+  | 'NGO_INSTITUTE'
+  | 'SUPERVISOR'
+  | 'FIELD_OFFICER'
+  | 'VIEWER';
 
 export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 export type CCTVStatus = 'ONLINE' | 'OFFLINE' | 'WARNING';

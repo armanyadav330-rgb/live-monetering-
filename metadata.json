@@ -1,5 +1,5 @@
 {
-  "name": "DoSJE Smart Monitoring & Inspection Portal",
+  "name": "Satya Nirakshak",
   "description": "Centralized web-based monitoring platform for government and department officials to monitor projects, NGOs, CCTV feeds, random video verifications, geo-tagged inspections, and AI anomaly analytics under DoSJE schemes.",
   "requestFramePermissions": ["camera", "microphone", "geolocation"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

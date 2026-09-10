@@ -214,8 +214,8 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
             <div className="space-y-3">
               <h4 className="font-bold text-slate-900 dark:text-white text-sm">
                 {lang === 'HI'
-                  ? 'DoSJE स्मार्ट निगरानी पोर्टल से लिंक करने के दिशा-निर्देश'
-                  : 'Guidelines on Linking to the DoSJE Smart Monitoring Portal'}
+                  ? 'Satya Nirakshak से लिंक करने के दिशा-निर्देश'
+                  : 'Guidelines on Linking to Satya Nirakshak'}
               </h4>
               <p>
                 {lang === 'HI'

@@ -84,27 +84,27 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white border-b border-slate-300 shadow-sm shrink-0 font-sans">
+    <header className="sticky top-0 z-30 bg-white border-b border-slate-300 shadow-xs shrink-0 font-sans w-full max-w-full">
       {/* Top Government Citizen Utility Bar (Standard on Indian Gov Portals) */}
-      <div className="bg-[#0B2545] text-slate-200 text-[11px] px-4 sm:px-6 py-1 border-b border-slate-800 flex items-center justify-between">
-        <div className="flex items-center gap-2 sm:gap-4 font-medium tracking-wide">
-          <span className="text-amber-400 font-semibold">भारत सरकार</span>
-          <span className="text-slate-400">|</span>
-          <span className="hidden xs:inline">GOVERNMENT OF INDIA</span>
-          <span className="hidden sm:inline text-slate-400">|</span>
-          <span className="hidden sm:inline text-slate-300 text-[10px]">सामाजिक न्याय और अधिकारिता मंत्रालय</span>
+      <div className="bg-[#0B2545] text-slate-200 text-[10px] sm:text-[11px] px-3 sm:px-6 py-1 border-b border-slate-800 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-3 font-medium tracking-wide min-w-0">
+          <span className="text-amber-400 font-semibold truncate shrink-0">भारत सरकार</span>
+          <span className="text-slate-400 hidden xs:inline">|</span>
+          <span className="hidden xs:inline text-slate-300 truncate">GOVERNMENT OF INDIA</span>
+          <span className="hidden md:inline text-slate-400">|</span>
+          <span className="hidden md:inline text-slate-300 text-[10px] truncate">सामाजिक न्याय और अधिकारिता मंत्रालय</span>
         </div>
-        <div className="flex items-center gap-3 text-[10px]">
-          <span className="hidden md:inline text-slate-300 font-mono">NIC-SECURE-NODE-2026</span>
-          <div className="flex items-center gap-1 bg-[#13315C] px-1.5 py-0.5 rounded border border-slate-700 text-amber-300 font-bold">
-            <span className="cursor-pointer hover:text-white" title="Decrease Font">A-</span>
+        <div className="flex items-center gap-2 sm:gap-3 text-[10px] shrink-0">
+          <span className="hidden lg:inline text-slate-400 font-mono text-[9px]">NIC-SECURE-NODE-2026</span>
+          <div className="hidden sm:flex items-center gap-1 bg-[#13315C] px-1.5 py-0.5 rounded border border-slate-700 text-amber-300 font-bold text-[10px]">
+            <span className="cursor-pointer hover:text-white px-0.5" title="Decrease Font">A-</span>
             <span className="text-slate-500">|</span>
-            <span className="cursor-pointer hover:text-white" title="Normal Font">A</span>
+            <span className="cursor-pointer hover:text-white px-0.5" title="Normal Font">A</span>
             <span className="text-slate-500">|</span>
-            <span className="cursor-pointer hover:text-white" title="Increase Font">A+</span>
+            <span className="cursor-pointer hover:text-white px-0.5" title="Increase Font">A+</span>
           </div>
-          <span className="font-semibold text-emerald-400 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-700/50">
-            हिंदी / English
+          <span className="font-semibold text-emerald-300 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-700/50 text-[10px]">
+            हिन्दी / EN
           </span>
         </div>
       </div>
@@ -116,35 +116,35 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="bg-[#138808]" />
       </div>
 
-      <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4 bg-slate-50/70">
+      <div className="px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4 bg-slate-50/70">
         {/* Government Identity Branding */}
-        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-          <div className="flex flex-col items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-[#0B2545] text-amber-400 border-2 border-amber-500/80 shadow-xs shrink-0 p-1">
-            <span className="text-base sm:text-lg leading-none">🏛️</span>
-            <span className="text-[8px] font-bold tracking-tighter text-amber-300 uppercase">सत्यमेव जयते</span>
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="flex flex-col items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[#0B2545] text-amber-400 border-2 border-amber-500/80 shadow-2xs shrink-0 p-1">
+            <span className="text-xs sm:text-base leading-none">🏛️</span>
+            <span className="text-[6px] sm:text-[7px] font-bold tracking-tighter text-amber-300 uppercase">सत्यमेव जयते</span>
           </div>
           <div className="min-w-0">
-            <div className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold text-[#0B2545] tracking-wider uppercase truncate max-w-[170px] sm:max-w-none">
-              Ministry of Social Justice and Empowerment · Government of India
+            <div className="text-[8px] xs:text-[9px] sm:text-[11px] font-bold text-[#0B2545] tracking-wider uppercase truncate max-w-[110px] xs:max-w-[160px] sm:max-w-none">
+              Ministry of Social Justice and Empowerment
             </div>
-            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-extrabold text-[#0B2545] leading-tight truncate max-w-[160px] xs:max-w-[220px] sm:max-w-md md:max-w-none">
-              National Institutional Monitoring &amp; Inspection Portal
+            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-black text-[#0B2545] leading-tight truncate">
+              Satya Nirakshak
             </h1>
           </div>
         </div>
 
         {/* Right Action Controls */}
-        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-2.5 shrink-0">
           {/* Quick Role Switcher for Evaluators */}
           <div className="relative">
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1.5 text-xs font-medium rounded-md border border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 transition"
+              className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2.5 py-1.5 text-xs font-medium rounded-md border border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 transition cursor-pointer"
               title="Switch user role for testing"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
               <span className="hidden md:inline text-slate-500">Role:</span>
-              <span className="font-semibold text-slate-900 truncate max-w-[75px] xs:max-w-[110px] sm:max-w-[140px]">
+              <span className="font-semibold text-slate-900 truncate max-w-[55px] xs:max-w-[85px] sm:max-w-[140px]">
                 {currentUser.role.replace('_', ' ')}
               </span>
               <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
@@ -153,29 +153,32 @@ export const Header: React.FC<HeaderProps> = ({
             {showRoleMenu && (
               <div className="absolute right-0 mt-1 w-64 max-w-[calc(100vw-1.5rem)] bg-white rounded-lg shadow-xl border border-slate-200 p-2 z-50 text-xs">
                 <div className="px-2 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100">
-                  Switch Demo Role
+                  Switch Active Role Profile
                 </div>
-                {(
-                  [
-                    'SUPER_ADMIN',
-                    'DEPARTMENT_OFFICIAL',
-                    'INSPECTION_OFFICER',
-                    'STATE_DISTRICT_AUTHORITY',
-                    'NGO_INSTITUTE',
-                  ] as UserRole[]
-                ).map((r) => (
+                {[
+                  { role: 'SUPER_ADMIN' as UserRole, label: 'Admin (System-Wide)', badge: 'ADMIN' },
+                  { role: 'INSPECTION_OFFICER' as UserRole, label: 'Inspection Officer', badge: 'INSPECTOR' },
+                  { role: 'DEPARTMENT_OFFICIAL' as UserRole, label: 'Supervisor / Senior Officer', badge: 'SUPERVISOR' },
+                  { role: 'NGO_INSTITUTE' as UserRole, label: 'Field Staff / Officer', badge: 'FIELD' },
+                  { role: 'STATE_DISTRICT_AUTHORITY' as UserRole, label: 'Viewer / General User', badge: 'VIEWER' },
+                ].map(({ role: r, label, badge }) => (
                   <button
                     key={r}
                     onClick={() => handleRoleSelect(r)}
-                    className={`w-full text-left px-2.5 py-2 my-0.5 rounded-md flex items-center justify-between transition ${
+                    className={`w-full text-left px-2.5 py-2 my-0.5 rounded-md flex items-center justify-between transition cursor-pointer ${
                       currentUser.role === r
                         ? 'bg-indigo-50 text-indigo-900 font-semibold'
                         : 'hover:bg-slate-50 text-slate-700'
                     }`}
                   >
-                    <span>{r.replace(/_/g, ' ')}</span>
-                    {currentUser.role === r && (
-                      <span className="w-2 h-2 rounded-full bg-indigo-600" />
+                    <div className="min-w-0">
+                      <div className="truncate text-xs font-semibold">{label}</div>
+                      <div className="text-[10px] text-slate-400 font-mono">{r}</div>
+                    </div>
+                    {currentUser.role === r ? (
+                      <span className="w-2 h-2 rounded-full bg-indigo-600 shrink-0" />
+                    ) : (
+                      <span className="text-[9px] font-mono text-slate-400 uppercase">{badge}</span>
                     )}
                   </button>
                 ))}
@@ -197,12 +200,12 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="relative">
             <button
               onClick={() => setShowNotifMenu(!showNotifMenu)}
-              className="relative p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
+              className="relative p-1.5 sm:p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer"
               title="Notifications"
             >
-              <Bell className="w-4 h-4" />
+              <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               {(unreadNotificationsCount !== undefined ? unreadNotificationsCount : unreadCount) > 0 && (
-                <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-600 text-[9px] font-bold text-white ring-2 ring-white">
+                <span className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 flex h-3.5 w-3.5 sm:h-4 sm:w-4 items-center justify-center rounded-full bg-rose-600 text-[8px] sm:text-[9px] font-bold text-white ring-1 sm:ring-2 ring-white">
                   {unreadNotificationsCount !== undefined ? unreadNotificationsCount : unreadCount}
                 </span>
               )}
@@ -265,11 +268,11 @@ export const Header: React.FC<HeaderProps> = ({
           {onNavigate && (
             <button
               onClick={() => onNavigate('settings')}
-              className="p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer"
+              className="p-1.5 sm:p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer"
               title="Portal Settings"
               aria-label="Open Portal Settings"
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           )}
 
@@ -277,17 +280,17 @@ export const Header: React.FC<HeaderProps> = ({
           {onNavigate && (
             <button
               onClick={() => onNavigate('home')}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-md border border-blue-200 bg-blue-50/90 hover:bg-blue-100 text-blue-700 transition cursor-pointer"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 text-xs font-semibold rounded-md border border-blue-200 bg-blue-50/90 hover:bg-blue-100 text-blue-700 transition cursor-pointer shrink-0"
               title="Return to Live Monitor Homepage Gateway"
             >
-              <Globe className="w-3.5 h-3.5 text-blue-600" />
+              <Globe className="w-3.5 h-3.5 text-blue-600 shrink-0" />
               <span className="hidden sm:inline">Homepage</span>
             </button>
           )}
 
           {/* Current User Badge */}
-          <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-            <div className="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-semibold text-xs shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 pl-1.5 sm:pl-2 border-l border-slate-200">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-semibold text-[11px] sm:text-xs shrink-0">
               {currentUser.name
                 .split(' ')
                 .map((n) => n[0])

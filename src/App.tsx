@@ -28,6 +28,14 @@ import { AIAssistantView } from './components/chatbot/AIAssistantView';
 import { LandingPage } from './components/home/LandingPage';
 import { User, Project, Inspection, AIAnomalyAlert } from './types';
 import { api, getStoredUser, setStoredUser } from './services/api';
+import { isRouteAuthorized } from './utils/rbac';
+import { UnauthorizedAccessView } from './components/common/UnauthorizedAccessView';
+import { UserProfileView } from './components/profile/UserProfileView';
+import { RoleManagementView } from './components/roles/RoleManagementView';
+import { OfficerManagementView } from './components/officers/OfficerManagementView';
+import { InspectionScheduleView } from './components/inspections/InspectionScheduleView';
+import { StatutoryChecklistView } from './components/inspections/StatutoryChecklistView';
+import { UploadEvidenceView } from './components/inspections/UploadEvidenceView';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User>(getStoredUser());
@@ -99,12 +107,52 @@ export default function App() {
   const handleUserChange = (user: User) => {
     setCurrentUser(user);
     setStoredUser(user);
+    // If the active view is not authorized for the newly selected role, fallback cleanly to dashboard
+    if (activeView !== 'home' && !isRouteAuthorized(user.role, activeView)) {
+      setActiveView('dashboard');
+    }
     setTimeout(() => {
       refreshData();
     }, 40);
   };
 
   const handleNavigate = (view: string) => {
+    if (view === 'start-inspection') {
+      const pending =
+        inspections.find(
+          (i) =>
+            (i.inspectorId === currentUser.id || i.inspectorName === currentUser.name || currentUser.role === 'SUPER_ADMIN') &&
+            (i.status === 'PENDING' || i.status === 'IN_PROGRESS')
+        ) || inspections.find((i) => i.status === 'PENDING' || i.status === 'IN_PROGRESS');
+
+      if (pending) {
+        setSelectedInspectionId(pending.id);
+        setActiveView('inspection-form');
+      } else {
+        setActiveView('inspections');
+      }
+      setSidebarOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (view === 'submit-report') {
+      const target =
+        inspections.find(
+          (i) => i.inspectorId === currentUser.id || i.inspectorName === currentUser.name
+        ) || inspections[0];
+
+      if (target) {
+        setSelectedInspectionId(target.id);
+        setActiveView('inspection-report');
+      } else {
+        setActiveView('inspections');
+      }
+      setSidebarOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     setActiveView(view);
     setSidebarOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -141,7 +189,7 @@ export default function App() {
         <div className="text-center space-y-3">
           <div className="animate-spin w-8 h-8 border-3 border-indigo-600 border-t-transparent rounded-full mx-auto" />
           <div className="text-sm font-bold text-slate-800">
-            Initializing DoSJE Smart Monitoring Portal...
+            Initializing Satya Nirakshak...
           </div>
           <p className="text-xs text-slate-500">Loading secure schemes and telemetry registries.</p>
         </div>
@@ -187,12 +235,21 @@ export default function App() {
           onNavigate={handleNavigate}
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
+          onLogout={() => setActiveView('home')}
         />
 
         {/* Main Content View Container */}
         <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-5 lg:p-6 max-w-7xl mx-auto w-full space-y-4 sm:space-y-6">
-          {/* DASHBOARD VIEW */}
-          {activeView === 'dashboard' && (
+          {!isRouteAuthorized(currentUser.role, activeView) ? (
+            <UnauthorizedAccessView
+              currentUser={currentUser}
+              attemptedView={activeView}
+              onNavigateToDashboard={() => setActiveView('dashboard')}
+            />
+          ) : (
+            <>
+              {/* DASHBOARD VIEW */}
+              {activeView === 'dashboard' && (
             <div className="space-y-4 sm:space-y-6">
               {/* Government Role & Scope Banner */}
               <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-300 border-l-4 border-l-[#0B2545] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
@@ -485,6 +542,208 @@ export default function App() {
             <AIAssistantView
               onStartCall={(mode) => handleOpenAIAssistant(mode)}
             />
+          )}
+
+          {/* MY INSPECTIONS (OFFICER) */}
+          {activeView === 'my-inspections' && (
+            <div className="space-y-4">
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">My Field Inspections</h2>
+                  <p className="text-xs text-slate-500">
+                    Inspections assigned directly to officer {currentUser.name}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleNavigate('upload-evidence')}
+                    className="px-3 py-1.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold hover:bg-indigo-100 transition cursor-pointer"
+                  >
+                    Upload Evidence
+                  </button>
+                  <button
+                    onClick={() => handleNavigate('inspection-schedule')}
+                    className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer"
+                  >
+                    View Schedule
+                  </button>
+                </div>
+              </div>
+              <InspectionList
+                inspections={inspections.filter(
+                  (i) => i.inspectorId === currentUser.id || i.inspectorName === currentUser.name
+                )}
+                userRole={currentUser.role}
+                onSelectInspection={handleViewInspectionDossier}
+                onConductInspection={handleConductInspection}
+                onOpenAssignModal={() => setIsAssignInspectionModalOpen(true)}
+              />
+            </div>
+          )}
+
+          {/* ASSIGNED INSPECTIONS / TASKS */}
+          {(activeView === 'assigned-inspections' || activeView === 'assigned-tasks') && (
+            <div className="space-y-4">
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
+                <div>
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">
+                    {activeView === 'assigned-tasks' ? 'Assigned Field Tasks' : 'Assigned Inspections'}
+                  </h2>
+                  <p className="text-xs text-slate-500">
+                    Official field verification and monitoring assignments requiring on-site audit
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleNavigate('inspection-checklist')}
+                  className="px-3 py-1.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold hover:bg-indigo-100 transition cursor-pointer"
+                >
+                  Statutory Checklist
+                </button>
+              </div>
+              <InspectionList
+                inspections={inspections.filter(
+                  (i) =>
+                    i.inspectorId === currentUser.id ||
+                    i.inspectorName === currentUser.name ||
+                    i.status !== 'COMPLETED'
+                )}
+                userRole={currentUser.role}
+                onSelectInspection={handleViewInspectionDossier}
+                onConductInspection={handleConductInspection}
+                onOpenAssignModal={() => setIsAssignInspectionModalOpen(true)}
+              />
+            </div>
+          )}
+
+          {/* PENDING ACTIONS / PENDING INSPECTIONS / PENDING TASKS */}
+          {(activeView === 'pending-actions' ||
+            activeView === 'pending-inspections' ||
+            activeView === 'pending-tasks') && (
+            <div className="space-y-4">
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
+                <div>
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">
+                    Pending Inspection Operations &amp; Actions
+                  </h2>
+                  <p className="text-xs text-slate-500">
+                    Active audits currently in progress or awaiting ground inspection
+                  </p>
+                </div>
+              </div>
+              <InspectionList
+                inspections={inspections.filter(
+                  (i) => i.status === 'PENDING' || i.status === 'IN_PROGRESS'
+                )}
+                userRole={currentUser.role}
+                onSelectInspection={handleViewInspectionDossier}
+                onConductInspection={handleConductInspection}
+                onOpenAssignModal={() => setIsAssignInspectionModalOpen(true)}
+              />
+            </div>
+          )}
+
+          {/* SUPERVISORY REVIEW & APPROVE REPORTS */}
+          {(activeView === 'review-inspections' || activeView === 'approve-reports') && (
+            <div className="space-y-4">
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
+                <div>
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">
+                    Supervisory Review &amp; Report Approval Pipeline
+                  </h2>
+                  <p className="text-xs text-slate-500">
+                    Completed field inspection dossiers awaiting senior officer sign-off and MIS transmission
+                  </p>
+                </div>
+              </div>
+              <InspectionList
+                inspections={inspections.filter((i) => i.status === 'COMPLETED')}
+                userRole={currentUser.role}
+                onSelectInspection={handleViewInspectionDossier}
+                onConductInspection={handleConductInspection}
+                onOpenAssignModal={() => setIsAssignInspectionModalOpen(true)}
+              />
+            </div>
+          )}
+
+          {/* INSPECTION STATUS (VIEWER / GENERAL) */}
+          {activeView === 'inspection-status' && (
+            <div className="space-y-4">
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
+                <div>
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">
+                    National Inspection Status &amp; Progress Registry
+                  </h2>
+                  <p className="text-xs text-slate-500">
+                    Read-only transparency view of on-site monitoring operations across regions
+                  </p>
+                </div>
+              </div>
+              <InspectionList
+                inspections={inspections}
+                userRole={currentUser.role}
+                onSelectInspection={handleViewInspectionDossier}
+                onConductInspection={handleConductInspection}
+                onOpenAssignModal={() => setIsAssignInspectionModalOpen(true)}
+              />
+            </div>
+          )}
+
+          {/* INSPECTION SCHEDULE / CALENDAR / TODAY'S SCHEDULE */}
+          {(activeView === 'inspection-schedule' || activeView === 'today-schedule') && (
+            <InspectionScheduleView
+              inspections={inspections}
+              currentUser={currentUser}
+              onConductInspection={handleConductInspection}
+              onSelectInspection={handleViewInspectionDossier}
+              isTodayOnly={activeView === 'today-schedule'}
+            />
+          )}
+
+          {/* STATUTORY CHECKLIST REFERENCE */}
+          {activeView === 'inspection-checklist' && (
+            <StatutoryChecklistView onNavigateToSchedule={() => handleNavigate('inspection-schedule')} />
+          )}
+
+          {/* GEO-TAGGED PHYSICAL EVIDENCE UPLOAD */}
+          {activeView === 'upload-evidence' && (
+            <UploadEvidenceView
+              inspections={inspections}
+              currentUser={currentUser}
+              onEvidenceUploaded={refreshData}
+            />
+          )}
+
+          {/* INSPECTION OFFICER MANAGEMENT */}
+          {activeView === 'officers' && (
+            <OfficerManagementView
+              users={allUsers}
+              inspections={inspections}
+              isSupervisoryView={
+                currentUser.role === 'DEPARTMENT_OFFICIAL' || currentUser.role === 'SUPERVISOR'
+              }
+              onAssignInspection={() => setIsAssignInspectionModalOpen(true)}
+            />
+          )}
+
+          {/* ROLE & PERMISSION MANAGEMENT */}
+          {activeView === 'roles' && (
+            <RoleManagementView users={allUsers} />
+          )}
+
+          {/* ALERTS & ESCALATIONS VIEW */}
+          {activeView === 'alerts' && (
+            <AIAnalyticsDashboard onSelectProject={handleViewProject} />
+          )}
+
+          {/* USER OFFICIAL PROFILE */}
+          {activeView === 'profile' && (
+            <UserProfileView
+              currentUser={currentUser}
+              onLogout={() => setActiveView('home')}
+              onNavigate={handleNavigate}
+            />
+          )}
+            </>
           )}
         </main>
       </div>

@@ -39,7 +39,7 @@ class PortalDataStore {
   private vcRecords: RandomVCRecord[] = [];
   private grievances: GrievanceTicket[] = [];
   private settings: PortalSettings = {
-    portalTitle: 'Department of Social Justice & Empowerment - Institutional Monitoring & Inspection Portal',
+    portalTitle: 'Satya Nirakshak',
     departmentName: 'Department of Social Justice and Empowerment (DoSJE)',
     ministryName: 'Ministry of Social Justice and Empowerment, Government of India',
     financialYear: '2026-2027',
@@ -930,7 +930,7 @@ class PortalDataStore {
 
   public resetSettings(): PortalSettings {
     this.settings = {
-      portalTitle: 'Department of Social Justice & Empowerment - Institutional Monitoring & Inspection Portal',
+      portalTitle: 'Satya Nirakshak',
       departmentName: 'Department of Social Justice and Empowerment (DoSJE)',
       ministryName: 'Ministry of Social Justice and Empowerment, Government of India',
       financialYear: '2026-2027',
