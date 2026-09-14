@@ -42,19 +42,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <h1 className="text-lg sm:text-2xl lg:text-3xl font-extrabold tracking-tight leading-snug text-[#0B2545]">
             {lang === 'HI' ? (
               <>
-                सत्य निरीक्षक ·{' '}
-                <span className="underline decoration-[#FF671F] decoration-4 underline-offset-8">
-                  राष्ट्रीय संस्थागत निगरानी
-                </span>{' '}
-                एवं ऑडिट कमान ग्रिड
+                सत्य निरीक्षक · राष्ट्रीय संस्थागत निगरानी एवं ऑडिट कमान ग्रिड
               </>
             ) : (
               <>
-                Satya Nirakshak ·{' '}
-                <span className="underline decoration-[#FF671F] decoration-4 underline-offset-8">
-                  National Surveillance
-                </span>{' '}
-                &amp; Inspection Command Grid
+                Satya Nirakshak · National Surveillance &amp; Inspection Command Grid
               </>
             )}
           </h1>
