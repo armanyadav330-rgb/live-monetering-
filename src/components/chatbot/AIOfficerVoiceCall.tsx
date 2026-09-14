@@ -13,6 +13,7 @@ import {
   Shield,
   Send,
   HelpCircle,
+  X,
 } from 'lucide-react';
 import { AIOfficerAvatar } from './AIOfficerAvatar';
 import { voiceAssistant } from '../../services/voiceAssistant';
@@ -23,6 +24,7 @@ import { AITicketCard } from './AITicketCard';
 interface AIOfficerVoiceCallProps {
   onSwitchToVideo: () => void;
   onEndCall: () => void;
+  onClose?: () => void;
   onTicketCreated?: (ticket: GrievanceTicket) => void;
   initialTopic?: string;
 }
@@ -30,6 +32,7 @@ interface AIOfficerVoiceCallProps {
 export const AIOfficerVoiceCall: React.FC<AIOfficerVoiceCallProps> = ({
   onSwitchToVideo,
   onEndCall,
+  onClose,
   onTicketCreated,
   initialTopic,
 }) => {
@@ -221,6 +224,20 @@ export const AIOfficerVoiceCall: React.FC<AIOfficerVoiceCallProps> = ({
               <Clock className="w-3 h-3 text-emerald-400" />
               <span>{formatTime(duration)}</span>
             </div>
+          )}
+
+          {onClose && (
+            <button
+              onClick={() => {
+                handleEndCall();
+                onClose();
+              }}
+              className="p-1.5 rounded-lg text-slate-400 hover:text-white bg-slate-800/60 hover:bg-slate-700 border border-slate-700/80 transition-colors"
+              title="Close Voice Call / Chatbot"
+              aria-label="Close Chatbot"
+            >
+              <X className="w-4 h-4" />
+            </button>
           )}
         </div>
       </div>

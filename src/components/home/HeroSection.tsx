@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowRight, Zap } from 'lucide-react';
 
 interface HeroSectionProps {
   isDarkMode: boolean;
@@ -7,6 +6,9 @@ interface HeroSectionProps {
   onStartMonitoring: () => void;
   onExploreDemo: () => void;
   onOpenInspectionOfficerDashboard?: () => void;
+  onOpenSuperAdminDashboard?: () => void;
+  onOpenDistrictDashboard?: () => void;
+  onOpenMinistryDashboard?: () => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -15,6 +17,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onStartMonitoring,
   onExploreDemo: _onExploreDemo,
   onOpenInspectionOfficerDashboard,
+  onOpenSuperAdminDashboard,
+  onOpenDistrictDashboard,
+  onOpenMinistryDashboard,
 }) => {
   return (
     <section id="preview" className="relative overflow-hidden pt-8 sm:pt-12 pb-12 sm:pb-16 bg-white text-black">
@@ -67,30 +72,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               : 'A unified digital oversight portal enabling 24×7 live CCTV monitoring, biometric attendance verification, and on-site field inspections across grant-in-aid institutions nationwide.'}
           </p>
 
-          {/* Action CTAs */}
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-            <button
-              onClick={onStartMonitoring}
-              className="px-6 py-3 rounded-xl bg-[#0B2545] hover:bg-[#13315C] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
-            >
-              <Zap className="w-4 h-4 text-amber-400" />
-              <span>{lang === 'HI' ? 'कमांड पोर्टल में प्रवेश करें' : 'Enter Command Portal'}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-
           {/* Quick Role-based Access Guide */}
           <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-left">
             <div
-              onClick={onStartMonitoring}
-              className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0B2545] shadow-xs transition cursor-pointer group"
+              id="super-admin-hero-card"
+              onClick={onOpenSuperAdminDashboard || onStartMonitoring}
+              className="relative p-3.5 rounded-xl border-2 border-amber-500/90 bg-amber-50/40 hover:bg-amber-50 hover:border-amber-600 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer group ring-2 ring-amber-500/20 transform hover:-translate-y-0.5"
             >
-              <div className="text-xl">🏢</div>
-              <div className="font-bold text-xs sm:text-sm text-black mt-1 group-hover:text-[#0B2545] transition">
-                {lang === 'HI' ? 'संस्थान एवं एनजीओ' : 'Institutions & NGOs'}
+              <div className="flex items-center justify-between">
+                <span className="text-xl">🛡️</span>
+                <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-amber-600 text-white tracking-wider shadow-2xs">
+                  SUPER ADMIN
+                </span>
               </div>
-              <div className="text-[11px] text-slate-600 mt-1 leading-tight">
-                {lang === 'HI' ? 'कैमरे व बायोमेट्रिक उपस्थिति जोड़ें' : 'CCTV feeds & attendance logs'}
+              <div className="font-bold text-xs sm:text-sm text-amber-950 mt-1 flex items-center justify-between group-hover:text-amber-700 transition">
+                <span>{lang === 'HI' ? 'सुपर एडमिन' : 'Super Admin'}</span>
+                <span className="text-amber-600 font-bold transition-transform group-hover:translate-x-1">→</span>
+              </div>
+              <div className="text-[11px] text-slate-700 mt-1 leading-tight">
+                {lang === 'HI' ? 'संपूर्ण राष्ट्रीय नियंत्रण, यूजर रोल्स व ऑडिट कंसोल' : 'Full national grid control, user roles & audit console'}
+              </div>
+              <div className="mt-2.5 pt-1.5 border-t border-amber-200/70 flex items-center justify-between text-[10px] font-bold text-amber-700 group-hover:text-amber-900">
+                <span>{lang === 'HI' ? 'लॉगिन करें' : 'Login as Super Admin'}</span>
+                <span className="text-xs font-mono">🔒</span>
               </div>
             </div>
 
@@ -113,34 +117,46 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 {lang === 'HI' ? 'सरप्राइज वीडियो कॉल, ग्राउंड ऑडिट व फील्ड रिपोर्ट' : 'Surprise video calls, field evidence & audit reports'}
               </div>
               <div className="mt-2.5 pt-1.5 border-t border-indigo-200/70 flex items-center justify-between text-[10px] font-bold text-indigo-700 group-hover:text-indigo-900">
-                <span>{lang === 'HI' ? 'डैशबोर्ड खोलें' : 'Open Dashboard'}</span>
-                <span className="text-xs font-mono">⚡</span>
+                <span>{lang === 'HI' ? 'लॉगिन करें' : 'Login as Inspector'}</span>
+                <span className="text-xs font-mono">🔒</span>
               </div>
             </div>
 
             <div
-              onClick={onStartMonitoring}
-              className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0B2545] shadow-xs transition cursor-pointer group"
+              id="district-authority-hero-card"
+              onClick={onOpenDistrictDashboard || onStartMonitoring}
+              className="relative p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0B2545] shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer group transform hover:-translate-y-0.5"
             >
               <div className="text-xl">🏛️</div>
-              <div className="font-bold text-xs sm:text-sm text-black mt-1 group-hover:text-[#0B2545] transition">
-                {lang === 'HI' ? 'जिला कल्याण प्रशासन' : 'District Authorities'}
+              <div className="font-bold text-xs sm:text-sm text-black mt-1 group-hover:text-[#0B2545] transition flex items-center justify-between">
+                <span>{lang === 'HI' ? 'जिला कल्याण प्रशासन' : 'District Authorities'}</span>
+                <span className="text-slate-400 group-hover:text-[#0B2545] font-bold transition-transform group-hover:translate-x-1">→</span>
               </div>
               <div className="text-[11px] text-slate-600 mt-1 leading-tight">
                 {lang === 'HI' ? 'क्षेत्रीय विसंगतियां व सत्यापन' : 'Regional anomaly reviews & grant checks'}
               </div>
+              <div className="mt-2.5 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] font-bold text-slate-600 group-hover:text-[#0B2545]">
+                <span>{lang === 'HI' ? 'लॉगिन करें' : 'Login as Authority'}</span>
+                <span className="text-xs font-mono">🔒</span>
+              </div>
             </div>
 
             <div
-              onClick={onStartMonitoring}
-              className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0B2545] shadow-xs transition cursor-pointer group"
+              id="central-ministry-hero-card"
+              onClick={onOpenMinistryDashboard || onStartMonitoring}
+              className="relative p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0B2545] shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer group transform hover:-translate-y-0.5"
             >
               <div className="text-xl">🇮🇳</div>
-              <div className="font-bold text-xs sm:text-sm text-black mt-1 group-hover:text-[#0B2545] transition">
-                {lang === 'HI' ? 'केंद्रीय मंत्रालय' : 'Central Ministry Apex'}
+              <div className="font-bold text-xs sm:text-sm text-black mt-1 group-hover:text-[#0B2545] transition flex items-center justify-between">
+                <span>{lang === 'HI' ? 'केंद्रीय मंत्रालय' : 'Central Ministry Apex'}</span>
+                <span className="text-slate-400 group-hover:text-[#0B2545] font-bold transition-transform group-hover:translate-x-1">→</span>
               </div>
               <div className="text-[11px] text-slate-600 mt-1 leading-tight">
                 {lang === 'HI' ? 'राष्ट्रीय ऑडिट, बजट व कैग अनुमोदन' : 'National audit, budget & CAG clearance'}
+              </div>
+              <div className="mt-2.5 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] font-bold text-slate-600 group-hover:text-[#0B2545]">
+                <span>{lang === 'HI' ? 'लॉगिन करें' : 'Login as Ministry'}</span>
+                <span className="text-xs font-mono">🔒</span>
               </div>
             </div>
           </div>

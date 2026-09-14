@@ -6,7 +6,8 @@ import { portalStore } from './src/services/store';
 import { cctvProvider } from './src/services/cctvProvider';
 import { vcProvider } from './src/services/vcProvider';
 import { attendanceProvider } from './src/services/attendanceProvider';
-import { analyzeProjectWithGemini, summarizeInspectionWithGemini, processAIChatbotQuery } from './src/services/serverGemini';
+import { analyzeProjectWithGemini, summarizeInspectionWithGemini } from './src/services/serverGemini';
+import { processGroqAIChatbotQuery } from './src/services/serverGroq';
 import { UserRole } from './src/types';
 
 dotenv.config();
@@ -448,14 +449,14 @@ async function startServer() {
     }
   });
 
-  // AI Chatbot Oral & Video Resolution Agent API
-  app.post('/api/ai/chatbot', async (req, res) => {
+  // Satya Nirakshak AI Assistant Chatbot API (Powered by Groq LLM)
+  const handleChatbotRequest = async (req: express.Request, res: express.Response) => {
     try {
       const user = getRequestUser(req);
       const { message, history, mode, language, context } = req.body;
 
-      if (!message || typeof message !== 'string') {
-        return res.status(400).json({ success: false, message: 'Message is required' });
+      if (!message || typeof message !== 'string' || !message.trim()) {
+        return res.status(400).json({ success: false, message: 'Message is required and cannot be empty' });
       }
 
       const mergedContext = {
@@ -464,8 +465,8 @@ async function startServer() {
         ...(context || {}),
       };
 
-      const result = await processAIChatbotQuery({
-        message,
+      const result = await processGroqAIChatbotQuery({
+        message: message.trim(),
         history,
         mode: mode || 'chat',
         language: language || 'en',
@@ -492,8 +493,12 @@ async function startServer() {
         'SYSTEM' as any,
         'SYSTEM',
         createdTicket?.id,
-        `AI Chatbot Interaction (${mode || 'chat'})`,
-        { messagePreview: message.substring(0, 60), resolved: result.resolved }
+        `Satya Nirakshak AI Chatbot Interaction (${mode || 'chat'})`,
+        {
+          model: result.modelUsed,
+          isSimulated: result.isSimulatedFallback,
+          resolved: result.resolved,
+        }
       );
 
       res.json({
@@ -504,10 +509,13 @@ async function startServer() {
         },
       });
     } catch (err: any) {
-      console.error('Chatbot API error:', err);
-      res.status(500).json({ success: false, error: err.message });
+      console.error('Groq Chatbot API error:', err?.message || err);
+      res.status(500).json({ success: false, error: err?.message || 'Chatbot service error' });
     }
-  });
+  };
+
+  app.post('/api/ai/chatbot', handleChatbotRequest);
+  app.post('/api/ai/groq-chatbot', handleChatbotRequest);
 
   // Grievances & Tickets API
   app.get('/api/grievances', (req, res) => {

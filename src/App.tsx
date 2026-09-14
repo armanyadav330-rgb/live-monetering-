@@ -749,7 +749,7 @@ export default function App() {
       </div>
 
       {/* AI Assistant Floating Trigger & Modal */}
-      <AIFloatingTrigger onOpen={(mode) => handleOpenAIAssistant(mode)} />
+      <AIFloatingTrigger onOpen={(mode) => handleOpenAIAssistant(mode)} isOpen={isChatbotOpen} />
 
       <AIChatbotModal
         isOpen={isChatbotOpen}

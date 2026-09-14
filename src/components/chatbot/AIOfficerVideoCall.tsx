@@ -16,6 +16,7 @@ import {
   Minimize2,
   Send,
   CheckCircle2,
+  X,
 } from 'lucide-react';
 import { AIOfficerAvatar } from './AIOfficerAvatar';
 import { voiceAssistant } from '../../services/voiceAssistant';
@@ -26,6 +27,7 @@ import { AITicketCard } from './AITicketCard';
 interface AIOfficerVideoCallProps {
   onSwitchToAudio: () => void;
   onEndCall: () => void;
+  onClose?: () => void;
   onTicketCreated?: (ticket: GrievanceTicket) => void;
   initialTopic?: string;
 }
@@ -33,6 +35,7 @@ interface AIOfficerVideoCallProps {
 export const AIOfficerVideoCall: React.FC<AIOfficerVideoCallProps> = ({
   onSwitchToAudio,
   onEndCall,
+  onClose,
   onTicketCreated,
   initialTopic,
 }) => {
@@ -233,6 +236,20 @@ export const AIOfficerVideoCall: React.FC<AIOfficerVideoCallProps> = ({
           >
             {isPipFlipped ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
+
+          {onClose && (
+            <button
+              onClick={() => {
+                handleEndCall();
+                onClose();
+              }}
+              className="p-2 rounded-full bg-slate-900/80 hover:bg-rose-950/60 border border-slate-700 hover:border-rose-600/60 text-slate-300 hover:text-white transition-colors"
+              title="Close Video Call / Chatbot"
+              aria-label="Close Chatbot"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
 
