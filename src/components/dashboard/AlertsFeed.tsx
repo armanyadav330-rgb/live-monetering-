@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { AIAnomalyAlert, Project, Inspection } from '../../types';
 import { api } from '../../services/api';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface AlertsFeedProps {
   alerts?: AIAnomalyAlert[];
@@ -28,6 +29,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
   onSelectInspection,
   onNavigate,
 }) => {
+  const { t } = useTranslation();
   const handleSelectProject = (projectId: string) => {
     if (onSelectProject) onSelectProject(projectId);
   };
@@ -69,7 +71,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
             <div className="flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-indigo-600" />
               <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                AI Anomaly Alerts
+                {t('dashboard.ai_anomalies_title')}
               </h3>
             </div>
             <span className="text-[10px] bg-indigo-50 text-indigo-700 font-semibold px-2 py-0.5 rounded-full border border-indigo-100">
@@ -117,7 +119,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
           onClick={() => handleNavigate('analytics')}
           className="mt-3 w-full py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition"
         >
-          <span>View All AI Insights</span>
+          <span>{t('analytics.title')}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>
@@ -129,7 +131,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
             <div className="flex items-center gap-1.5">
               <ShieldAlert className="w-4 h-4 text-rose-600" />
               <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                Priority Inspection Queue
+                {t('dashboard.high_risk_watchlist')}
               </h3>
             </div>
             <span className="text-[10px] bg-rose-50 text-rose-700 font-semibold px-2 py-0.5 rounded-full border border-rose-100">
@@ -173,7 +175,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
           onClick={() => handleNavigate('projects')}
           className="mt-3 w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition border border-slate-200"
         >
-          <span>Explore All Projects</span>
+          <span>{t('projects.title')}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>
@@ -185,7 +187,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
             <div className="flex items-center gap-1.5">
               <Clock className="w-4 h-4 text-emerald-600" />
               <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                Recent Field Audits
+                {t('dashboard.recent_inspections')}
               </h3>
             </div>
             <span className="text-[10px] text-slate-500">Official Logs</span>
@@ -231,7 +233,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
           onClick={() => handleNavigate('inspections')}
           className="mt-3 w-full py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition border border-emerald-200"
         >
-          <span>All Inspections &amp; Reports</span>
+          <span>{t('inspections.title')}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>

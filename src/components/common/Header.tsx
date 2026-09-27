@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import { User, UserRole } from '../../types';
 import { api, setStoredUser } from '../../services/api';
+import { useTranslation } from '../../i18n/LanguageContext';
+import { LanguageSelector } from './LanguageSelector';
 
 interface HeaderProps {
   currentUser: User;
@@ -35,6 +37,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenNotifications,
   unreadNotificationsCount,
 }) => {
+  const { t, tRole } = useTranslation();
   const [availableUsers, setAvailableUsers] = useState<User[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotifMenu, setShowNotifMenu] = useState(false);
@@ -131,24 +134,20 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Top Government Citizen Utility Bar (Standard on Indian Gov Portals) */}
       <div className="bg-[#0B2545] text-slate-200 text-[10px] sm:text-[11px] px-3 sm:px-6 py-1 border-b border-slate-800 flex items-center justify-between gap-2 w-full max-w-full">
         <div className="flex items-center gap-1.5 sm:gap-3 font-medium tracking-wide min-w-0">
-          <span className="text-amber-400 font-semibold truncate shrink-0">भारत सरकार</span>
+          <span className="text-amber-400 font-semibold truncate shrink-0">{t('gov.india')}</span>
           <span className="text-slate-400 hidden sm:inline">|</span>
-          <span className="hidden sm:inline text-slate-300 truncate">GOVERNMENT OF INDIA</span>
-          <span className="hidden md:inline text-slate-400">|</span>
-          <span className="hidden md:inline text-slate-300 text-[10px] truncate">सामाजिक न्याय और अधिकारिता मंत्रालय</span>
+          <span className="hidden sm:inline text-slate-300 truncate">{t('gov.ministry')}</span>
         </div>
         <div className="flex items-center gap-2 sm:gap-3 text-[10px] shrink-0">
           <span className="hidden lg:inline text-slate-400 font-mono text-[9px]">NIC-SECURE-NODE-2026</span>
           <div className="hidden sm:flex items-center gap-1 bg-[#13315C] px-1.5 py-0.5 rounded border border-slate-700 text-amber-300 font-bold text-[10px]">
-            <span className="cursor-pointer hover:text-white px-0.5" title="Decrease Font">A-</span>
+            <span className="cursor-pointer hover:text-white px-0.5" title={t('gov.decrease_font')}>A-</span>
             <span className="text-slate-500">|</span>
-            <span className="cursor-pointer hover:text-white px-0.5" title="Normal Font">A</span>
+            <span className="cursor-pointer hover:text-white px-0.5" title={t('gov.normal_font')}>A</span>
             <span className="text-slate-500">|</span>
-            <span className="cursor-pointer hover:text-white px-0.5" title="Increase Font">A+</span>
+            <span className="cursor-pointer hover:text-white px-0.5" title={t('gov.increase_font')}>A+</span>
           </div>
-          <span className="font-semibold text-emerald-300 bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-700/50 text-[10px] shrink-0">
-            हिन्दी / EN
-          </span>
+          <LanguageSelector />
         </div>
       </div>
 
@@ -167,10 +166,10 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <div className="min-w-0">
             <div className="text-[8px] sm:text-[11px] font-bold text-[#0B2545] tracking-wider uppercase truncate max-w-[100px] sm:max-w-none">
-              Ministry of Social Justice and Empowerment
+              {t('gov.ministry')}
             </div>
             <h1 className="text-xs sm:text-base md:text-lg font-black text-[#0B2545] leading-tight truncate">
-              Satya Nirakshak
+              {t('gov.portal_title')}
             </h1>
           </div>
         </div>
@@ -184,7 +183,7 @@ export const Header: React.FC<HeaderProps> = ({
             title="Reset database to initial seed dataset"
           >
             <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
-            <span>Reset Demo</span>
+            <span>{t('common.reset_demo')}</span>
           </button>
 
           {/* Notifications Bell */}
@@ -195,7 +194,7 @@ export const Header: React.FC<HeaderProps> = ({
               className={`relative p-1.5 sm:p-2 rounded-md transition cursor-pointer shrink-0 ${
                 showNotifMenu ? 'bg-slate-200 text-slate-900' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
-              title="Notifications"
+              title={t('common.notifications')}
             >
               <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               {(unreadNotificationsCount !== undefined ? unreadNotificationsCount : unreadCount) > 0 && (
@@ -208,7 +207,7 @@ export const Header: React.FC<HeaderProps> = ({
             {showNotifMenu && (
               <div className="fixed right-2 top-16 sm:absolute sm:top-full sm:mt-2 sm:right-0 sm:left-auto w-80 max-w-[calc(100vw-1rem)] bg-white rounded-lg shadow-2xl border border-slate-200 z-[70] overflow-hidden text-xs max-h-[calc(100vh-5rem)]">
                 <div className="px-3 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-                  <span className="font-semibold text-slate-800">Notifications</span>
+                  <span className="font-semibold text-slate-800">{t('common.notifications')}</span>
                   <button
                     onClick={() => {
                       api.markAllNotificationsRead();
@@ -216,12 +215,12 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                     className="text-[11px] text-indigo-600 hover:underline cursor-pointer"
                   >
-                    Mark all read
+                    {t('common.mark_all_read')}
                   </button>
                 </div>
                 <div className="max-h-64 overflow-y-auto divide-y divide-slate-100">
                   {notifications.length === 0 ? (
-                    <div className="p-4 text-center text-slate-400">No recent notifications</div>
+                    <div className="p-4 text-center text-slate-400">{t('common.no_notifications')}</div>
                   ) : (
                     notifications.map((n) => (
                       <div
@@ -252,7 +251,7 @@ export const Header: React.FC<HeaderProps> = ({
                   }}
                   className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-center font-medium text-indigo-600 border-t border-slate-100 cursor-pointer"
                 >
-                  View all notifications
+                  {t('common.view_all_notifications')}
                 </button>
               </div>
             )}
@@ -263,7 +262,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               onClick={() => onNavigate('settings')}
               className="hidden sm:flex p-1.5 sm:p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer shrink-0"
-              title="Portal Settings"
+              title={t('nav.settings')}
               aria-label="Open Portal Settings"
             >
               <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -278,7 +277,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="Return to Live Monitor Homepage Gateway"
             >
               <Globe className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-              <span>Homepage</span>
+              <span>{t('nav.home')}</span>
             </button>
           )}
 

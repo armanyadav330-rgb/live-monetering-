@@ -22,6 +22,8 @@ import {
 import { AIChatMessage, GrievanceTicket } from '../../types';
 import { api } from '../../services/api';
 import { voiceAssistant } from '../../services/voiceAssistant';
+import { bhashiniVoice } from '../../services/bhashiniVoice';
+import { useTranslation } from '../../i18n/LanguageContext';
 import { AIOfficerVoiceCall } from './AIOfficerVoiceCall';
 import { AIOfficerVideoCall } from './AIOfficerVideoCall';
 import { AITicketCard } from './AITicketCard';
@@ -40,6 +42,7 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
   initialMode = 'chat',
   initialTopic,
 }) => {
+  const { lang, t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'chat' | 'audio_call' | 'video_call' | 'tickets'>(initialMode);
   const [isMaximized, setIsMaximized] = useState(false);
   const [messages, setMessages] = useState<AIChatMessage[]>([]);
@@ -47,17 +50,32 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [isListeningMic, setIsListeningMic] = useState(false);
   const [speakingMessageId, setSpeakingMessageId] = useState<string | null>(null);
+  const [isBhashiniProcessing, setIsBhashiniProcessing] = useState(false);
   const [tickets, setTickets] = useState<GrievanceTicket[]>([]);
   const [selectedTopic, setSelectedTopic] = useState<string | undefined>(initialTopic);
-  const [language, setLanguage] = useState<'en' | 'hi'>('en');
+  const [language, setLanguage] = useState<'en' | 'hi' | 'auto'>('auto');
+
+  // Keep chatbot language aligned with global selection if user switches
+  useEffect(() => {
+    if (lang === 'hi') {
+      setLanguage('hi');
+    } else if (lang === 'en') {
+      setLanguage('en');
+    } else {
+      setLanguage('auto');
+    }
+  }, [lang]);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   // Safe Close Handler: stops any running synthesis and mic listeners
   const handleSafeClose = () => {
     voiceAssistant.stopSpeaking();
+    bhashiniVoice.stopSpeaking();
     voiceAssistant.stopListening();
+    bhashiniVoice.stopMicrophoneCapture();
     setIsListeningMic(false);
+    setIsBhashiniProcessing(false);
     setSpeakingMessageId(null);
     onClose();
   };
@@ -120,7 +138,7 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
     }
   };
 
-  const handleSendMessage = async (textToSend?: string) => {
+  const handleSendMessage = async (textToSend?: string, voiceSpoken: boolean = false) => {
     const text = textToSend || inputMessage;
     if (!text.trim() || isProcessing) return;
 
@@ -144,18 +162,21 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
           content: m.text,
         }));
 
-      const res = await api.sendChatbotMessage({
+      const res: any = await api.sendChatbotMessage({
         message: text.trim(),
         history: historyPayload,
         mode: 'chat',
         language,
       });
 
+      const detectedLang = res.detectedLanguage || 'en';
+
       const botMsg: AIChatMessage = {
         id: `msg_bot_${Date.now()}`,
         sender: 'bot',
         text: res.displayText,
         spokenText: res.speechText,
+        detectedLanguage: detectedLang,
         timestamp: new Date().toISOString(),
         ticket: res.ticket,
         actionTaken: res.actionTaken,
@@ -167,6 +188,11 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
       if (res.ticket) {
         voiceAssistant.playTone('ticket');
         loadTickets();
+      }
+
+      // If user queried via voice, automatically play the response via Bhashini TTS in the detected language
+      if (voiceSpoken && res.speechText) {
+        handleSpeakMessage(botMsg);
       }
     } catch {
       const errorMsg: AIChatMessage = {
@@ -181,41 +207,99 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
     }
   };
 
-  const handleSpeakMessage = (msg: AIChatMessage) => {
+  const handleSpeakMessage = async (msg: AIChatMessage) => {
     if (speakingMessageId === msg.id) {
+      bhashiniVoice.stopSpeaking();
       voiceAssistant.stopSpeaking();
       setSpeakingMessageId(null);
       return;
     }
 
     const text = msg.spokenText || msg.text;
+    const msgLang: 'hi' | 'en' | 'hinglish' =
+      msg.detectedLanguage ||
+      (/[\u0900-\u097F]/.test(text) ? 'hi' : 'en');
+
     setSpeakingMessageId(msg.id);
 
-    voiceAssistant.speak(text, {
+    // Use Bhashini TTS service with automatic language pairing
+    await bhashiniVoice.playBhashiniTTS(text, msgLang, {
       onEnd: () => setSpeakingMessageId(null),
       onError: () => setSpeakingMessageId(null),
     });
   };
 
-  const handleToggleMic = () => {
+  const handleToggleMic = async () => {
     if (isListeningMic) {
+      bhashiniVoice.stopMicrophoneCapture();
       voiceAssistant.stopListening();
       setIsListeningMic(false);
+      setIsBhashiniProcessing(false);
       return;
     }
 
     setIsListeningMic(true);
-    voiceAssistant.startListening({
-      onResult: (transcript, isFinal) => {
-        setInputMessage(transcript);
-        if (isFinal) {
-          setIsListeningMic(false);
-          handleSendMessage(transcript);
+
+    // Start Bhashini microphone audio capture
+    const started = await bhashiniVoice.startMicrophoneCapture({
+      onStart: () => {
+        setIsListeningMic(true);
+        voiceAssistant.playTone('chirp');
+      },
+      onStatusChange: (status) => {
+        if (status === 'transcribing') {
+          setIsBhashiniProcessing(true);
+        } else if (status === 'idle') {
+          setIsBhashiniProcessing(false);
         }
       },
-      onError: () => setIsListeningMic(false),
-      onEnd: () => setIsListeningMic(false),
+      onTranscript: (transcript) => {
+        setIsListeningMic(false);
+        setIsBhashiniProcessing(false);
+        if (transcript.trim()) {
+          setInputMessage(transcript);
+          // Send message with voiceSpoken=true so response is automatically read aloud in the same language
+          handleSendMessage(transcript, true);
+        }
+      },
+      onError: (err) => {
+        console.warn('Bhashini mic error, trying Web Speech fallback:', err);
+        setIsListeningMic(false);
+        setIsBhashiniProcessing(false);
+
+        // Graceful fallback to browser speech recognition
+        if (voiceAssistant.isSpeechRecognitionSupported()) {
+          setIsListeningMic(true);
+          voiceAssistant.startListening({
+            onResult: (transcript, isFinal) => {
+              setInputMessage(transcript);
+              if (isFinal) {
+                setIsListeningMic(false);
+                handleSendMessage(transcript, true);
+              }
+            },
+            onError: () => setIsListeningMic(false),
+            onEnd: () => setIsListeningMic(false),
+          });
+        }
+      },
     });
+
+    if (!started && voiceAssistant.isSpeechRecognitionSupported()) {
+      // Direct Web Speech fallback if MediaRecorder couldn't start
+      setIsListeningMic(true);
+      voiceAssistant.startListening({
+        onResult: (transcript, isFinal) => {
+          setInputMessage(transcript);
+          if (isFinal) {
+            setIsListeningMic(false);
+            handleSendMessage(transcript, true);
+          }
+        },
+        onError: () => setIsListeningMic(false),
+        onEnd: () => setIsListeningMic(false),
+      });
+    }
   };
 
   const handleNewTicketFromCall = (newTicket: GrievanceTicket) => {
@@ -264,28 +348,30 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
             <div className="min-w-0 flex-1">
               <div className="flex items-center space-x-1.5 min-w-0">
                 <h3 className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">
-                  DoSJE AI Resolution Desk
+                  {t('chatbot.desk_title')}
                 </h3>
                 <span className="hidden xs:inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse" />
-                  <span className="hidden sm:inline">Live Officer</span>
-                  <span className="sm:hidden">Live</span>
+                  <span className="hidden sm:inline">{t('chatbot.live_officer')}</span>
+                  <span className="sm:hidden">{t('status.active')}</span>
                 </span>
               </div>
               <p className="text-[10px] sm:text-[11px] text-slate-400 truncate">
-                Ministry of Social Justice & Empowerment
+                {t('gov.ministry')}
               </p>
             </div>
           </div>
 
           <div className="flex items-center space-x-1 sm:space-x-1.5 shrink-0">
-            {/* Language Switch */}
+            {/* Auto Language Support (Bhashini AI) */}
             <button
-              onClick={() => setLanguage((l) => (l === 'en' ? 'hi' : 'en'))}
+              onClick={() =>
+                setLanguage((l) => (l === 'auto' ? 'hi' : l === 'hi' ? 'en' : 'auto'))
+              }
               className="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] sm:text-xs font-semibold text-slate-300 border border-slate-700 transition-colors shrink-0"
-              title="Toggle Language"
+              title="Language Mode: Auto (Hindi / English / Hinglish)"
             >
-              {language === 'en' ? 'हिन्दी' : 'EN'}
+              {language === 'auto' ? 'Auto 🌐' : language === 'hi' ? 'हिन्दी' : 'EN'}
             </button>
 
             {/* Maximize / Restore */}
@@ -302,12 +388,12 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
             <button
               onClick={handleSafeClose}
               className="group flex items-center space-x-1 px-2 py-1 rounded-lg bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/40 hover:border-rose-500 transition-all shrink-0 cursor-pointer"
-              title="Close Chatbot (बंद करें / Esc)"
-              aria-label="Close Chatbot"
+              title={t('common.close')}
+              aria-label={t('common.close')}
               id="chatbot-header-close-btn"
             >
               <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:rotate-90" />
-              <span className="text-[11px] font-medium hidden sm:inline">Close</span>
+              <span className="text-[11px] font-medium hidden sm:inline">{t('common.close')}</span>
             </button>
           </div>
         </div>
@@ -323,7 +409,7 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5 shrink-0" />
-            <span className="truncate">Chat</span>
+            <span className="truncate">{t('chatbot.chat_tab')}</span>
           </button>
           <button
             onClick={() => setActiveTab('audio_call')}
@@ -334,7 +420,7 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
             }`}
           >
             <Phone className="w-3.5 h-3.5 shrink-0" />
-            <span className="truncate">Voice</span>
+            <span className="truncate">{t('chatbot.voice_tab')}</span>
           </button>
           <button
             onClick={() => setActiveTab('video_call')}
@@ -345,7 +431,7 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
             }`}
           >
             <Video className="w-3.5 h-3.5 shrink-0" />
-            <span className="truncate">Video</span>
+            <span className="truncate">{t('chatbot.video_tab')}</span>
           </button>
           <button
             onClick={() => setActiveTab('tickets')}
@@ -356,9 +442,10 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
             }`}
           >
             <FileText className="w-3.5 h-3.5 shrink-0" />
-            <span className="truncate">Tickets{tickets.length > 0 ? ` (${tickets.length})` : ''}</span>
+            <span className="truncate">{t('chatbot.tickets_tab')}{tickets.length > 0 ? ` (${tickets.length})` : ''}</span>
           </button>
         </div>
+
 
         {/* Modal Main Content Body */}
         <div className="flex-1 overflow-hidden relative flex flex-col min-h-0">
@@ -493,6 +580,17 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
                   </div>
                 ))}
 
+                {isBhashiniProcessing && (
+                  <div className="flex justify-start">
+                    <div className="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 rounded-2xl rounded-bl-none p-2.5 sm:p-3 shadow-sm flex items-center space-x-2 animate-pulse">
+                      <div className="w-2 h-2 rounded-full bg-indigo-500 animate-ping" />
+                      <span className="text-[11px] sm:text-xs font-medium">
+                        Bhashini Speech-to-Text: Transcribing voice...
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 {isProcessing && (
                   <div className="flex justify-start">
                     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl rounded-bl-none p-2.5 sm:p-3 shadow-sm flex items-center space-x-2">
@@ -537,7 +635,7 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
                     type="text"
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
-                    placeholder="Type or speak (e.g. stipend delay, CCTV)..."
+                    placeholder={t('chatbot.placeholder')}
                     className="flex-1 min-w-0 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 sm:px-3.5 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
 
@@ -545,8 +643,8 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({
                     type="submit"
                     disabled={!inputMessage.trim() || isProcessing}
                     className="p-2 sm:p-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-300 dark:disabled:bg-slate-800 text-white rounded-xl transition-colors shadow-sm shrink-0"
-                    title="Send message"
-                    aria-label="Send message"
+                    title={t('chatbot.send')}
+                    aria-label={t('chatbot.send')}
                   >
                     <Send className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>

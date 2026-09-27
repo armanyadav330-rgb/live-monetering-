@@ -9,6 +9,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { Project, Inspection } from '../../types';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface StatCardsProps {
   projects?: Project[];
@@ -16,6 +17,7 @@ interface StatCardsProps {
 }
 
 export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections = [] }) => {
+  const { t } = useTranslation();
   const safeProjects = Array.isArray(projects) ? projects : [];
   const safeInspections = Array.isArray(inspections) ? inspections : [];
 
@@ -42,9 +44,9 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
         <div className="flex items-center justify-between">
           <div>
             <span className="text-xs font-bold text-[#0B2545] uppercase tracking-wider block">
-              Total Projects
+              {t('dashboard.stat_total_projects')}
             </span>
-            <span className="text-[10px] text-slate-500 font-medium">कुल परियोजनाएं</span>
+            <span className="text-[10px] text-slate-500 font-medium">DoSJE Projects</span>
           </div>
           <div className="p-2 rounded-lg bg-[#0B2545]/10 text-[#0B2545]">
             <Building2 className="w-4 h-4" />
@@ -53,12 +55,12 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
         <div className="mt-2 flex items-baseline gap-2">
           <span className="text-2xl font-bold text-[#0B2545]">{totalProjects}</span>
           <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-            {activeProjects} Active
+            {activeProjects} {t('status.active')}
           </span>
         </div>
         <div className="mt-2 text-[11px] text-slate-600 flex justify-between border-t border-slate-200 pt-2 font-medium">
-          <span>Review Queue: {underReview}</span>
-          <span className="font-semibold text-slate-800">{totalBeneficiaries.toLocaleString()} Beneficiaries</span>
+          <span>{t('status.under_review')}: {underReview}</span>
+          <span className="font-semibold text-slate-800">{totalBeneficiaries.toLocaleString()} {t('dashboard.beneficiaries')}</span>
         </div>
       </div>
 
@@ -67,9 +69,9 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
         <div className="flex items-center justify-between">
           <div>
             <span className="text-xs font-bold text-[#047857] uppercase tracking-wider block">
-              CCTV Surveillance
+              {t('dashboard.stat_live_cctv')}
             </span>
-            <span className="text-[10px] text-slate-500 font-medium">सीसीटीवी लाइव निगरानी</span>
+            <span className="text-[10px] text-slate-500 font-medium">24×7 Feeds</span>
           </div>
           <div className="p-2 rounded-lg bg-emerald-50 text-emerald-700">
             <Video className="w-4 h-4" />
@@ -77,11 +79,11 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
         </div>
         <div className="mt-2 flex items-baseline gap-2">
           <span className="text-2xl font-bold text-emerald-700">{cctvOnline}</span>
-          <span className="text-xs text-slate-600 font-semibold">Active Feeds</span>
+          <span className="text-xs text-slate-600 font-semibold">{t('status.online')}</span>
         </div>
         <div className="mt-2 text-[11px] text-slate-600 flex justify-between border-t border-slate-200 pt-2 font-medium">
-          <span className="text-rose-700 font-bold">{cctvOffline} Offline</span>
-          <span className="text-amber-700 font-bold">{cctvWarning} Degraded</span>
+          <span className="text-rose-700 font-bold">{cctvOffline} {t('status.offline')}</span>
+          <span className="text-amber-700 font-bold">{cctvWarning} {t('status.warning')}</span>
         </div>
       </div>
 
@@ -90,9 +92,9 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
         <div className="flex items-center justify-between">
           <div>
             <span className="text-xs font-bold text-[#1E3A8A] uppercase tracking-wider block">
-              Field Audits
+              {t('dashboard.stat_inspections')}
             </span>
-            <span className="text-[10px] text-slate-500 font-medium">क्षेत्रीय निरीक्षण एवं सत्यापन</span>
+            <span className="text-[10px] text-slate-500 font-medium">Audits & Visits</span>
           </div>
           <div className="p-2 rounded-lg bg-blue-50 text-blue-700">
             <ClipboardList className="w-4 h-4" />
@@ -100,12 +102,12 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
         </div>
         <div className="mt-2 flex items-baseline gap-2">
           <span className="text-2xl font-bold text-[#1E3A8A]">{completedInspections}</span>
-          <span className="text-xs font-semibold text-slate-600">Completed</span>
+          <span className="text-xs font-semibold text-slate-600">{t('status.completed')}</span>
         </div>
         <div className="mt-2 text-[11px] text-slate-600 flex justify-between border-t border-slate-200 pt-2 font-medium">
-          <span className="text-amber-700 font-bold">Pending: {pendingInspections}</span>
+          <span className="text-amber-700 font-bold">{t('status.pending')}: {pendingInspections}</span>
           <span className="text-emerald-700 font-semibold flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5" /> GPS Verified
+            <CheckCircle2 className="w-3.5 h-3.5" /> GPS
           </span>
         </div>
       </div>
@@ -115,9 +117,9 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
         <div className="flex items-center justify-between">
           <div>
             <span className="text-xs font-bold text-[#C2410C] uppercase tracking-wider block">
-              Compliance Watch
+              {t('dashboard.stat_critical_alerts')}
             </span>
-            <span className="text-[10px] text-slate-500 font-medium">जोखिम एवं अनुपालन सतर्कता</span>
+            <span className="text-[10px] text-slate-500 font-medium">Compliance Radar</span>
           </div>
           <div className="p-2 rounded-lg bg-amber-50 text-amber-700">
             <AlertTriangle className="w-4 h-4" />
@@ -128,12 +130,12 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
             {criticalProjects + highProjects}
           </span>
           <span className="text-xs text-rose-800 font-bold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">
-            Priority Watch
+            {t('risk.high')}
           </span>
         </div>
         <div className="mt-2 text-[11px] text-slate-600 flex justify-between border-t border-slate-200 pt-2 font-medium">
-          <span className="text-rose-700 font-bold">{criticalProjects} Critical</span>
-          <span className="text-amber-700 font-semibold">{highProjects} Under Review</span>
+          <span className="text-rose-700 font-bold">{criticalProjects} {t('risk.critical')}</span>
+          <span className="text-amber-700 font-semibold">{highProjects} {t('status.under_review')}</span>
         </div>
       </div>
     </div>

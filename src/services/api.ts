@@ -665,6 +665,73 @@ export const api = {
     };
   },
 
+  // Bhashini Speech-to-Text (ASR) via server proxy
+  async bhashiniSTT(payload: {
+    audioBase64: string;
+    audioFormat?: string;
+    samplingRate?: number;
+    language?: 'hi' | 'en' | 'auto';
+  }): Promise<{ success: boolean; transcript: string; language: 'hi' | 'en'; source: 'bhashini' | 'fallback'; error?: string }> {
+    try {
+      const res = await fetch('/api/ai/bhashini/stt', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (err: any) {
+      console.warn('bhashiniSTT api error:', err?.message || err);
+    }
+    return {
+      success: false,
+      transcript: '',
+      language: payload.language === 'hi' ? 'hi' : 'en',
+      source: 'fallback',
+      error: 'Bhashini STT request failed',
+    };
+  },
+
+  // Bhashini Text-to-Speech (TTS) via server proxy
+  async bhashiniTTS(payload: {
+    text: string;
+    language?: 'hi' | 'en' | 'hinglish';
+    gender?: 'female' | 'male';
+  }): Promise<{ success: boolean; audioBase64?: string; audioFormat?: string; language: 'hi' | 'en'; source: 'bhashini' | 'fallback'; error?: string }> {
+    try {
+      const res = await fetch('/api/ai/bhashini/tts', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (err: any) {
+      console.warn('bhashiniTTS api error:', err?.message || err);
+    }
+    return {
+      success: false,
+      language: payload.language === 'hi' ? 'hi' : 'en',
+      source: 'fallback',
+      error: 'Bhashini TTS request failed',
+    };
+  },
+
+  // Check Bhashini configuration status
+  async getBhashiniStatus(): Promise<{ configured: boolean; hasUserId: boolean; hasApiKey: boolean }> {
+    try {
+      const res = await fetch('/api/ai/bhashini/status', { headers: getAuthHeaders() });
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch {
+      // fallback
+    }
+    return { configured: false, hasUserId: false, hasApiKey: false };
+  },
+
   // Grievances
   async getGrievances(): Promise<GrievanceTicket[]> {
     try {

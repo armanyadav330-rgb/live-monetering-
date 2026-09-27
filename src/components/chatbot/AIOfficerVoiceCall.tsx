@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { AIOfficerAvatar } from './AIOfficerAvatar';
 import { voiceAssistant } from '../../services/voiceAssistant';
+import { bhashiniVoice } from '../../services/bhashiniVoice';
 import { api } from '../../services/api';
 import { GrievanceTicket } from '../../types';
 import { AITicketCard } from './AITicketCard';
@@ -90,15 +91,18 @@ export const AIOfficerVoiceCall: React.FC<AIOfficerVoiceCallProps> = ({
     };
   }, [callState]);
 
-  // Oral speech synthesis
-  const speakResponse = (text: string) => {
+  // Oral speech synthesis with Bhashini & automatic language detection
+  const speakResponse = async (text: string, languageHint?: 'hi' | 'en' | 'hinglish') => {
     setLastSpeech(text);
     if (isSpeakerMuted) return;
 
     setIsSpeaking(true);
-    voiceAssistant.speak(text, {
+    const targetLang: 'hi' | 'en' | 'hinglish' =
+      languageHint ||
+      (/[\u0900-\u097F]/.test(text) ? 'hi' : 'en');
+
+    await bhashiniVoice.playBhashiniTTS(text, targetLang, {
       onStart: () => setIsSpeaking(true),
-      onWord: (w) => setCurrentWord(w),
       onEnd: () => {
         setIsSpeaking(false);
         setCurrentWord('');
@@ -113,25 +117,56 @@ export const AIOfficerVoiceCall: React.FC<AIOfficerVoiceCallProps> = ({
     });
   };
 
-  // Voice recognition (listening to user's oral question)
-  const startVoiceRecognition = () => {
+  // Voice recognition (listening to user's oral question via Bhashini STT)
+  const startVoiceRecognition = async () => {
     if (isMuted || isSpeaking) return;
 
     setIsListening(true);
-    voiceAssistant.startListening({
-      onResult: (text, isFinal) => {
-        setTranscript(text);
-        if (isFinal && text.trim().length > 2) {
-          handleSendQuery(text.trim());
+    const started = await bhashiniVoice.startMicrophoneCapture({
+      onStart: () => {
+        setIsListening(true);
+      },
+      onTranscript: (spokenText) => {
+        setIsListening(false);
+        setTranscript(spokenText);
+        if (spokenText.trim().length > 1) {
+          handleSendQuery(spokenText.trim());
         }
       },
       onError: () => {
         setIsListening(false);
-      },
-      onEnd: () => {
-        setIsListening(false);
+        // Fallback to browser recognition
+        if (voiceAssistant.isSpeechRecognitionSupported()) {
+          setIsListening(true);
+          voiceAssistant.startListening({
+            onResult: (text, isFinal) => {
+              setTranscript(text);
+              if (isFinal && text.trim().length > 1) {
+                setIsListening(false);
+                handleSendQuery(text.trim());
+              }
+            },
+            onError: () => setIsListening(false),
+            onEnd: () => setIsListening(false),
+          });
+        }
       },
     });
+
+    if (!started && voiceAssistant.isSpeechRecognitionSupported()) {
+      setIsListening(true);
+      voiceAssistant.startListening({
+        onResult: (text, isFinal) => {
+          setTranscript(text);
+          if (isFinal && text.trim().length > 1) {
+            setIsListening(false);
+            handleSendQuery(text.trim());
+          }
+        },
+        onError: () => setIsListening(false),
+        onEnd: () => setIsListening(false),
+      });
+    }
   };
 
   const handleSendQuery = async (queryText: string) => {
@@ -141,7 +176,7 @@ export const AIOfficerVoiceCall: React.FC<AIOfficerVoiceCallProps> = ({
     setIsListening(false);
 
     try {
-      const res = await api.sendChatbotMessage({
+      const res: any = await api.sendChatbotMessage({
         message: queryText,
         mode: 'audio_call',
       });
@@ -152,7 +187,7 @@ export const AIOfficerVoiceCall: React.FC<AIOfficerVoiceCallProps> = ({
         onTicketCreated?.(res.ticket);
       }
 
-      speakResponse(res.speechText);
+      speakResponse(res.speechText, res.detectedLanguage);
     } catch {
       speakResponse('I apologize, there was a momentary network disturbance. Please repeat your concern or choose a quick option below.');
     } finally {
@@ -164,6 +199,8 @@ export const AIOfficerVoiceCall: React.FC<AIOfficerVoiceCallProps> = ({
 
   const handleEndCall = () => {
     voiceAssistant.playTone('hangup');
+    bhashiniVoice.stopSpeaking();
+    bhashiniVoice.stopMicrophoneCapture();
     voiceAssistant.stopSpeaking();
     voiceAssistant.stopListening();
     setCallState('ENDED');

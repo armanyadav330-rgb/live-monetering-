@@ -27,6 +27,7 @@ export interface GroqChatbotResponse {
   modelUsed: string;
   speechText: string;
   displayText: string;
+  detectedLanguage?: 'hi' | 'en' | 'hinglish';
   actionTaken?: string;
   resolved: boolean;
   ticketData?: {
@@ -55,7 +56,30 @@ export function getGroqClient(): Groq | null {
 const DEFAULT_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 const FALLBACK_MODELS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'mixtral-8x7b-32768'];
 
-function buildSystemPrompt(context: Record<string, any> = {}, mode: string = 'chat', language: string = 'en'): string {
+export function detectLanguage(text: string): 'hi' | 'en' | 'hinglish' {
+  if (!text) return 'en';
+  // Check for Devanagari script
+  if (/[\u0900-\u097F]/.test(text)) {
+    return 'hi';
+  }
+  // Check for common Hinglish words/particles in Latin script
+  const hinglishTokens = /\b(kya|hai|hain|kaise|kaun|kaha|kahan|kyu|kyun|mujhe|mera|meri|mere|aap|tum|hum|nahi|nhi|chahiye|karo|karna|hoga|raha|rahi|rahe|bhi|aur|ke|ki|ko|se|me|mein|par|yojana|yojna|shikayat|suvidha|batao|batayein|namaste|dhanyawad|shukriya)\b/i;
+  if (hinglishTokens.test(text)) {
+    return 'hinglish';
+  }
+  return 'en';
+}
+
+function buildSystemPrompt(context: Record<string, any> = {}, mode: string = 'chat', language: string = 'auto', detectedLang: 'hi' | 'en' | 'hinglish' = 'en'): string {
+  let langDirective = '';
+  if (detectedLang === 'hi' || language === 'hi') {
+    langDirective = 'The user is communicating in Hindi. You MUST reply completely and fluently in pure Hindi (हिन्दी) in both "speechText" and "displayText". Do not reply in English.';
+  } else if (detectedLang === 'hinglish') {
+    langDirective = 'The user is communicating in Hinglish (Romanized Hindi + English mixed). You MUST reply naturally and fluently in Hinglish (friendly Romanized Hindi mixed with common English terminology) in both "speechText" and "displayText".';
+  } else {
+    langDirective = 'The user is communicating in English. You MUST reply completely in English in both "speechText" and "displayText".';
+  }
+
   return `
 You are "Satya Nirakshak AI Assistant", the official intelligent assistant for the Satya Nirakshak monitoring & inspection platform under the Ministry of Social Justice and Empowerment (DoSJE), Government of India.
 
@@ -80,14 +104,16 @@ CORE PRINCIPLES & CONSTRAINTS:
 - Protect sensitive beneficiary information and proprietary NGO records; never disclose private personal identifiers.
 - Avoid making administrative decisions that must legally be made by authorized DoSJE or district welfare officers.
 - Keep responses concise, respectful, and professional.
-- Language: Respond in ${language === 'hi' ? 'Hindi (हिंदी)' : 'English'}, or match the user's input language.
+- LANGUAGE REQUIREMENT: ${langDirective}
+  Maintain this detected language consistently throughout your entire response.
 - Mode of interaction: ${mode} (if audio_call or video_call, provide warm, spoken cadence in "speechText" without asterisks or emojis).
 
 RESPONSE FORMAT:
 You MUST respond with a strictly valid JSON object matching this schema (do NOT wrap with markdown code fences):
 {
-  "speechText": "Natural human spoken response with no markdown, asterisks, emojis, or bullets (suitable for text-to-speech oral delivery)",
-  "displayText": "Comprehensive, well-structured markdown for display with headings, bullet points, and official advisories",
+  "speechText": "Natural human spoken response with no markdown, asterisks, emojis, or bullets in the detected language (suitable for Bhashini text-to-speech oral delivery)",
+  "displayText": "Comprehensive, well-structured markdown in the detected language with headings, bullet points, and official advisories",
+  "detectedLanguage": "${detectedLang}",
   "actionTaken": "Brief summary of administrative action taken, docket created, or null",
   "resolved": true or false,
   "ticketData": {
@@ -107,8 +133,9 @@ CURRENT USER CONTEXT:
 `.trim();
 }
 
+
 export async function processGroqAIChatbotQuery(req: GroqChatbotRequest): Promise<GroqChatbotResponse> {
-  const { message, history = [], mode = 'chat', language = 'en', context = {} } = req;
+  const { message, history = [], mode = 'chat', language = 'auto', context = {} } = req;
 
   // Validate message
   if (!message || typeof message !== 'string' || !message.trim()) {
@@ -116,10 +143,14 @@ export async function processGroqAIChatbotQuery(req: GroqChatbotRequest): Promis
   }
 
   const cleanMessage = message.trim();
+  // Detect language of the user's latest message automatically
+  const autoDetectedLang = detectLanguage(cleanMessage);
+  const effectiveLanguage = language === 'auto' || !language ? autoDetectedLang : (language as 'hi' | 'en' | 'hinglish');
+
   const groq = getGroqClient();
 
   if (groq) {
-    const systemPrompt = buildSystemPrompt(context, mode, language);
+    const systemPrompt = buildSystemPrompt(context, mode, language, autoDetectedLang);
 
     // Build chat message payload
     const chatMessages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
@@ -185,6 +216,7 @@ export async function processGroqAIChatbotQuery(req: GroqChatbotRequest): Promis
           modelUsed: `Groq (${modelName})`,
           speechText,
           displayText,
+          detectedLanguage: parsed.detectedLanguage || autoDetectedLang,
           actionTaken: parsed.actionTaken || undefined,
           resolved: Boolean(parsed.resolved),
           ticketData: parsed.ticketData || undefined,
@@ -202,7 +234,7 @@ export async function processGroqAIChatbotQuery(req: GroqChatbotRequest): Promis
   }
 
   // Graceful domain fallback if Groq API key is not configured or all attempts timed out
-  return generateDomainFallbackResponse(cleanMessage, mode, language, context);
+  return generateDomainFallbackResponse(cleanMessage, mode, effectiveLanguage, context);
 }
 
 function generateDomainFallbackResponse(
@@ -213,7 +245,10 @@ function generateDomainFallbackResponse(
 ): GroqChatbotResponse {
   const q = message.toLowerCase();
   const randomNum = Math.floor(1000 + Math.random() * 9000);
-  const isHindi = language === 'hi' || /[\u0900-\u097F]/.test(message);
+  const detected = detectLanguage(message);
+  const isHindi = detected === 'hi' || language === 'hi';
+  const isHinglish = detected === 'hinglish' || language === 'hinglish';
+
 
   // 1. INSPECTION / CHECKLIST / AUDIT
   if (q.includes('inspection') || q.includes('checklist') || q.includes('audit') || q.includes('निरीक्षण') || q.includes('चेकलिस्ट')) {
@@ -292,15 +327,26 @@ function generateDomainFallbackResponse(
 
   // 4. GENERAL ASSISTANCE
   const docketNo = `SN-2026-${randomNum}`;
+  let speechText = '';
+  let displayText = '';
+
+  if (isHindi) {
+    speechText = `नमस्ते। मैं सत्य निरीक्षक एआई सहायक हूँ। मैं एनजीओ प्रोजेक्ट निगरानी, फील्ड निरीक्षण, चेकलिस्ट और अनुपालन में आपकी सहायता के लिए उपस्थित हूँ।`;
+    displayText = `### 🏛️ सत्य निरीक्षक एआई सहायक (सामाजिक न्याय एवं अधिकारिता मंत्रालय)\n\nमैं निम्नलिखित विषयों में आपकी तत्काल सहायता कर सकता हूँ:\n\n* **फील्ड निरीक्षण:** मानक चेकलिस्ट, जियो-टैगिंग दिशानिर्देश एवं ऑन-साइट डॉजियर।\n* **सीसीटीवी निगरानी:** लाइव स्ट्रीम स्थिति एवं तकनीकी छूट अनुरोध।\n* **बायोमेट्रिक सत्यापन:** AEBAS उपस्थिति मिलान एवं विसंगति समाधान।\n* **अनुपालन व रिपोर्ट:** जीआईए (Grant-in-Aid) दिशा-निर्देश एवं स्थिति ट्रैकिंग।\n\n*कृपया अपना प्रश्न दर्ज करें अथवा नीचे दिए गए त्वरित विकल्पों में से चुनें।*`;
+  } else if (isHinglish) {
+    speechText = `Namaste! Main Satya Nirakshak AI Assistant hoon. Main NGO project monitoring, field inspection checklist, CCTV stream aur compliance queries me aapki poori madad kar sakta hoon. Aap apna sawal pooch sakte hain.`;
+    displayText = `### 🏛️ Satya Nirakshak AI Assistant (Ministry of Social Justice & Empowerment)\n\nMain in areas me aapki immediate help kar sakta hoon:\n\n* **Field Inspections:** Verification checklist, GPS geo-tagged photo rules, aur on-site guidelines.\n* **Project Monitoring:** Sanctioned capacity, active beneficiaries, aur compliance status.\n* **CCTV Surveillance:** 24x7 live stream diagnostic aur downtime waiver docketing.\n* **Biometric Attendance:** AEBAS synchronization aur headcount discrepancy resolution.\n\n*Aap apna question type karein ya mic button daba kar bol sakte hain.*`;
+  } else {
+    speechText = `Namaste. I am the Satya Nirakshak AI Assistant. I can assist you with NGO project monitoring, field inspections, compliance checklists, CCTV streams, and grievance resolution. How may I help you today?`;
+    displayText = `### 🏛️ Satya Nirakshak AI Assistant (Ministry of Social Justice & Empowerment)\n\nI am configured to assist NGO staff, field inspectors, and administrators with:\n\n* **Field Inspections:** Verification checklists, GPS-stamped photo rules, and inspection dossiers.\n* **Project Monitoring:** Sanctioned capacity, active beneficiaries, and risk assessments.\n* **CCTV Surveillance:** 24x7 live stream diagnostic and downtime waiver dockets.\n* **Biometric Attendance:** AEBAS synchronization and headcount reconciliation.\n\n*Please type your query or select a quick action below.*`;
+  }
+
   return {
     isSimulatedFallback: true,
     modelUsed: 'Satya Nirakshak Domain Engine (Groq Key Pending)',
-    speechText: isHindi
-      ? `नमस्ते। मैं सत्य निरीक्षक एआई सहायक हूँ। मैं एनजीओ प्रोजेक्ट निगरानी, फील्ड निरीक्षण, चेकलिस्ट और अनुपालन में आपकी सहायता के लिए उपस्थित हूँ।`
-      : `Namaste. I am the Satya Nirakshak AI Assistant. I can assist you with NGO project monitoring, field inspections, compliance checklists, CCTV streams, and grievance resolution. How may I help you today?`,
-    displayText: isHindi
-      ? `### 🏛️ सत्य निरीक्षक एआई सहायक (सामाजिक न्याय एवं अधिकारिता मंत्रालय)\n\nमैं निम्नलिखित विषयों में आपकी तत्काल सहायता कर सकता हूँ:\n\n* **फील्ड निरीक्षण:** मानक चेकलिस्ट, जियो-टैगिंग दिशानिर्देश एवं ऑन-साइट डॉजियर।\n* **सीसीटीवी निगरानी:** लाइव स्ट्रीम स्थिति एवं तकनीकी छूट अनुरोध।\n* **बायोमेट्रिक सत्यापन:** AEBAS उपस्थिति मिलान एवं विसंगति समाधान।\n* **अनुपालन व रिपोर्ट:** जीआईए (Grant-in-Aid) दिशा-निर्देश एवं स्थिति ट्रैकिंग।\n\n*कृपया अपना प्रश्न दर्ज करें अथवा नीचे दिए गए त्वरित विकल्पों में से चुनें।*`
-      : `### 🏛️ Satya Nirakshak AI Assistant (Ministry of Social Justice & Empowerment)\n\nI am configured to assist NGO staff, field inspectors, and administrators with:\n\n* **Field Inspections:** Verification checklists, GPS-stamped photo rules, and inspection dossiers.\n* **Project Monitoring:** Sanctioned capacity, active beneficiaries, and risk assessments.\n* **CCTV Surveillance:** 24x7 live stream diagnostic and downtime waiver dockets.\n* **Biometric Attendance:** AEBAS synchronization and headcount reconciliation.\n\n*Please type your query or select a quick action below.*`,
+    speechText,
+    displayText,
+    detectedLanguage: isHindi ? 'hi' : isHinglish ? 'hinglish' : 'en',
     actionTaken: 'Satya Nirakshak AI Session Active',
     resolved: false,
     suggestedQuickReplies: [

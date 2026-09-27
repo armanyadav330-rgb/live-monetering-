@@ -337,6 +337,7 @@ export interface AIChatMessage {
   sender: 'user' | 'bot' | 'system';
   text: string;
   spokenText?: string;
+  detectedLanguage?: 'hi' | 'en' | 'hinglish';
   timestamp: string;
   mode?: 'text' | 'audio_call' | 'video_call';
   ticket?: GrievanceTicket;

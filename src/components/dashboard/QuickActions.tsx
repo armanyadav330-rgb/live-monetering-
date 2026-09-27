@@ -9,6 +9,7 @@ import {
   Bot,
   Sparkles,
 } from 'lucide-react';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface QuickActionsProps {
   onOpenAssignModal?: () => void;
@@ -32,6 +33,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
   onOpenVC,
   onOpenGISMap,
 }) => {
+  const { t } = useTranslation();
   const triggerAssign = onOpenAssignModal || onOpenAssignInspection;
   const triggerCCTV = onOpenCCTV || (() => onNavigate('cctv'));
   const triggerVC = onOpenVC || (() => onNavigate('vc'));
@@ -42,7 +44,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
       <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-200">
         <h3 className="text-xs font-bold text-[#0B2545] uppercase tracking-wider flex items-center gap-1.5">
           <span>⚡</span>
-          <span>Direct Statutory &amp; Operational Controls (त्वरित प्रशासनिक नियंत्रण)</span>
+          <span>{t('dashboard.quick_actions_title')}</span>
         </h3>
         <span className="text-[11px] text-slate-500 font-medium">NIC Encrypted · Direct Action Desk</span>
       </div>
@@ -60,7 +62,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
           </div>
-          <span>AI Officer (Oral/Voice)</span>
+          <span>{t('action.ai_call')}</span>
         </button>
 
         <button
@@ -68,7 +70,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
           className="flex items-center justify-center gap-2 p-3 rounded-lg bg-[#1E3A8A]/5 hover:bg-[#1E3A8A]/10 text-[#1E3A8A] border border-[#1E3A8A]/20 text-xs font-bold transition cursor-pointer"
         >
           <Shuffle className="w-4 h-4 text-[#1E3A8A]" />
-          <span>Assign Random Audit</span>
+          <span>{t('action.assign_inspection')}</span>
         </button>
 
         <button
@@ -76,7 +78,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
           className="flex items-center justify-center gap-2 p-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold transition cursor-pointer"
         >
           <PhoneCall className="w-4 h-4 text-emerald-700" />
-          <span>Random Call &amp; Video</span>
+          <span>{t('action.surprise_vc')}</span>
         </button>
 
         <button
@@ -84,7 +86,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
           className="flex items-center justify-center gap-2 p-3 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-900 border border-sky-300 text-xs font-bold transition cursor-pointer"
         >
           <Video className="w-4 h-4 text-sky-700" />
-          <span>CCTV Matrix</span>
+          <span>{t('action.live_cctv')}</span>
         </button>
 
         <button
@@ -92,7 +94,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
           className="flex items-center justify-center gap-2 p-3 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition cursor-pointer"
         >
           <MapPin className="w-4 h-4 text-amber-700" />
-          <span>GIS Project Map</span>
+          <span>{t('action.gis_map')}</span>
         </button>
 
         <button
@@ -100,9 +102,10 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
           className="flex items-center justify-center gap-2 p-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-bold transition cursor-pointer"
         >
           <FileSpreadsheet className="w-4 h-4 text-slate-700" />
-          <span>MIS Reports Dossier</span>
+          <span>{t('reports.title')}</span>
         </button>
       </div>
     </div>
   );
 };
+

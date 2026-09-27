@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+@keyframes circular-spinner-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.circular-spinner-animated {
+  animation: circular-spinner-spin var(--spinner-speed, 1.3s) linear infinite;
+  transform-origin: center center;
+  will-change: transform;
+}

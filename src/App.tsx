@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FileBarChart, ShieldCheck } from 'lucide-react';
 import { Header } from './components/common/Header';
 import { Sidebar } from './components/common/Sidebar';
+import { CircularSpinner } from './components/common/CircularSpinner';
 import { StatCards } from './components/dashboard/StatCards';
 import { QuickActions } from './components/dashboard/QuickActions';
 import { RiskChart } from './components/dashboard/RiskChart';
@@ -187,7 +188,7 @@ export default function App() {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="text-center space-y-3">
-          <div className="animate-spin w-8 h-8 border-3 border-indigo-600 border-t-transparent rounded-full mx-auto" />
+          <CircularSpinner size={48} speed={1.3} className="mx-auto" />
           <div className="text-sm font-bold text-slate-800">
             Initializing Satya Nirakshak...
           </div>

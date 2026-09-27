@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { AuditLog, User as UserType } from '../../types';
 import { api } from '../../services/api';
+import { CircularSpinner } from '../common/CircularSpinner';
 
 interface AuditLogsViewProps {
   currentUser?: UserType;
@@ -616,9 +617,9 @@ export const AuditLogsView: React.FC<AuditLogsViewProps> = ({
       {/* Main Audit Log Table */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
         {isLoading ? (
-          <div className="py-16 text-center text-slate-400 text-xs">
-            <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-indigo-500" />
-            <span>Loading regulatory audit logs...</span>
+          <div className="py-16 text-center text-slate-500 text-xs flex flex-col items-center justify-center">
+            <CircularSpinner size={38} speed={1.3} className="mb-2" />
+            <span className="font-medium text-slate-600">Loading regulatory audit logs...</span>
           </div>
         ) : filteredLogs.length === 0 ? (
           <div className="py-16 text-center">

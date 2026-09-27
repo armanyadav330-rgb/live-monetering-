@@ -13,6 +13,7 @@ import {
   Shuffle,
 } from 'lucide-react';
 import { Inspection, InspectionStatus, InspectionPriority, UserRole } from '../../types';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface InspectionListProps {
   inspections: Inspection[];
@@ -29,6 +30,7 @@ export const InspectionList: React.FC<InspectionListProps> = ({
   onConductInspection,
   onOpenAssignModal,
 }) => {
+  const { t, tStatus } = useTranslation();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [priorityFilter, setPriorityFilter] = useState('ALL');
@@ -59,10 +61,10 @@ export const InspectionList: React.FC<InspectionListProps> = ({
         <div>
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
             <ClipboardCheck className="w-5 h-5 text-indigo-600" />
-            <span>Field Inspection &amp; Audit Registry</span>
+            <span>{t('inspections.title')}</span>
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Surprise visits, routine audits, and geo-tagged verification records across all project units.
+            {t('inspections.subtitle')}
           </p>
         </div>
 
@@ -72,7 +74,7 @@ export const InspectionList: React.FC<InspectionListProps> = ({
             className="flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-xs transition shrink-0"
           >
             <Shuffle className="w-4 h-4" />
-            <span>Assign Random Inspection</span>
+            <span>{t('inspections.assign_new')}</span>
           </button>
         )}
       </div>
@@ -86,7 +88,7 @@ export const InspectionList: React.FC<InspectionListProps> = ({
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by code, project, inspector, district..."
+              placeholder={t('inspections.search_placeholder')}
               className="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-slate-300 bg-slate-50 focus:bg-white focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
             />
           </div>
@@ -96,11 +98,11 @@ export const InspectionList: React.FC<InspectionListProps> = ({
             onChange={(e) => setStatusFilter(e.target.value)}
             className="px-2.5 py-2 text-xs rounded-lg border border-slate-300 bg-white"
           >
-            <option value="ALL">All Inspection Statuses</option>
-            <option value="PENDING">PENDING (Scheduled)</option>
-            <option value="IN_PROGRESS">IN PROGRESS (On-site Draft)</option>
-            <option value="COMPLETED">COMPLETED (Submitted)</option>
-            <option value="UNDER_REVIEW">UNDER REVIEW</option>
+            <option value="ALL">{t('projects.filter_all_status')}</option>
+            <option value="PENDING">{t('status.pending')}</option>
+            <option value="IN_PROGRESS">{t('status.in_progress')}</option>
+            <option value="COMPLETED">{t('status.completed')}</option>
+            <option value="UNDER_REVIEW">{t('status.under_review')}</option>
           </select>
 
           <select
@@ -108,7 +110,7 @@ export const InspectionList: React.FC<InspectionListProps> = ({
             onChange={(e) => setPriorityFilter(e.target.value)}
             className="px-2.5 py-2 text-xs rounded-lg border border-slate-300 bg-white"
           >
-            <option value="ALL">All Audit Priorities</option>
+            <option value="ALL">{t('projects.filter_all_risks')}</option>
             <option value="SURPRISE">SURPRISE INSPECTION</option>
             <option value="CRITICAL_AUDIT">CRITICAL AUDIT</option>
             <option value="HIGH_PRIORITY">HIGH PRIORITY</option>
@@ -124,20 +126,20 @@ export const InspectionList: React.FC<InspectionListProps> = ({
           <table className="w-full text-left border-collapse text-xs">
             <thead>
               <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider text-[10px]">
-                <th className="py-3 px-4">Order Code &amp; Date</th>
-                <th className="py-3 px-4">Target Project &amp; Location</th>
-                <th className="py-3 px-4">Assigned Inspector</th>
-                <th className="py-3 px-4">Audit Type</th>
-                <th className="py-3 px-4">GPS Geostamp</th>
-                <th className="py-3 px-4">Compliance Outcome</th>
-                <th className="py-3 px-4 text-right">Actions</th>
+                <th className="py-3 px-4">{t('inspections.col_id')}</th>
+                <th className="py-3 px-4">{t('inspections.col_project')}</th>
+                <th className="py-3 px-4">{t('inspections.col_inspector')}</th>
+                <th className="py-3 px-4">{t('inspections.col_type')}</th>
+                <th className="py-3 px-4">{t('inspections.col_gps')}</th>
+                <th className="py-3 px-4">{t('inspections.col_status')}</th>
+                <th className="py-3 px-4 text-right">{t('projects.col_actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="py-8 text-center text-slate-400">
-                    No inspection records found matching your filters.
+                    {t('common.no_records_found')}
                   </td>
                 </tr>
               ) : (

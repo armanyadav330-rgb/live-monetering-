@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { PortalSettings, User as UserType } from '../../types';
 import { api } from '../../services/api';
+import { CircularSpinner } from '../common/CircularSpinner';
 
 interface PortalSettingsViewProps {
   currentUser: UserType;
@@ -149,7 +150,7 @@ export const PortalSettingsView: React.FC<PortalSettingsViewProps> = ({
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-3">
-          <RefreshCw className="w-8 h-8 text-emerald-600 animate-spin" />
+          <CircularSpinner size={42} speed={1.3} />
           <span className="text-xs font-semibold text-slate-500">Loading Portal Configuration...</span>
         </div>
       </div>

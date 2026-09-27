@@ -14,6 +14,7 @@ import {
   ShieldAlert,
 } from 'lucide-react';
 import { Project, RiskLevel, CCTVStatus, UserRole } from '../../types';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface ProjectListProps {
   projects?: Project[];
@@ -34,6 +35,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
   onEditProject,
   onDeleteProject,
 }) => {
+  const { t, tRisk, tStatus } = useTranslation();
   const handleAdd = () => {
     if (onAddProject) onAddProject();
     else if (onOpenAddModal) onOpenAddModal();
@@ -167,10 +169,10 @@ export const ProjectList: React.FC<ProjectListProps> = ({
         <div>
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
             <Building2 className="w-5 h-5 text-indigo-600" />
-            <span>Scheme Project Directory</span>
+            <span>{t('projects.title')}</span>
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Central repository of all DoSJE assisted NGOs, rehabilitation shelters, and institutions.
+            {t('projects.subtitle')}
           </p>
         </div>
 
@@ -180,7 +182,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
             className="flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-xs transition shrink-0"
           >
             <Plus className="w-4 h-4" />
-            <span>Register Project</span>
+            <span>{t('projects.modal_add_btn')}</span>
           </button>
         )}
       </div>
@@ -198,7 +200,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                 setSearch(e.target.value);
                 setCurrentPage(1);
               }}
-              placeholder="Search by project name, ID, NGO, district..."
+              placeholder={t('projects.search_placeholder')}
               className="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-slate-300 bg-slate-50 focus:bg-white focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
             />
           </div>
@@ -212,7 +214,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
             }}
             className="px-2.5 py-2 text-xs rounded-lg border border-slate-300 bg-white"
           >
-            <option value="ALL">All Schemes ({schemes.length})</option>
+            <option value="ALL">{t('projects.filter_all_schemes')} ({schemes.length})</option>
             {schemes.map((s) => (
               <option key={s} value={s}>
                 {s.split('(')[0]}
@@ -330,20 +332,20 @@ export const ProjectList: React.FC<ProjectListProps> = ({
           <table className="w-full text-left border-collapse text-xs">
             <thead>
               <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider text-[10px]">
-                <th className="py-3 px-4">Project &amp; Code</th>
-                <th className="py-3 px-4">Scheme &amp; NGO</th>
-                <th className="py-3 px-4">Location</th>
-                <th className="py-3 px-4">Beneficiaries</th>
-                <th className="py-3 px-4">CCTV Feed</th>
-                <th className="py-3 px-4">Risk Level</th>
-                <th className="py-3 px-4 text-right">Actions</th>
+                <th className="py-3 px-4">{t('projects.col_id')}</th>
+                <th className="py-3 px-4">{t('projects.col_ngo')}</th>
+                <th className="py-3 px-4">{t('projects.col_location')}</th>
+                <th className="py-3 px-4">{t('projects.col_capacity')}</th>
+                <th className="py-3 px-4">{t('projects.col_cctv')}</th>
+                <th className="py-3 px-4">{t('projects.col_risk')}</th>
+                <th className="py-3 px-4 text-right">{t('projects.col_actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {paginatedProjects.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="py-8 text-center text-slate-400">
-                    No projects found matching the selected search criteria.
+                    {t('common.no_records_found')}
                   </td>
                 </tr>
               ) : (

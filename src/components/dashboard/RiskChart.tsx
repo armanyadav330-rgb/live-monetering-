@@ -12,12 +12,14 @@ import {
   Legend,
 } from 'recharts';
 import { Project } from '../../types';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface RiskChartProps {
   projects?: Project[];
 }
 
 export const RiskChart: React.FC<RiskChartProps> = ({ projects = [] }) => {
+  const { t, tRisk } = useTranslation();
   const safeProjects = Array.isArray(projects) ? projects : [];
 
   // Risk Distribution Data
@@ -29,10 +31,10 @@ export const RiskChart: React.FC<RiskChartProps> = ({ projects = [] }) => {
   };
 
   const riskData = [
-    { name: 'Low Risk', value: riskCounts.LOW, color: '#10b981' },
-    { name: 'Medium Risk', value: riskCounts.MEDIUM, color: '#f59e0b' },
-    { name: 'High Risk', value: riskCounts.HIGH, color: '#ea580c' },
-    { name: 'Critical Risk', value: riskCounts.CRITICAL, color: '#e11d48' },
+    { name: tRisk('LOW'), value: riskCounts.LOW, color: '#10b981' },
+    { name: tRisk('MEDIUM'), value: riskCounts.MEDIUM, color: '#f59e0b' },
+    { name: tRisk('HIGH'), value: riskCounts.HIGH, color: '#ea580c' },
+    { name: tRisk('CRITICAL'), value: riskCounts.CRITICAL, color: '#e11d48' },
   ];
 
   // Scheme Distribution
@@ -58,7 +60,7 @@ export const RiskChart: React.FC<RiskChartProps> = ({ projects = [] }) => {
       <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-            Risk Classification Distribution
+            {t('dashboard.risk_dist_title')}
           </h3>
           <span className="text-[11px] text-slate-500 font-medium">Algorithmic Scoring</span>
         </div>
@@ -104,7 +106,7 @@ export const RiskChart: React.FC<RiskChartProps> = ({ projects = [] }) => {
       <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-            Projects by Scheme Category
+            {t('dashboard.scheme_dist_title')}
           </h3>
           <span className="text-[11px] text-slate-500 font-medium">Active Portfolios</span>
         </div>

@@ -11,6 +11,7 @@ import {
   Image as ImageIcon,
 } from 'lucide-react';
 import { Inspection, User } from '../../types';
+import { CircularSpinner } from '../common/CircularSpinner';
 
 interface UploadEvidenceViewProps {
   inspections: Inspection[];
@@ -207,7 +208,7 @@ export const UploadEvidenceView: React.FC<UploadEvidenceViewProps> = ({
               >
                 {isUploading ? (
                   <>
-                    <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <CircularSpinner size={16} speed={1.2} />
                     <span>Sealing GPS Metadata...</span>
                   </>
                 ) : (

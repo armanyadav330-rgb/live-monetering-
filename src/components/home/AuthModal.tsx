@@ -14,6 +14,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { User, UserRole } from '../../types';
+import { CircularSpinner } from '../common/CircularSpinner';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -382,7 +383,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               >
                 {isLoading ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <CircularSpinner size={18} speed={1.2} />
                     <span>
                       {lang === 'HI' ? 'प्रमाणीकरण जारी है...' : 'Authenticating...'}
                     </span>

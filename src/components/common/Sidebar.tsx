@@ -10,6 +10,7 @@ import {
   ROLE_SIDEBAR_MENUS,
   RoleMenuItem,
 } from '../../utils/rbac';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface SidebarProps {
   currentView?: string;
@@ -30,6 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onClose,
   onLogout,
 }) => {
+  const { t } = useTranslation();
   const effectiveView = currentView || activeView || 'dashboard';
   const roleCategory = getRoleCategory(userRole);
 
@@ -73,11 +75,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
               if (onClose) onClose();
             }}
             className="w-full flex items-center justify-between px-2.5 py-1.5 rounded text-xs font-semibold text-sky-200 hover:bg-[#13315C] hover:text-white border border-dashed border-[#1E3A8A] transition cursor-pointer"
-            title="Public Homepage Gateway"
+            title={t('nav.home')}
           >
             <div className="flex items-center gap-2">
               <Globe className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-              <span>Homepage Gateway</span>
+              <span>{t('nav.home')}</span>
             </div>
             <span className="text-[9px] font-mono text-sky-300 uppercase">GOV.IN</span>
           </button>
@@ -96,6 +98,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     viewStr === 'inspection-report')) ||
                 (item.id === 'alerts' && viewStr === 'analytics');
 
+              const translatedLabel = t(`nav.${item.id}`, item.label);
+
               return (
                 <button
                   key={item.id}
@@ -111,7 +115,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-amber-300' : 'text-slate-400'}`} />
-                    <span className="truncate">{item.label}</span>
+                    <span className="truncate">{translatedLabel}</span>
                   </div>
                   {item.badge && (
                     <span
@@ -147,7 +151,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               title="Official Profile"
             >
               <UserCircle className="w-3.5 h-3.5 text-indigo-300" />
-              <span>Profile</span>
+              <span>{t('nav.profile')}</span>
             </button>
 
             {onLogout && (
@@ -157,16 +161,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 title="Sign Out / Logout"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span>Exit</span>
+                <span>{t('nav.logout')}</span>
               </button>
             )}
           </div>
 
           <div className="flex items-center justify-between pt-1 border-t border-[#13315C]/60 text-[10px] text-slate-400">
-            <span className="truncate">NIC Sovereign Grid</span>
+            <span className="truncate">{t('gov.nic_node')}</span>
             <span className="inline-flex items-center gap-1 text-emerald-400 font-bold">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              ACTIVE
+              {t('status.active')}
             </span>
           </div>
         </div>
@@ -174,3 +178,4 @@ export const Sidebar: React.FC<SidebarProps> = ({
     </>
   );
 };
+

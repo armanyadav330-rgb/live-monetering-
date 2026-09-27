@@ -8,6 +8,11 @@ import { vcProvider } from './src/services/vcProvider';
 import { attendanceProvider } from './src/services/attendanceProvider';
 import { analyzeProjectWithGemini, summarizeInspectionWithGemini } from './src/services/serverGemini';
 import { processGroqAIChatbotQuery } from './src/services/serverGroq';
+import {
+  transcribeAudioWithBhashini,
+  synthesizeSpeechWithBhashini,
+  getBhashiniCredentials,
+} from './src/services/serverBhashini';
 import { UserRole } from './src/types';
 
 dotenv.config();
@@ -516,6 +521,60 @@ async function startServer() {
 
   app.post('/api/ai/chatbot', handleChatbotRequest);
   app.post('/api/ai/groq-chatbot', handleChatbotRequest);
+
+  // Bhashini Speech-to-Text (ASR) Endpoint
+  app.post('/api/ai/bhashini/stt', async (req, res) => {
+    try {
+      const { audioBase64, audioFormat, samplingRate, language } = req.body;
+      if (!audioBase64) {
+        return res.status(400).json({ success: false, error: 'audioBase64 is required' });
+      }
+
+      const result = await transcribeAudioWithBhashini({
+        audioBase64,
+        audioFormat: audioFormat || 'wav',
+        samplingRate: samplingRate || 16000,
+        language: language || 'auto',
+      });
+
+      res.json(result);
+    } catch (err: any) {
+      console.error('Bhashini STT route error:', err?.message || err);
+      res.status(500).json({ success: false, error: err?.message || 'Bhashini STT failed' });
+    }
+  });
+
+  // Bhashini Text-to-Speech (TTS) Endpoint
+  app.post('/api/ai/bhashini/tts', async (req, res) => {
+    try {
+      const { text, language, gender } = req.body;
+      if (!text || typeof text !== 'string') {
+        return res.status(400).json({ success: false, error: 'text is required' });
+      }
+
+      const result = await synthesizeSpeechWithBhashini({
+        text,
+        language: language || 'en',
+        gender: gender || 'female',
+      });
+
+      res.json(result);
+    } catch (err: any) {
+      console.error('Bhashini TTS route error:', err?.message || err);
+      res.status(500).json({ success: false, error: err?.message || 'Bhashini TTS failed' });
+    }
+  });
+
+  // Bhashini Config status (does NOT expose secrets, only tells frontend if credentials exist)
+  app.get('/api/ai/bhashini/status', (req, res) => {
+    const creds = getBhashiniCredentials();
+    res.json({
+      configured: creds.isConfigured,
+      hasUserId: Boolean(creds.userId),
+      hasApiKey: Boolean(creds.apiKey),
+      hasPipelineId: Boolean(creds.pipelineId),
+    });
+  });
 
   // Grievances & Tickets API
   app.get('/api/grievances', (req, res) => {

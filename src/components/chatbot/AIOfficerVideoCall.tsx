@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { AIOfficerAvatar } from './AIOfficerAvatar';
 import { voiceAssistant } from '../../services/voiceAssistant';
+import { bhashiniVoice } from '../../services/bhashiniVoice';
 import { api } from '../../services/api';
 import { GrievanceTicket } from '../../types';
 import { AITicketCard } from './AITicketCard';
@@ -107,14 +108,16 @@ export const AIOfficerVideoCall: React.FC<AIOfficerVideoCallProps> = ({
     };
   }, []);
 
-  const speakOfficer = (text: string) => {
+  const speakOfficer = async (text: string, languageHint?: 'hi' | 'en' | 'hinglish') => {
     setOfficerSubtitle(text);
     if (isSpeakerMuted) return;
 
     setIsSpeaking(true);
-    voiceAssistant.speak(text, {
+    const targetLang: 'hi' | 'en' | 'hinglish' =
+      languageHint || (/[\u0900-\u097F]/.test(text) ? 'hi' : 'en');
+
+    await bhashiniVoice.playBhashiniTTS(text, targetLang, {
       onStart: () => setIsSpeaking(true),
-      onWord: (w) => setCurrentWord(w),
       onEnd: () => {
         setIsSpeaking(false);
         setCurrentWord('');
@@ -128,29 +131,65 @@ export const AIOfficerVideoCall: React.FC<AIOfficerVideoCallProps> = ({
     });
   };
 
-  const startVoiceRecognition = () => {
+  const startVoiceRecognition = async () => {
     if (isMuted || isSpeaking) return;
     setIsListening(true);
-    voiceAssistant.startListening({
-      onResult: (text, isFinal) => {
-        setUserTranscript(text);
-        if (isFinal && text.trim().length > 2) {
-          handleSendVideoQuery(text.trim());
+
+    const started = await bhashiniVoice.startMicrophoneCapture({
+      onStart: () => {
+        setIsListening(true);
+      },
+      onTranscript: (spokenText) => {
+        setIsListening(false);
+        setUserTranscript(spokenText);
+        if (spokenText.trim().length > 1) {
+          handleSendVideoQuery(spokenText.trim());
         }
       },
-      onError: () => setIsListening(false),
-      onEnd: () => setIsListening(false),
+      onError: () => {
+        setIsListening(false);
+        if (voiceAssistant.isSpeechRecognitionSupported()) {
+          setIsListening(true);
+          voiceAssistant.startListening({
+            onResult: (text, isFinal) => {
+              setUserTranscript(text);
+              if (isFinal && text.trim().length > 1) {
+                setIsListening(false);
+                handleSendVideoQuery(text.trim());
+              }
+            },
+            onError: () => setIsListening(false),
+            onEnd: () => setIsListening(false),
+          });
+        }
+      },
     });
+
+    if (!started && voiceAssistant.isSpeechRecognitionSupported()) {
+      setIsListening(true);
+      voiceAssistant.startListening({
+        onResult: (text, isFinal) => {
+          setUserTranscript(text);
+          if (isFinal && text.trim().length > 1) {
+            setIsListening(false);
+            handleSendVideoQuery(text.trim());
+          }
+        },
+        onError: () => setIsListening(false),
+        onEnd: () => setIsListening(false),
+      });
+    }
   };
 
   const handleSendVideoQuery = async (msg: string) => {
     if (!msg.trim() || isProcessing) return;
     setIsProcessing(true);
+    bhashiniVoice.stopMicrophoneCapture();
     voiceAssistant.stopListening();
     setIsListening(false);
 
     try {
-      const res = await api.sendChatbotMessage({
+      const res: any = await api.sendChatbotMessage({
         message: msg,
         mode: 'video_call',
       });
@@ -161,7 +200,7 @@ export const AIOfficerVideoCall: React.FC<AIOfficerVideoCallProps> = ({
         onTicketCreated?.(res.ticket);
       }
 
-      speakOfficer(res.speechText);
+      speakOfficer(res.speechText, res.detectedLanguage);
     } catch {
       speakOfficer('Please repeat your query, the audio stream had a brief packet buffer.');
     } finally {
@@ -196,6 +235,8 @@ export const AIOfficerVideoCall: React.FC<AIOfficerVideoCallProps> = ({
 
   const handleEndCall = () => {
     voiceAssistant.playTone('hangup');
+    bhashiniVoice.stopSpeaking();
+    bhashiniVoice.stopMicrophoneCapture();
     voiceAssistant.stopSpeaking();
     voiceAssistant.stopListening();
     onEndCall();

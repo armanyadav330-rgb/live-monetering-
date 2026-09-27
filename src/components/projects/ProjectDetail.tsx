@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { Project, Inspection, CCTVCamera, AttendanceRecord, UserRole } from '../../types';
 import { api } from '../../services/api';
+import { CircularSpinner } from '../common/CircularSpinner';
 
 interface ProjectDetailProps {
   projectId: string;
@@ -84,9 +85,10 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({
 
   if (!project) {
     return (
-      <div className="p-8 text-center text-slate-500">
-        <div className="animate-spin w-6 h-6 border-2 border-indigo-600 border-t-transparent rounded-full mx-auto mb-2" />
-        Loading Project Telemetry...
+      <div className="p-12 text-center text-slate-500 flex flex-col items-center justify-center min-h-[300px]">
+        <CircularSpinner size={42} speed={1.3} className="mb-3" />
+        <span className="text-sm font-semibold text-slate-700">Loading Project Telemetry...</span>
+        <p className="text-xs text-slate-400 mt-1">Fetching live inspections, CCTV nodes, and beneficiary attendance.</p>
       </div>
     );
   }
