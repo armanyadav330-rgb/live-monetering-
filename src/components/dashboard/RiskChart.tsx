@@ -62,7 +62,7 @@ export const RiskChart: React.FC<RiskChartProps> = ({ projects = [] }) => {
           <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
             {t('dashboard.risk_dist_title')}
           </h3>
-          <span className="text-[11px] text-slate-500 font-medium">Algorithmic Scoring</span>
+          <span className="text-[11px] text-slate-500 font-medium">{t('charts.algorithmic_scoring', 'Algorithmic Scoring')}</span>
         </div>
         <div className="h-60 w-full flex items-center justify-center">
           <ResponsiveContainer width="100%" height="100%">
@@ -84,7 +84,7 @@ export const RiskChart: React.FC<RiskChartProps> = ({ projects = [] }) => {
                 ))}
               </Pie>
               <Tooltip
-                formatter={(val: number) => [`${val} Projects`, 'Count']}
+                formatter={(val: number) => [`${val} ${t('charts.projects', 'Projects')}`, t('charts.count', 'Count')]}
                 contentStyle={{ fontSize: '12px', borderRadius: '8px' }}
               />
             </PieChart>
@@ -108,7 +108,7 @@ export const RiskChart: React.FC<RiskChartProps> = ({ projects = [] }) => {
           <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
             {t('dashboard.scheme_dist_title')}
           </h3>
-          <span className="text-[11px] text-slate-500 font-medium">Active Portfolios</span>
+          <span className="text-[11px] text-slate-500 font-medium">{t('charts.active_portfolios', 'Active Portfolios')}</span>
         </div>
         <div className="h-60 w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -117,12 +117,12 @@ export const RiskChart: React.FC<RiskChartProps> = ({ projects = [] }) => {
               <YAxis tick={{ fontSize: 10 }} />
               <Tooltip contentStyle={{ fontSize: '12px', borderRadius: '8px' }} />
               <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-              <Bar dataKey="projects" fill="#4f46e5" name="Projects Count" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="projects" fill="#4f46e5" name={t('charts.projects_count', 'Projects Count')} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
         <div className="text-[11px] text-slate-500 text-center pt-2 border-t border-slate-100">
-          Encompassing PM-AJAY, SMILE, SHREYAS, NAPDDR, &amp; Senior Citizen Welfare Initiatives
+          {t('charts.schemes_footer', 'Encompassing PM-AJAY, SMILE, SHREYAS, NAPDDR, & Senior Citizen Welfare Initiatives')}
         </div>
       </div>
     </div>

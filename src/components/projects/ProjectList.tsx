@@ -112,25 +112,25 @@ export const ProjectList: React.FC<ProjectListProps> = ({
         return (
           <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200">
             <AlertTriangle className="w-3 h-3" />
-            CRITICAL ({score})
+            {tRisk('CRITICAL')} ({score})
           </span>
         );
       case 'HIGH':
         return (
           <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-800 border border-orange-200">
-            HIGH ({score})
+            {tRisk('HIGH')} ({score})
           </span>
         );
       case 'MEDIUM':
         return (
           <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
-            MEDIUM ({score})
+            {tRisk('MEDIUM')} ({score})
           </span>
         );
       default:
         return (
           <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-            LOW ({score})
+            {tRisk('LOW')} ({score})
           </span>
         );
     }
@@ -142,21 +142,21 @@ export const ProjectList: React.FC<ProjectListProps> = ({
         return (
           <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            ONLINE ({active}/{total})
+            {tStatus('ONLINE')} ({active}/{total})
           </span>
         );
       case 'WARNING':
         return (
           <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-700">
             <span className="w-2 h-2 rounded-full bg-amber-500" />
-            WARNING ({active}/{total})
+            {tStatus('WARNING')} ({active}/{total})
           </span>
         );
       default:
         return (
           <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-rose-700">
             <span className="w-2 h-2 rounded-full bg-rose-500" />
-            OFFLINE (0/{total})
+            {tStatus('OFFLINE')} (0/{total})
           </span>
         );
     }
@@ -231,11 +231,11 @@ export const ProjectList: React.FC<ProjectListProps> = ({
             }}
             className="px-2.5 py-2 text-xs rounded-lg border border-slate-300 bg-white"
           >
-            <option value="ALL">All Risk Levels</option>
-            <option value="CRITICAL">CRITICAL Risk</option>
-            <option value="HIGH">HIGH Risk</option>
-            <option value="MEDIUM">MEDIUM Risk</option>
-            <option value="LOW">LOW Risk</option>
+            <option value="ALL">{t('projects.filter_all_risks', 'All Risk Levels')}</option>
+            <option value="CRITICAL">{tRisk('CRITICAL')}</option>
+            <option value="HIGH">{tRisk('HIGH')}</option>
+            <option value="MEDIUM">{tRisk('MEDIUM')}</option>
+            <option value="LOW">{tRisk('LOW')}</option>
           </select>
 
           {/* CCTV Filter */}
@@ -247,17 +247,17 @@ export const ProjectList: React.FC<ProjectListProps> = ({
             }}
             className="px-2.5 py-2 text-xs rounded-lg border border-slate-300 bg-white"
           >
-            <option value="ALL">All CCTV Status</option>
-            <option value="ONLINE">ONLINE</option>
-            <option value="WARNING">WARNING</option>
-            <option value="OFFLINE">OFFLINE</option>
+            <option value="ALL">{t('projects.filter_all_cctv', 'All CCTV Status')}</option>
+            <option value="ONLINE">{tStatus('ONLINE')}</option>
+            <option value="WARNING">{tStatus('WARNING')}</option>
+            <option value="OFFLINE">{tStatus('OFFLINE')}</option>
           </select>
         </div>
 
         {/* State filter & Sort row */}
         <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 text-xs text-slate-500">
           <div className="flex items-center gap-2">
-            <span>State:</span>
+            <span>{t('projects.state_label', 'State:')}</span>
             <select
               value={stateFilter}
               onChange={(e) => {
@@ -266,7 +266,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
               }}
               className="px-2 py-1 text-xs rounded border border-slate-200 bg-slate-50"
             >
-              <option value="ALL">All States</option>
+              <option value="ALL">{t('projects.all_states', 'All States')}</option>
               {states.map((st) => (
                 <option key={st} value={st}>
                   {st}
@@ -275,13 +275,12 @@ export const ProjectList: React.FC<ProjectListProps> = ({
             </select>
             <span className="text-slate-400">|</span>
             <span>
-              Showing <strong className="text-slate-900">{filteredProjects.length}</strong> matching
-              projects
+              {t('projects.showing_matching', `Showing ${filteredProjects.length} matching projects`, { count: filteredProjects.length })}
             </span>
           </div>
 
           <div className="flex items-center gap-2">
-            <span>Sort by:</span>
+            <span>{t('projects.sort_by', 'Sort by:')}</span>
             <button
               onClick={() => {
                 setSortBy('riskScore');
@@ -293,7 +292,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                   : 'hover:bg-slate-100'
               }`}
             >
-              Risk Score {sortBy === 'riskScore' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
+              {t('projects.sort_risk', 'Risk Score')} {sortBy === 'riskScore' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
             </button>
             <button
               onClick={() => {
@@ -306,7 +305,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                   : 'hover:bg-slate-100'
               }`}
             >
-              Name {sortBy === 'projectName' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
+              {t('projects.sort_name', 'Name')} {sortBy === 'projectName' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
             </button>
             <button
               onClick={() => {
@@ -319,7 +318,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                   : 'hover:bg-slate-100'
               }`}
             >
-              Beneficiaries {sortBy === 'beneficiaries' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
+              {t('projects.sort_beneficiaries', 'Beneficiaries')} {sortBy === 'beneficiaries' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
             </button>
           </div>
         </div>
@@ -366,9 +365,9 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                       <div className="text-[11px] text-slate-500">{p.state}</div>
                     </td>
                     <td className="py-3 px-4">
-                      <div className="font-semibold text-slate-900">{p.beneficiaryCount} Registered</div>
+                      <div className="font-semibold text-slate-900">{p.beneficiaryCount} {t('projects.registered_suffix', 'Registered')}</div>
                       <div className="text-[10px] text-slate-500">
-                        Avg. Att: {p.averageAttendancePercent}%
+                        {t('projects.avg_att_prefix', 'Avg. Att:')} {p.averageAttendancePercent}%
                       </div>
                     </td>
                     <td className="py-3 px-4">
@@ -380,7 +379,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                         <button
                           onClick={() => onSelectProject(p.id)}
                           className="p-1.5 rounded-md hover:bg-indigo-50 text-indigo-600 hover:text-indigo-800 transition"
-                          title="View Details"
+                          title={t('projects.view_details', 'View Details')}
                         >
                           <Eye className="w-4 h-4" />
                         </button>
@@ -389,7 +388,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                             <button
                               onClick={() => onEditProject(p)}
                               className="p-1.5 rounded-md hover:bg-slate-100 text-slate-600 hover:text-slate-800 transition"
-                              title="Edit Project"
+                              title={t('projects.edit_project', 'Edit Project')}
                             >
                               <Edit2 className="w-3.5 h-3.5" />
                             </button>
@@ -404,7 +403,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                                 }
                               }}
                               className="p-1.5 rounded-md hover:bg-rose-50 text-rose-500 hover:text-rose-700 transition"
-                              title="Delete Project"
+                              title={t('projects.delete_project', 'Delete Project')}
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -423,7 +422,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
         <div className="md:hidden divide-y divide-slate-100">
           {paginatedProjects.length === 0 ? (
             <div className="py-8 text-center text-xs text-slate-400">
-              No projects found matching the selected search criteria.
+              {t('projects.no_projects_matching', 'No projects found matching the selected search criteria.')}
             </div>
           ) : (
             paginatedProjects.map((p) => (
@@ -455,7 +454,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                 <div className="flex items-center justify-between text-[11px] text-slate-600 pt-0.5">
                   <div>
                     <span className="font-semibold text-slate-900">{p.beneficiaryCount}</span>{' '}
-                    <span className="text-[10px] text-slate-500">Beneficiaries ({p.averageAttendancePercent}% Att.)</span>
+                    <span className="text-[10px] text-slate-500">{t('dashboard.beneficiaries', 'Beneficiaries')} ({p.averageAttendancePercent}% Att.)</span>
                   </div>
                   <div>{getCCTVIndicator(p.cctvStatus, p.activeCamerasCount, p.totalCamerasCount)}</div>
                 </div>
@@ -467,7 +466,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                     className="flex-1 py-1.5 px-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs flex items-center justify-center gap-1.5 transition"
                   >
                     <Eye className="w-3.5 h-3.5" />
-                    <span>View Details</span>
+                    <span>{t('projects.view_details', 'View Details')}</span>
                   </button>
 
                   {canManage && (
@@ -475,7 +474,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                       <button
                         onClick={() => onEditProject(p)}
                         className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-600 transition"
-                        title="Edit Project"
+                        title={t('projects.edit_project', 'Edit Project')}
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
@@ -490,7 +489,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                           }
                         }}
                         className="p-1.5 rounded-lg border border-rose-200 hover:bg-rose-50 text-rose-500 transition"
-                        title="Delete Project"
+                        title={t('projects.delete_project', 'Delete Project')}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -505,8 +504,7 @@ export const ProjectList: React.FC<ProjectListProps> = ({
         {/* Pagination bar */}
         <div className="px-4 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
           <div>
-            Page <strong className="text-slate-900">{currentPage}</strong> of{' '}
-            <strong className="text-slate-900">{totalPages}</strong>
+            {t('projects.page_of', `Page ${currentPage} of ${totalPages}`, { current: currentPage, total: totalPages })}
           </div>
           <div className="flex items-center gap-2">
             <button

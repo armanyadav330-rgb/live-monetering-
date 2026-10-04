@@ -5,6 +5,7 @@ import { LandingFooter } from './LandingFooter';
 import { AuthModal } from './AuthModal';
 import { PolicyModal, PolicyType } from './PolicyModal';
 import { User, UserRole } from '../../types';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface LandingPageProps {
   onEnterPortal: (user?: User, targetView?: string) => void;
@@ -16,18 +17,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   onEnterPortal,
   availableUsers,
 }) => {
+  const { lang, t } = useTranslation();
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [lang, setLang] = useState<'EN' | 'HI'>('EN');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [selectedInitialRole, setSelectedInitialRole] = useState<UserRole>('SUPER_ADMIN');
   const [pendingTargetView, setPendingTargetView] = useState<string>('dashboard');
   const [isPolicyModalOpen, setIsPolicyModalOpen] = useState(false);
   const [selectedPolicy, setSelectedPolicy] = useState<PolicyType>('privacy');
-
-  const handleToggleLang = () => {
-    setLang((prev) => (prev === 'EN' ? 'HI' : 'EN'));
-  };
 
   const handleOpenLogin = (role?: UserRole, targetView: string = 'dashboard') => {
     if (role) {
@@ -61,7 +58,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <LandingNav
         isDarkMode={isDarkMode}
         lang={lang}
-        onToggleLang={handleToggleLang}
         onToggleTheme={() => setIsDarkMode(!isDarkMode)}
         onLoginClick={() => handleOpenLogin()}
         onLaunchDashboard={() => handleOpenLogin(undefined, 'dashboard')}
@@ -81,17 +77,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           onOpenMinistryDashboard={() => handleOpenLogin('DEPARTMENT_OFFICIAL', 'dashboard')}
         />
 
-        {/* 3. Essential 3-Pillar Overview (Simple, Clean & Purpose-Driven) */}
+        {/* 3. Essential 3-Pillar Overview */}
         <section id="features" className="py-10 sm:py-12 bg-slate-50 border-y border-slate-200">
           <div id="how-it-works" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-8">
               <h2 className="text-lg sm:text-xl font-black text-[#0B2545]">
-                {lang === 'HI' ? 'प्लेटफॉर्म के मुख्य कार्य एवं उद्देश्य' : 'Core Platform Pillars'}
+                {t('pillars.title')}
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 font-medium mt-1">
-                {lang === 'HI'
-                  ? 'अनुदान-प्राप्त संस्थानों में पूर्ण पारदर्शिता, सुरक्षा और वैधानिक अनुपालन।'
-                  : 'Ensuring total transparency, beneficiary safety, and statutory compliance.'}
+                {t('pillars.subtitle')}
               </p>
             </div>
 
@@ -106,16 +100,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </div>
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    {lang === 'HI' ? 'लाइव सक्रिय' : 'Live Feeds Active'}
+                    {t('pillars.cctv_badge')}
                   </span>
                 </div>
                 <h3 className="text-sm font-bold text-[#0B2545] mb-1.5">
-                  {lang === 'HI' ? '24×7 लाइव सीसीटीवी निगरानी' : '24×7 Live CCTV Monitoring'}
+                  {t('pillars.cctv_title')}
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  {lang === 'HI'
-                    ? 'वृद्धाश्रमों और नशा मुक्ति केंद्रों से सुरक्षित लाइव फीड व विसंगति रडार अलर्ट।'
-                    : 'Secure real-time camera streams and automated anomaly detection across assisted institutions.'}
+                  {t('pillars.cctv_desc')}
                 </p>
               </div>
 
@@ -129,16 +121,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </div>
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                    {lang === 'HI' ? 'ऑडिट तैयार' : 'Field Audits Ready'}
+                    {t('pillars.inspections_badge')}
                   </span>
                 </div>
                 <h3 className="text-sm font-bold text-[#0B2545] mb-1.5">
-                  {lang === 'HI' ? 'डिजिटल ऑन-साइट निरीक्षण' : 'On-Site Field Inspections'}
+                  {t('pillars.inspections_title')}
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  {lang === 'HI'
-                    ? 'जियो-टैग फोटो साक्ष्य, डिजिटल चेकलिस्ट और ऑन-साइट निरीक्षण डॉजियर।'
-                    : 'Standardized field audit checklists, GPS-stamped photo evidence, and digital inspection dossiers.'}
+                  {t('pillars.inspections_desc')}
                 </p>
               </div>
 
@@ -152,16 +142,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </div>
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    {lang === 'HI' ? 'कैग अनुपालन' : 'CAG Compliant'}
+                    {t('pillars.biometric_badge')}
                   </span>
                 </div>
                 <h3 className="text-sm font-bold text-[#0B2545] mb-1.5">
-                  {lang === 'HI' ? 'बायोमेट्रिक सत्यापन एवं ऑडिट' : 'Biometric Attendance Audit'}
+                  {t('pillars.biometric_title')}
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  {lang === 'HI'
-                    ? 'आधार-सत्यापित उपस्थिति मिलान और कैग अनुपालन हेतु पारदर्शी डिजिटल रिकॉर्ड।'
-                    : 'Aadhaar-authenticated beneficiary headcount reconciliation and CAG-compliant audit trails.'}
+                  {t('pillars.biometric_desc')}
                 </p>
               </div>
             </div>

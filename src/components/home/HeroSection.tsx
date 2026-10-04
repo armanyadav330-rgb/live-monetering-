@@ -1,8 +1,9 @@
 import React from 'react';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface HeroSectionProps {
-  isDarkMode: boolean;
-  lang: 'EN' | 'HI';
+  isDarkMode?: boolean;
+  lang?: string;
   onStartMonitoring: () => void;
   onExploreDemo: () => void;
   onOpenInspectionOfficerDashboard?: () => void;
@@ -13,7 +14,6 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
   isDarkMode: _isDarkMode,
-  lang,
   onStartMonitoring,
   onExploreDemo: _onExploreDemo,
   onOpenInspectionOfficerDashboard,
@@ -21,6 +21,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenDistrictDashboard,
   onOpenMinistryDashboard,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <section id="preview" className="relative overflow-hidden pt-8 sm:pt-12 pb-12 sm:pb-16 bg-white text-black">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,36 +34,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF671F]" />
             </span>
             <span>
-              {lang === 'HI'
-                ? 'भारत सरकार • सामाजिक न्याय और अधिकारिता मंत्रालय'
-                : 'Government of India • Ministry of Social Justice and Empowerment'}
+              {t('hero.badge')}
             </span>
           </div>
 
           {/* Main Headline */}
           <h1 className="text-lg sm:text-2xl lg:text-3xl font-extrabold tracking-tight leading-snug text-[#0B2545]">
-            {lang === 'HI' ? (
-              <>
-                सत्य निरीक्षक · राष्ट्रीय संस्थागत निगरानी एवं ऑडिट कमान ग्रिड
-              </>
-            ) : (
-              <>
-                Satya Nirakshak · National Surveillance &amp; Inspection Command Grid
-              </>
-            )}
+            {t('hero.title')}
           </h1>
 
           <div className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">
-            {lang === 'HI'
-              ? 'सामाजिक न्याय और अधिकारिता विभाग (DoSJE)'
-              : 'Department of Social Justice and Empowerment (DoSJE)'}
+            {t('hero.dept')}
           </div>
 
           {/* Simple, Understandable Purpose Statement */}
           <p className="text-sm sm:text-base text-slate-700 max-w-2xl mx-auto leading-relaxed font-medium">
-            {lang === 'HI'
-              ? 'देश भर के अनुदान-प्राप्त वृद्धाश्रमों, नशा मुक्ति केंद्रों (IRCAs) और दिव्यांगजन पुनर्वास संस्थानों में 24×7 लाइव सीसीटीवी निगरानी, बायोमेट्रिक उपस्थिति सत्यापन और ऑन-साइट फील्ड निरीक्षण का केंद्रीय डिजिटल प्लेटफॉर्म।'
-              : 'A unified digital oversight portal enabling 24×7 live CCTV monitoring, biometric attendance verification, and on-site field inspections across grant-in-aid institutions nationwide.'}
+            {t('hero.desc')}
           </p>
 
           {/* Quick Role-based Access Guide */}
@@ -74,18 +62,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="flex items-center justify-between">
                 <span className="text-xl">🛡️</span>
                 <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-amber-600 text-white tracking-wider shadow-2xs">
-                  SUPER ADMIN
+                  {t('role.super_admin', 'SUPER ADMIN')}
                 </span>
               </div>
               <div className="font-bold text-xs sm:text-sm text-amber-950 mt-1 flex items-center justify-between group-hover:text-amber-700 transition">
-                <span>{lang === 'HI' ? 'सुपर एडमिन' : 'Super Admin'}</span>
+                <span>{t('hero.super_admin_title')}</span>
                 <span className="text-amber-600 font-bold transition-transform group-hover:translate-x-1">→</span>
               </div>
               <div className="text-[11px] text-slate-700 mt-1 leading-tight">
-                {lang === 'HI' ? 'संपूर्ण राष्ट्रीय नियंत्रण, यूजर रोल्स व ऑडिट कंसोल' : 'Full national grid control, user roles & audit console'}
+                {t('hero.super_admin_desc')}
               </div>
               <div className="mt-2.5 pt-1.5 border-t border-amber-200/70 flex items-center justify-between text-[10px] font-bold text-amber-700 group-hover:text-amber-900">
-                <span>{lang === 'HI' ? 'लॉगिन करें' : 'Login as Super Admin'}</span>
+                <span>{t('hero.super_admin_login')}</span>
                 <span className="text-xs font-mono">🔒</span>
               </div>
             </div>
@@ -98,18 +86,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="flex items-center justify-between">
                 <span className="text-xl">🕵️‍♂️</span>
                 <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-indigo-600 text-white tracking-wider shadow-2xs">
-                  INSPECTOR
+                  {t('role.inspection_officer', 'INSPECTOR')}
                 </span>
               </div>
               <div className="font-bold text-xs sm:text-sm text-indigo-950 mt-1 flex items-center justify-between group-hover:text-indigo-600 transition">
-                <span>{lang === 'HI' ? 'निरीक्षण अधिकारी' : 'Inspection Officers'}</span>
+                <span>{t('hero.inspector_title')}</span>
                 <span className="text-indigo-600 font-bold transition-transform group-hover:translate-x-1">→</span>
               </div>
               <div className="text-[11px] text-slate-700 mt-1 leading-tight">
-                {lang === 'HI' ? 'सरप्राइज वीडियो कॉल, ग्राउंड ऑडिट व फील्ड रिपोर्ट' : 'Surprise video calls, field evidence & audit reports'}
+                {t('hero.inspector_desc')}
               </div>
               <div className="mt-2.5 pt-1.5 border-t border-indigo-200/70 flex items-center justify-between text-[10px] font-bold text-indigo-700 group-hover:text-indigo-900">
-                <span>{lang === 'HI' ? 'लॉगिन करें' : 'Login as Inspector'}</span>
+                <span>{t('hero.inspector_login')}</span>
                 <span className="text-xs font-mono">🔒</span>
               </div>
             </div>
@@ -121,14 +109,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             >
               <div className="text-xl">🏛️</div>
               <div className="font-bold text-xs sm:text-sm text-black mt-1 group-hover:text-[#0B2545] transition flex items-center justify-between">
-                <span>{lang === 'HI' ? 'जिला कल्याण प्रशासन' : 'District Authorities'}</span>
+                <span>{t('hero.district_title')}</span>
                 <span className="text-slate-400 group-hover:text-[#0B2545] font-bold transition-transform group-hover:translate-x-1">→</span>
               </div>
               <div className="text-[11px] text-slate-600 mt-1 leading-tight">
-                {lang === 'HI' ? 'क्षेत्रीय विसंगतियां व सत्यापन' : 'Regional anomaly reviews & grant checks'}
+                {t('hero.district_desc')}
               </div>
               <div className="mt-2.5 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] font-bold text-slate-600 group-hover:text-[#0B2545]">
-                <span>{lang === 'HI' ? 'लॉगिन करें' : 'Login as Authority'}</span>
+                <span>{t('hero.district_login')}</span>
                 <span className="text-xs font-mono">🔒</span>
               </div>
             </div>
@@ -140,14 +128,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             >
               <div className="text-xl">🇮🇳</div>
               <div className="font-bold text-xs sm:text-sm text-black mt-1 group-hover:text-[#0B2545] transition flex items-center justify-between">
-                <span>{lang === 'HI' ? 'केंद्रीय मंत्रालय' : 'Central Ministry Apex'}</span>
+                <span>{t('hero.ministry_title')}</span>
                 <span className="text-slate-400 group-hover:text-[#0B2545] font-bold transition-transform group-hover:translate-x-1">→</span>
               </div>
               <div className="text-[11px] text-slate-600 mt-1 leading-tight">
-                {lang === 'HI' ? 'राष्ट्रीय ऑडिट, बजट व कैग अनुमोदन' : 'National audit, budget & CAG clearance'}
+                {t('hero.ministry_desc')}
               </div>
               <div className="mt-2.5 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] font-bold text-slate-600 group-hover:text-[#0B2545]">
-                <span>{lang === 'HI' ? 'लॉगिन करें' : 'Login as Ministry'}</span>
+                <span>{t('hero.ministry_login')}</span>
                 <span className="text-xs font-mono">🔒</span>
               </div>
             </div>

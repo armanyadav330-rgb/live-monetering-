@@ -14,7 +14,7 @@ export interface IndianLanguage {
   sampleGreeting: string;
   sampleGreetingEnglish: string;
   supportedInPortalUI: boolean;
-  portalCode?: 'en' | 'hi' | 'bn' | 'te' | 'mr' | 'ta';
+  portalCode?: 'en' | 'hi' | 'bn' | 'te' | 'mr' | 'ta' | 'gu' | 'kn' | 'ml' | 'pa' | 'or' | 'as' | 'ur';
   bhashiniCode?: string;
   description: string;
 }
@@ -162,7 +162,8 @@ export const INDIAN_LANGUAGES: IndianLanguage[] = [
     region: 'west',
     sampleGreeting: 'નમસ્તે! સામાજિક ન્યાય અને સશક્તિકરણ વિભાગમાં આપનું સ્વાગત છે.',
     sampleGreetingEnglish: 'Namaste! Welcome to the Department of Social Justice & Empowerment.',
-    supportedInPortalUI: false,
+    supportedInPortalUI: true,
+    portalCode: 'gu',
     bhashiniCode: 'gu',
     description: 'Official language of Gujarat, birthplace language of Mahatma Gandhi and Sardar Vallabhbhai Patel.',
   },
@@ -182,7 +183,8 @@ export const INDIAN_LANGUAGES: IndianLanguage[] = [
     region: 'north',
     sampleGreeting: 'آداب! سماجی انصاف اور تفویض اختیارات کے شعبے میں خوش آمدید۔',
     sampleGreetingEnglish: 'Adaab! Welcome to the Department of Social Justice & Empowerment.',
-    supportedInPortalUI: false,
+    supportedInPortalUI: true,
+    portalCode: 'ur',
     bhashiniCode: 'ur',
     description: 'Official 8th schedule language celebrated for its lyrical poetry, ghazals, and constitutional status.',
   },
@@ -202,7 +204,8 @@ export const INDIAN_LANGUAGES: IndianLanguage[] = [
     region: 'south',
     sampleGreeting: 'ನಮಸ್ಕಾರ! ಸಾಮಾಜಿಕ ನ್ಯಾಯ ಮತ್ತು ಸಬಲೀಕರಣ ಇಲಾಖೆಗೆ ಸ್ವಾಗತ.',
     sampleGreetingEnglish: 'Namaskara! Welcome to the Department of Social Justice & Empowerment.',
-    supportedInPortalUI: false,
+    supportedInPortalUI: true,
+    portalCode: 'kn',
     bhashiniCode: 'kn',
     description: 'Classical language of Karnataka with ancient epigraphy like Halmidi inscription and Halegannada epics.',
   },
@@ -222,7 +225,8 @@ export const INDIAN_LANGUAGES: IndianLanguage[] = [
     region: 'east',
     sampleGreeting: 'ନମସ୍କାର! ସାମାଜିକ ନ୍ୟାୟ ଏବଂ ସଶକ୍ତିକରଣ ବିଭାଗକୁ ଆପଣଙ୍କୁ ସ୍ୱାଗତ।',
     sampleGreetingEnglish: 'Namaskar! Welcome to the Department of Social Justice & Empowerment.',
-    supportedInPortalUI: false,
+    supportedInPortalUI: true,
+    portalCode: 'or',
     bhashiniCode: 'or',
     description: 'First Indo-Aryan language to be granted Classical Language status in India, dating back over 1,500 years.',
   },
@@ -242,7 +246,8 @@ export const INDIAN_LANGUAGES: IndianLanguage[] = [
     region: 'south',
     sampleGreeting: 'നമസ്കാരം! സാമൂഹിക നീതി, ശാക്തീകരണ വകുപ്പിലേക്ക് സ്വാഗതം.',
     sampleGreetingEnglish: 'Namaskaram! Welcome to the Department of Social Justice & Empowerment.',
-    supportedInPortalUI: false,
+    supportedInPortalUI: true,
+    portalCode: 'ml',
     bhashiniCode: 'ml',
     description: 'Classical language of Kerala and Lakshadweep, known for poetic tradition and high literacy.',
   },
@@ -262,7 +267,8 @@ export const INDIAN_LANGUAGES: IndianLanguage[] = [
     region: 'north',
     sampleGreeting: 'ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਸਮਾਜਿਕ ਨਿਆਂ ਅਤੇ ਅਧਿਕਾਰਤਾ ਵਿਭਾਗ ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ।',
     sampleGreetingEnglish: 'Sat Sri Akal! Welcome to the Department of Social Justice & Empowerment.',
-    supportedInPortalUI: false,
+    supportedInPortalUI: true,
+    portalCode: 'pa',
     bhashiniCode: 'pa',
     description: 'Language of the land of five rivers, written in Gurmukhi, widely spoken across Northern India and diaspora.',
   },
@@ -282,7 +288,8 @@ export const INDIAN_LANGUAGES: IndianLanguage[] = [
     region: 'northeast',
     sampleGreeting: 'নমস্কাৰ! সামাজিক ন্যায় আৰু সশক্তিকৰণ বিভাগলৈ আপোনাক স্বাগতম।',
     sampleGreetingEnglish: 'Nomoskar! Welcome to the Department of Social Justice & Empowerment.',
-    supportedInPortalUI: false,
+    supportedInPortalUI: true,
+    portalCode: 'as',
     bhashiniCode: 'as',
     description: 'Official language of Assam and the gateway to Northeast India, designated a Classical Language in 2024.',
   },

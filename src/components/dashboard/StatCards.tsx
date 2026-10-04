@@ -46,7 +46,7 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
             <span className="text-xs font-bold text-[#0B2545] uppercase tracking-wider block">
               {t('dashboard.stat_total_projects')}
             </span>
-            <span className="text-[10px] text-slate-500 font-medium">DoSJE Projects</span>
+            <span className="text-[10px] text-slate-500 font-medium">{t('dashboard.stat_sub_projects', 'DoSJE Projects')}</span>
           </div>
           <div className="p-2 rounded-lg bg-[#0B2545]/10 text-[#0B2545]">
             <Building2 className="w-4 h-4" />
@@ -71,7 +71,7 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
             <span className="text-xs font-bold text-[#047857] uppercase tracking-wider block">
               {t('dashboard.stat_live_cctv')}
             </span>
-            <span className="text-[10px] text-slate-500 font-medium">24×7 Feeds</span>
+            <span className="text-[10px] text-slate-500 font-medium">{t('dashboard.stat_sub_cctv', '24×7 Feeds')}</span>
           </div>
           <div className="p-2 rounded-lg bg-emerald-50 text-emerald-700">
             <Video className="w-4 h-4" />
@@ -94,7 +94,7 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
             <span className="text-xs font-bold text-[#1E3A8A] uppercase tracking-wider block">
               {t('dashboard.stat_inspections')}
             </span>
-            <span className="text-[10px] text-slate-500 font-medium">Audits & Visits</span>
+            <span className="text-[10px] text-slate-500 font-medium">{t('dashboard.stat_sub_inspections', 'Audits & Visits')}</span>
           </div>
           <div className="p-2 rounded-lg bg-blue-50 text-blue-700">
             <ClipboardList className="w-4 h-4" />
@@ -107,7 +107,7 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
         <div className="mt-2 text-[11px] text-slate-600 flex justify-between border-t border-slate-200 pt-2 font-medium">
           <span className="text-amber-700 font-bold">{t('status.pending')}: {pendingInspections}</span>
           <span className="text-emerald-700 font-semibold flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5" /> GPS
+            <CheckCircle2 className="w-3.5 h-3.5" /> {t('dashboard.gps_verified', 'GPS')}
           </span>
         </div>
       </div>
@@ -119,7 +119,7 @@ export const StatCards: React.FC<StatCardsProps> = ({ projects = [], inspections
             <span className="text-xs font-bold text-[#C2410C] uppercase tracking-wider block">
               {t('dashboard.stat_critical_alerts')}
             </span>
-            <span className="text-[10px] text-slate-500 font-medium">Compliance Radar</span>
+            <span className="text-[10px] text-slate-500 font-medium">{t('dashboard.stat_sub_alerts', 'Compliance Radar')}</span>
           </div>
           <div className="p-2 rounded-lg bg-amber-50 text-amber-700">
             <AlertTriangle className="w-4 h-4" />

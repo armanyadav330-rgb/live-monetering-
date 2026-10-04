@@ -14,6 +14,7 @@ interface LanguageContextType {
   setLanguage: (lang: SupportedLanguage) => void;
   languages: LanguageOption[];
   currentLanguageInfo: LanguageOption;
+  isRtl: boolean;
   t: (key: string, fallback?: string, params?: Record<string, string | number>) => string;
   tRole: (role?: string) => string;
   tStatus: (status?: string) => string;
@@ -29,12 +30,13 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       if (stored && SUPPORTED_LANGUAGES.some((l) => l.code === stored)) {
         return stored;
       }
-      // Check browser language or default to 'en'
       return 'en';
     } catch {
       return 'en';
     }
   });
+
+  const isRtl = useMemo(() => language === 'ur', [language]);
 
   const setLanguage = (newLang: SupportedLanguage) => {
     if (SUPPORTED_LANGUAGES.some((l) => l.code === newLang)) {
@@ -50,6 +52,15 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   useEffect(() => {
     try {
       document.documentElement.lang = language;
+      if (language === 'ur') {
+        document.documentElement.dir = 'rtl';
+        document.documentElement.classList.add('rtl');
+        document.documentElement.classList.remove('ltr');
+      } else {
+        document.documentElement.dir = 'ltr';
+        document.documentElement.classList.add('ltr');
+        document.documentElement.classList.remove('rtl');
+      }
     } catch {
       // safe fallback
     }
@@ -61,7 +72,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const t = (key: string, fallback?: string, params?: Record<string, string | number>): string => {
     const langDict = translations[language] || translations['en'];
-    let text = langDict[key];
+    let text = langDict?.[key];
 
     if (!text && language !== 'en') {
       // Fallback to English
@@ -86,7 +97,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       });
     }
 
-    return text;
+    return text || '';
   };
 
   // Helper to translate user roles dynamically in the active language
@@ -94,185 +105,345 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     if (!role) return '';
     const cleanRole = role.toUpperCase();
     const roleKey = `role.${cleanRole.toLowerCase()}`;
+    const translated = t(roleKey, '');
+    if (translated && translated !== roleKey) {
+      return translated;
+    }
 
-    // Common role labels in each language
-    const roleLabels: Record<SupportedLanguage, Record<string, string>> = {
-      en: {
-        SUPER_ADMIN: 'Super Admin (Apex Command)',
-        DEPARTMENT_OFFICIAL: 'Department Official (Joint Secretary)',
-        INSPECTION_OFFICER: 'Field Inspection Officer',
-        STATE_DISTRICT_AUTHORITY: 'District Authority (DSWO)',
-        NGO_INSTITUTE: 'NGO / Institute Superintendent',
-        VIEWER: 'Public Observer',
+    // Role fallbacks across common Indian languages
+    const roleLabels: Record<string, Record<string, string>> = {
+      SUPER_ADMIN: {
+        en: 'Super Admin (Apex Command)',
+        hi: 'सुपर एडमिन (केंद्रीय मंत्रालय)',
+        bn: 'সুপার অ্যাডমিন (কেন্দ্রীয় মন্ত্রণালয়)',
+        te: 'సూపర్ అడ్మిన్ (కేంద్ర మంత్రిత్వ శాఖ)',
+        mr: 'सुपर ॲडमिन (केंद्रीय मंत्रालय)',
+        ta: 'முதன்மை நிர்வாகி (மத்திய அமைச்சகம்)',
+        gu: 'સુપર એડમિન (કેન્દ્રીય મંત્રાલય)',
+        kn: 'ಸೂಪರ್ ಅಡ್ಮಿನ್ (ಕೇಂದ್ರ ಸಚಿವಾಲಯ)',
+        ml: 'സൂപ്പർ അഡ്മിൻ (കേന്ദ്ര മന്ത്രാലയം)',
+        pa: 'ਸੁਪਰ ਐਡਮਿਨ (ਕੇਂਦਰੀ ਮੰਤਰਾਲਾ)',
+        or: 'ସୁପର ଆଡମିନ (କେନ୍ଦ୍ରୀୟ ମନ୍ତ୍ରଣାଳୟ)',
+        as: 'ছুপাৰ এডমিন (কেন্দ্ৰীয় মন্ত্ৰালয়)',
+        ur: 'سپر ایڈمن (مرکزی وزارت)',
       },
-      hi: {
-        SUPER_ADMIN: 'सुपर एडमिन (केंद्रीय मंत्रालय)',
-        DEPARTMENT_OFFICIAL: 'विभागीय अधिकारी (संयुक्त सचिव / राज्य स्तर)',
-        INSPECTION_OFFICER: 'निरीक्षण अधिकारी (फील्ड ऑडिटर)',
-        STATE_DISTRICT_AUTHORITY: 'जिला समाज कल्याण अधिकारी (DSWO)',
-        NGO_INSTITUTE: 'एनजीओ / संस्थान अधीक्षक',
-        VIEWER: 'सार्वजनिक पर्यवेक्षक',
+      DEPARTMENT_OFFICIAL: {
+        en: 'Department Official (Joint Secretary)',
+        hi: 'विभागीय अधिकारी (संयुक्त सचिव / राज्य स्तर)',
+        bn: 'বিভাগীয় কর্মকর্তা (যুগ্ম সচিব)',
+        te: 'విభాగ అధికారి (జాయింట్ సెక్రటరీ)',
+        mr: 'विभागीय अधिकारी (संयुक्त सचिव)',
+        ta: 'துறை அதிகாரி (இணைச் செயலாளர்)',
+        gu: 'વિભાગીય અધિકારી (સંયુક્ત સચિવ)',
+        kn: 'ಇಲಾಖಾ ಅಧಿಕಾರಿ (ಜಂಟಿ ಕಾರ್ಯದರ್ಶಿ)',
+        ml: 'വകുപ്പ് ഉദ്യോഗസ്ഥൻ (ജോയിന്റ് സെക്രട്ടറി)',
+        pa: 'ਵਿਭਾਗੀ ਅਧਿਕਾਰੀ (ਸੰਯੁਕਤ ਸਕੱਤਰ)',
+        or: 'ବିଭାଗୀୟ ଅଧିକାରୀ (ଯୁଗ୍ମ ସଚିବ)',
+        as: 'বিভাগীয় বিষয়া (যুটীয়া সচিব)',
+        ur: 'محکمہ جاتی افسر (جوائنٹ سکریٹری)',
       },
-      bn: {
-        SUPER_ADMIN: 'সুপার অ্যাডমিন (কেন্দ্রীয় মন্ত্রণালয়)',
-        DEPARTMENT_OFFICIAL: 'বিভাগীয় কর্মকর্তা (যুগ্ম সচিব)',
-        INSPECTION_OFFICER: 'মাঠ পরিদর্শন কর্মকর্তা',
-        STATE_DISTRICT_AUTHORITY: 'জেলা সমাজকল্যাণ কর্মকর্তা (DSWO)',
-        NGO_INSTITUTE: 'এনজিও / প্রতিষ্ঠান সুপারিনটেনডেন্ট',
-        VIEWER: 'সাধারণ পর্যবেক্ষক',
+      INSPECTION_OFFICER: {
+        en: 'Field Inspection Officer',
+        hi: 'निरीक्षण अधिकारी (फील्ड ऑडिटर)',
+        bn: 'মাঠ পরিদর্শন কর্মকর্তা',
+        te: 'ఫీల్డ్ తనిఖీ అధికారి',
+        mr: 'क्षेत्रीय तपासणी अधिकारी',
+        ta: 'கள ஆய்வு அதிகாரி',
+        gu: 'ક્ષેત્ર નિરીક્ષણ અધિકારી',
+        kn: 'ಕ್ಷೇತ್ರ ಪರಿಶೀಲನಾ ಅಧಿಕಾರಿ',
+        ml: 'ഫീൽഡ് പരിശോധനാ ഉദ്യോഗസ്ഥൻ',
+        pa: 'ਫੀਲਡ ਨਿਰੀਖਣ ਅਧਿਕਾਰੀ',
+        or: 'କ୍ଷେତ୍ର ପରିଦର୍ଶନ ଅଧିକାରୀ',
+        as: 'ক্ষেত্ৰ পৰিদৰ্শন বিষয়া',
+        ur: 'فیلڈ معائنہ افسر',
       },
-      ta: {
-        SUPER_ADMIN: 'முதன்மை நிர்வாகி (மத்திய அமைச்சகம்)',
-        DEPARTMENT_OFFICIAL: 'துறை அதிகாரி (இணைச் செயலாளர்)',
-        INSPECTION_OFFICER: 'கள ஆய்வு அதிகாரி',
-        STATE_DISTRICT_AUTHORITY: 'மாவட்ட சமூக நல அலுவலர் (DSWO)',
-        NGO_INSTITUTE: 'என்ஜிஓ / நிறுவன கண்காணிப்பாளர்',
-        VIEWER: 'பொது பார்வையாளர்',
+      STATE_DISTRICT_AUTHORITY: {
+        en: 'District Authority (DSWO)',
+        hi: 'जिला समाज कल्याण अधिकारी (DSWO)',
+        bn: 'জেলা সমাজকল্যাণ কর্মকর্তা (DSWO)',
+        te: 'జిల్లా సాంఘిక సంక్షేమ అధికారి (DSWO)',
+        mr: 'जिल्हा समाजकल्याण अधिकारी (DSWO)',
+        ta: 'மாவட்ட சமூக நல அலுவலர் (DSWO)',
+        gu: 'જિલ્લા સમાજ કલ્યાણ અધિકારી (DSWO)',
+        kn: 'ಜಿಲ್ಲಾ ಸಮಾಜ ಕಲ್ಯಾಣಾಧಿಕಾರಿ (DSWO)',
+        ml: 'ജില്ലാ സാമൂഹിക ക്ഷേമ ഓഫീസർ (DSWO)',
+        pa: 'ਜ਼ਿਲ੍ਹਾ ਸਮਾਜ ਭਲਾਈ ਅਧਿਕਾਰੀ (DSWO)',
+        or: 'ଜିଲ୍ଲା ସମାଜ ମଙ୍ଗଳ ଅଧିକାରୀ (DSWO)',
+        as: 'জিলা সমাজ কল্যাণ বিষয়া (DSWO)',
+        ur: 'ضلعی سماجی بہبود افسر (DSWO)',
       },
-      te: {
-        SUPER_ADMIN: 'సూపర్ అడ్మిన్ (కేంద్ర మంత్రిత్వ శాఖ)',
-        DEPARTMENT_OFFICIAL: 'విభాగ అధికారి (జాయింట్ సెక్రటరీ)',
-        INSPECTION_OFFICER: 'ఫీల్డ్ తనిఖీ అధికారి',
-        STATE_DISTRICT_AUTHORITY: 'జిల్లా సాంఘిక సంక్షేమ అధికారి (DSWO)',
-        NGO_INSTITUTE: 'ఎన్జీఓ / సంస్థ సూపరింటెండెంట్',
-        VIEWER: 'ప్రజా పరిశీలకుడు',
+      NGO_INSTITUTE: {
+        en: 'NGO / Institute Superintendent',
+        hi: 'एनजीओ / संस्थान अधीक्षक',
+        bn: 'এনজিও / প্রতিষ্ঠান সুপারিনটেনডেন্ট',
+        te: 'ఎన్జీఓ / సంస్థ సూపరింటెండెంట్',
+        mr: 'एनजीओ / संस्था अधीक्षक',
+        ta: 'என்ஜிஓ / நிறுவன கண்காணிப்பாளர்',
+        gu: 'એનજીઓ / સંસ્થા અધિક્ષક',
+        kn: 'ಎನ್‌ಜಿಒ / ಸಂಸ್ಥೆಯ ಅಧೀಕ್ಷಕರು',
+        ml: 'എൻ‌ജി‌ഒ / ഇൻസ്റ്റിറ്റ്യൂട്ട് സൂപ്രണ്ട്',
+        pa: 'ਐਨਜੀਓ / ਸੰਸਥਾ ਸੁਪਰਡੈਂਟ',
+        or: 'ଏନଜିଓ / ଅନୁଷ୍ଠାନ ଅଧୀକ୍ଷକ',
+        as: 'এনজিঅ’ / প্ৰতিষ্ঠান অধীক্ষক',
+        ur: 'این جی او / ادارہ سپرنٹنڈنٹ',
       },
-      mr: {
-        SUPER_ADMIN: 'सुपर ॲडमिन (केंद्रीय मंत्रालय)',
-        DEPARTMENT_OFFICIAL: 'विभागीय अधिकारी (संयुक्त सचिव)',
-        INSPECTION_OFFICER: 'क्षेत्रीय तपासणी अधिकारी',
-        STATE_DISTRICT_AUTHORITY: 'जिल्हा समाजकल्याण अधिकारी (DSWO)',
-        NGO_INSTITUTE: 'एनजीओ / संस्था अधीक्षक',
-        VIEWER: 'सार्वजनिक निरीक्षक',
+      VIEWER: {
+        en: 'Public Observer',
+        hi: 'सार्वजनिक पर्यवेक्षक',
+        bn: 'সাধারণ পর্যবেক্ষক',
+        te: 'ప్రజా పరిశీలకుడు',
+        mr: 'सार्वजनिक निरीक्षक',
+        ta: 'பொது பார்வையாளர்',
+        gu: 'જાહેર નિરીક્ષક',
+        kn: 'ಸಾರ್ವಜನಿಕ ವೀಕ್ಷಕರು',
+        ml: 'പൊതു നിരീക്ഷകൻ',
+        pa: 'ਜਨਤਕ ਨਿਰੀਖਕ',
+        or: 'ସର୍ବସାଧାରଣ ପର୍ଯ୍ୟବେକ୍ଷକ',
+        as: 'সাধাৰণ পৰ্যবেক্ষক',
+        ur: 'عوامی مبصر',
       },
     };
 
-    const currentDict = roleLabels[language] || roleLabels['en'];
-    return currentDict[cleanRole] || roleLabels['en'][cleanRole] || role.replace(/_/g, ' ');
+    const map = roleLabels[cleanRole];
+    if (map) {
+      return map[language] || map['en'] || cleanRole.replace(/_/g, ' ');
+    }
+    return role.replace(/_/g, ' ');
   };
 
   // Helper to translate status tags dynamically
   const tStatus = (status?: string): string => {
     if (!status) return '';
     const clean = status.toUpperCase();
-    const statusMap: Record<SupportedLanguage, Record<string, string>> = {
-      en: {
-        ACTIVE: 'Active',
-        PENDING: 'Pending',
-        IN_PROGRESS: 'In Progress',
-        COMPLETED: 'Completed',
-        VERIFIED: 'Verified',
-        SUSPENDED: 'Suspended',
-        UNDER_REVIEW: 'Under Review',
-        SCHEDULED: 'Scheduled',
-        CANCELLED: 'Cancelled',
+    const statusKey = `status.${clean.toLowerCase()}`;
+    const translated = t(statusKey, '');
+    if (translated && translated !== statusKey) {
+      return translated;
+    }
+
+    const statusMap: Record<string, Record<string, string>> = {
+      ACTIVE: {
+        en: 'Active',
+        hi: 'सक्रिय',
+        bn: 'সক্রিয়',
+        te: 'యాక్టివ్',
+        mr: 'सक्रिय',
+        ta: 'செயலில்',
+        gu: 'સક્રિય',
+        kn: 'ಸಕ್ರಿಯ',
+        ml: 'സജീവം',
+        pa: 'ਸਰਗਰਮ',
+        or: 'ସକ୍ରିୟ',
+        as: 'সক্ৰিয়',
+        ur: 'فعال',
       },
-      hi: {
-        ACTIVE: 'सक्रिय',
-        PENDING: 'लंबित',
-        IN_PROGRESS: 'प्रगति पर',
-        COMPLETED: 'पूर्ण',
-        VERIFIED: 'सत्यापित',
-        SUSPENDED: 'निलंबित',
-        UNDER_REVIEW: 'समीक्षाधीन',
-        SCHEDULED: 'निर्धारित',
-        CANCELLED: 'रद्द',
+      PENDING: {
+        en: 'Pending',
+        hi: 'लंबित',
+        bn: 'মুলতবি',
+        te: 'పెండింగ్',
+        mr: 'प्रलंबित',
+        ta: 'நிலுவையில்',
+        gu: 'બાકી',
+        kn: 'ಬಾಕಿ',
+        ml: 'തീർച്ചപ്പെടുത്തിയിട്ടില്ല',
+        pa: 'ਬਕਾਇਆ',
+        or: 'ବାକି',
+        as: 'বাকী থকা',
+        ur: 'زیر التواء',
       },
-      bn: {
-        ACTIVE: 'সক্রিয়',
-        PENDING: 'মুলতবি',
-        IN_PROGRESS: 'চলমান',
-        COMPLETED: 'সম্পন্ন',
-        VERIFIED: 'যাচাইকৃত',
-        SUSPENDED: 'স্থগিত',
-        UNDER_REVIEW: 'পর্যালোচনাধীন',
-        SCHEDULED: 'নির্ধারিত',
-        CANCELLED: 'বাতিল',
+      IN_PROGRESS: {
+        en: 'In Progress',
+        hi: 'प्रगति पर',
+        bn: 'চলমান',
+        te: 'పురోగతిలో ఉంది',
+        mr: 'प्रगतीपथावर',
+        ta: 'செயல்பாட்டில்',
+        gu: 'પ્રગતિમાં',
+        kn: 'ಪ್ರಗತಿಯಲ್ಲಿದೆ',
+        ml: 'പുരോഗമിക്കുന്നു',
+        pa: 'ਪ੍ਰਗਤੀ ਅਧੀਨ',
+        or: 'ଚାଲୁଅଛି',
+        as: 'চলি থকা',
+        ur: 'جاری ہے',
       },
-      ta: {
-        ACTIVE: 'செயலில்',
-        PENDING: 'நிலுவையில்',
-        IN_PROGRESS: 'செயல்பாட்டில்',
-        COMPLETED: 'முடிந்தது',
-        VERIFIED: 'சரிபார்க்கப்பட்டது',
-        SUSPENDED: 'நிறுத்தி வைக்கப்பட்டது',
-        UNDER_REVIEW: 'மதிப்பாய்வில்',
-        SCHEDULED: 'திட்டமிடப்பட்டது',
-        CANCELLED: 'ரத்து செய்யப்பட்டது',
+      COMPLETED: {
+        en: 'Completed',
+        hi: 'पूर्ण',
+        bn: 'সম্পন্ন',
+        te: 'పూర్తయింది',
+        mr: 'पूर्ण',
+        ta: 'முடிந்தது',
+        gu: 'પૂર્ણ',
+        kn: 'ಪೂರ್ಣಗೊಂಡಿದೆ',
+        ml: 'പൂർത്തിയായി',
+        pa: 'ਮੁਕੰਮਲ',
+        or: 'ସମ୍ପନ୍ନ',
+        as: 'সম্পূৰ্ণ হ’ল',
+        ur: 'مکمل',
       },
-      te: {
-        ACTIVE: 'యాక్టివ్',
-        PENDING: 'పెండింగ్',
-        IN_PROGRESS: 'పురోగతిలో ఉంది',
-        COMPLETED: 'పూర్తయింది',
-        VERIFIED: 'ధృవీకరించబడింది',
-        SUSPENDED: 'సస్పెండ్ చేయబడింది',
-        UNDER_REVIEW: 'సమీక్షలో ఉంది',
-        SCHEDULED: 'షెడ్యూల్ చేయబడింది',
-        CANCELLED: 'రద్దు చేయబడింది',
+      VERIFIED: {
+        en: 'Verified',
+        hi: 'सत्यापित',
+        bn: 'যাচাইকৃত',
+        te: 'ధృవీకరించబడింది',
+        mr: 'सत्यापित',
+        ta: 'சரிபார்க்கப்பட்டது',
+        gu: 'ચકાસાયેલ',
+        kn: 'ಪರಿಶೀಲಿಸಲಾಗಿದೆ',
+        ml: 'പരിശോധിച്ചു',
+        pa: 'ਪ੍ਰਮਾਣਿਤ',
+        or: 'ଯାଞ୍ଚ ହୋଇଛି',
+        as: 'পৰীক্ষিত',
+        ur: 'تصدیق شدہ',
       },
-      mr: {
-        ACTIVE: 'सक्रिय',
-        PENDING: 'प्रलंबित',
-        IN_PROGRESS: 'प्रगतीपथावर',
-        COMPLETED: 'पूर्ण',
-        VERIFIED: 'सत्यापित',
-        SUSPENDED: 'निलंबित',
-        UNDER_REVIEW: 'पुनरावलोकनाधीन',
-        SCHEDULED: 'नियोजित',
-        CANCELLED: 'रद्द केले',
+      SUSPENDED: {
+        en: 'Suspended',
+        hi: 'निलंबित',
+        bn: 'স্থগিত',
+        te: 'సస్పెండ్ చేయబడింది',
+        mr: 'निलंबित',
+        ta: 'நிறுத்தி வைக்கப்பட்டது',
+        gu: 'નિલંબિત',
+        kn: 'ಅಮಾನತುಗೊಳಿಸಲಾಗಿದೆ',
+        ml: 'സസ്പെൻഡ് ചെയ്തു',
+        pa: 'ਮੁਅੱਤਲ',
+        or: 'ନିଲମ୍ବିତ',
+        as: 'স্থগিত',
+        ur: 'معطل',
+      },
+      UNDER_REVIEW: {
+        en: 'Under Review',
+        hi: 'समीक्षाधीन',
+        bn: 'পর্যালোচনাধীন',
+        te: 'సమీక్షలో ఉంది',
+        mr: 'पुनरावलोकनाधीन',
+        ta: 'மதிப்பாய்வில்',
+        gu: 'સમીક્ષા હેઠળ',
+        kn: 'ಪರಿಶೀಲನೆಯಲ್ಲಿದೆ',
+        ml: 'പരിശോധനയിലാണ്',
+        pa: 'ਸਮੀਖਿਆ ਅਧੀਨ',
+        or: 'ସମୀକ୍ଷାଧୀନ',
+        as: 'পৰ্যালোচনাত আছে',
+        ur: 'زیر غور',
+      },
+      SCHEDULED: {
+        en: 'Scheduled',
+        hi: 'निर्धारित',
+        bn: 'নির্ধারিত',
+        te: 'షెడ్యూల్ చేయబడింది',
+        mr: 'नियोजित',
+        ta: 'திட்டமிடப்பட்டது',
+        gu: 'નિયુક્ત',
+        kn: 'ನಿಗದಿಪಡಿಸಲಾಗಿದೆ',
+        ml: 'ഷെഡ്യൂൾ ചെയ്തു',
+        pa: 'ਨਿਰਧਾਰਤ',
+        or: 'ନିର୍ଦ୍ଧାରିତ',
+        as: 'নিৰ্ধাৰিত',
+        ur: 'طے شدہ',
+      },
+      CANCELLED: {
+        en: 'Cancelled',
+        hi: 'रद्द',
+        bn: 'বাতিল',
+        te: 'రద్దు చేయబడింది',
+        mr: 'रद्द केले',
+        ta: 'ரத்து செய்யப்பட்டது',
+        gu: 'રદ',
+        kn: 'ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ',
+        ml: 'റദ്ദാക്കി',
+        pa: 'ਰੱਦ ਕੀਤਾ ਗਿਆ',
+        or: 'ବାତିଲ',
+        as: 'বাতিল',
+        ur: 'منسوخ',
       },
     };
 
-    const dict = statusMap[language] || statusMap['en'];
-    return dict[clean] || statusMap['en'][clean] || status;
+    const map = statusMap[clean];
+    if (map) {
+      return map[language] || map['en'] || status;
+    }
+    return status;
   };
 
   // Helper to translate risk ratings dynamically
   const tRisk = (risk?: string): string => {
     if (!risk) return '';
     const clean = risk.toUpperCase();
-    const riskMap: Record<SupportedLanguage, Record<string, string>> = {
-      en: {
-        CRITICAL: 'Critical Risk',
-        HIGH: 'High Risk',
-        MEDIUM: 'Medium Risk',
-        LOW: 'Low Risk',
+    const riskKey = `risk.${clean.toLowerCase()}`;
+    const translated = t(riskKey, '');
+    if (translated && translated !== riskKey) {
+      return translated;
+    }
+
+    const riskMap: Record<string, Record<string, string>> = {
+      CRITICAL: {
+        en: 'Critical Risk',
+        hi: 'गंभीर जोखिम',
+        bn: 'সংকটজনক ঝুঁকি',
+        te: 'కీలకమైన రిస్క్',
+        mr: 'गंभीर जोखीम',
+        ta: 'மிக முக்கியமான ஆபத்து',
+        gu: 'ગંભીર જોખમ',
+        kn: 'ಗಂಭೀರ ಅಪಾಯ',
+        ml: 'ഗുരുതരമായ അപകടസാധ്യത',
+        pa: 'ਗੰਭੀਰ ਜੋਖਮ',
+        or: 'ଗୁରୁତର ବିପଦ',
+        as: 'গুৰুতৰ বিপদ',
+        ur: 'انتہائی خطرناک',
       },
-      hi: {
-        CRITICAL: 'गंभीर जोखिम',
-        HIGH: 'उच्च जोखिम',
-        MEDIUM: 'मध्यम जोखिम',
-        LOW: 'निम्न जोखिम',
+      HIGH: {
+        en: 'High Risk',
+        hi: 'उच्च जोखिम',
+        bn: 'উচ্চ ঝুঁকি',
+        te: 'అధిక రిస్క్',
+        mr: 'उच्च जोखीम',
+        ta: 'அதிக ஆபத்து',
+        gu: 'ઉચ્ચ જોખમ',
+        kn: 'ಹೆಚ್ಚಿನ ಅಪಾಯ',
+        ml: 'ഉയർന്ന അപകടസാധ്യത',
+        pa: 'ਉੱਚ ਜੋਖਮ',
+        or: 'ଉଚ୍ଚ ବିପଦ',
+        as: 'উচ্চ বিপদ',
+        ur: 'زیادہ خطرہ',
       },
-      bn: {
-        CRITICAL: 'সংকটজনক ঝুঁকি',
-        HIGH: 'উচ্চ ঝুঁকি',
-        MEDIUM: 'মাঝারি ঝুঁকি',
-        LOW: 'কম ঝুঁকি',
+      MEDIUM: {
+        en: 'Medium Risk',
+        hi: 'मध्यम जोखिम',
+        bn: 'মাঝারি ঝুঁকি',
+        te: 'మధ్యస్థ రిస్క్',
+        mr: 'मध्यम जोखीम',
+        ta: 'நடுத்தர ஆபத்து',
+        gu: 'મધ્યમ જોખમ',
+        kn: 'ಮಧ್ಯಮ ಅಪಾಯ',
+        ml: 'ഇടത്തരം അപകടസാധ്യത',
+        pa: 'ਦਰਮਿਆਨਾ ਜੋਖਮ',
+        or: 'ମଧ୍ୟମ ବିପଦ',
+        as: 'মধ্যম বিপদ',
+        ur: 'درمیانہ خطرہ',
       },
-      ta: {
-        CRITICAL: 'மிக முக்கியமான ஆபத்து',
-        HIGH: 'அதிக ஆபத்து',
-        MEDIUM: 'நடுத்தர ஆபத்து',
-        LOW: 'குறைந்த ஆபத்து',
-      },
-      te: {
-        CRITICAL: 'కీలకమైన రిస్క్',
-        HIGH: 'అధిక రిస్క్',
-        MEDIUM: 'మధ్యస్థ రిస్క్',
-        LOW: 'తక్కువ రిస్క్',
-      },
-      mr: {
-        CRITICAL: 'गंभीर जोखीम',
-        HIGH: 'उच्च जोखीम',
-        MEDIUM: 'मध्यम जोखीम',
-        LOW: 'कमी जोखीम',
+      LOW: {
+        en: 'Low Risk',
+        hi: 'निम्न जोखिम',
+        bn: 'কম ঝুঁকি',
+        te: 'తక్కువ రిస్క్',
+        mr: 'कमी जोखीम',
+        ta: 'குறைந்த ஆபத்து',
+        gu: 'ઓછું જોખમ',
+        kn: 'ಕಡಿಮೆ ಅಪಾಯ',
+        ml: 'കുറഞ്ഞ അപകടസാധ്യത',
+        pa: 'ਘੱਟ ਜੋਖਮ',
+        or: 'କମ ବିପଦ',
+        as: 'কম বিপদ',
+        ur: 'کم خطرہ',
       },
     };
 
-    const dict = riskMap[language] || riskMap['en'];
-    return dict[clean] || riskMap['en'][clean] || risk;
+    const map = riskMap[clean];
+    if (map) {
+      return map[language] || map['en'] || risk;
+    }
+    return risk;
   };
 
   const value: LanguageContextType = {
@@ -281,6 +452,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     setLanguage,
     languages: SUPPORTED_LANGUAGES,
     currentLanguageInfo,
+    isRtl,
     t,
     tRole,
     tStatus,

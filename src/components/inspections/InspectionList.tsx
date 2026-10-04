@@ -110,11 +110,11 @@ export const InspectionList: React.FC<InspectionListProps> = ({
             onChange={(e) => setPriorityFilter(e.target.value)}
             className="px-2.5 py-2 text-xs rounded-lg border border-slate-300 bg-white"
           >
-            <option value="ALL">{t('projects.filter_all_risks')}</option>
-            <option value="SURPRISE">SURPRISE INSPECTION</option>
-            <option value="CRITICAL_AUDIT">CRITICAL AUDIT</option>
-            <option value="HIGH_PRIORITY">HIGH PRIORITY</option>
-            <option value="ROUTINE">ROUTINE ANNUAL</option>
+            <option value="ALL">{t('projects.filter_all_risks', 'All Priorities')}</option>
+            <option value="SURPRISE">{t('action.surprise_vc', 'Surprise Inspection')}</option>
+            <option value="CRITICAL_AUDIT">{t('risk.critical', 'Critical Audit')}</option>
+            <option value="HIGH_PRIORITY">{t('risk.high', 'High Priority')}</option>
+            <option value="ROUTINE">{t('common.routine', 'Routine Annual')}</option>
           </select>
         </div>
       </div>
@@ -178,10 +178,10 @@ export const InspectionList: React.FC<InspectionListProps> = ({
                       {item.gpsVerification?.status === 'MATCHED' ? (
                         <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                           <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                          VERIFIED ({item.gpsVerification.distanceFromRegisteredMeters}m)
+                          {t('dashboard.gps_verified', 'GPS Verified')} ({item.gpsVerification.distanceFromRegisteredMeters}m)
                         </span>
                       ) : (
-                        <span className="text-[10px] text-slate-400 font-medium">Pending On-site</span>
+                        <span className="text-[10px] text-slate-400 font-medium">{t('inspections.gps_pending', 'GPS: Pending On-site')}</span>
                       )}
                     </td>
                     <td className="py-3 px-4">
@@ -196,7 +196,7 @@ export const InspectionList: React.FC<InspectionListProps> = ({
                             : 'bg-slate-100 text-slate-600'
                         }`}
                       >
-                        {item.overallResult || item.status}
+                        {tStatus(item.overallResult || item.status)}
                       </span>
                     </td>
                     <td className="py-3 px-4 text-right">
@@ -205,19 +205,19 @@ export const InspectionList: React.FC<InspectionListProps> = ({
                           <button
                             onClick={() => onConductInspection(item.id)}
                             className="flex items-center gap-1 px-2.5 py-1 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs transition"
-                            title="Execute / Fill Inspection"
+                            title={t('inspections.btn_conduct_inspection', 'Conduct Inspection')}
                           >
                             <Edit3 className="w-3.5 h-3.5" />
-                            <span>Conduct</span>
+                            <span>{t('inspections.btn_conduct', 'Conduct')}</span>
                           </button>
                         ) : (
                           <button
                             onClick={() => onSelectInspection(item.id)}
                             className="flex items-center gap-1 px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium text-xs transition"
-                            title="View Dossier"
+                            title={t('inspections.btn_view_dossier', 'View Dossier')}
                           >
                             <Eye className="w-3.5 h-3.5" />
-                            <span>Dossier</span>
+                            <span>{t('inspections.btn_dossier', 'Dossier')}</span>
                           </button>
                         )}
                       </div>
@@ -233,7 +233,7 @@ export const InspectionList: React.FC<InspectionListProps> = ({
         <div className="md:hidden divide-y divide-slate-100">
           {filtered.length === 0 ? (
             <div className="py-8 text-center text-xs text-slate-400">
-              No inspection records found matching your filters.
+              {t('common.no_records_found', 'No inspection records found matching your filters.')}
             </div>
           ) : (
             filtered.map((item) => (
@@ -263,10 +263,10 @@ export const InspectionList: React.FC<InspectionListProps> = ({
                 <div className="text-[11px] text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-100 space-y-1">
                   <div className="font-semibold text-slate-900">{item.projectName}</div>
                   <div className="text-[10px] text-slate-500">
-                    Location: {item.district}, {item.state}
+                    {t('inspections.lbl_location', 'Location:')} {item.district}, {item.state}
                   </div>
                   <div className="text-[10px] text-slate-600">
-                    Inspector: <span className="font-medium text-slate-800">{item.inspectorName}</span> ({item.inspectorDesignation})
+                    {t('inspections.lbl_inspector', 'Inspector:')} <span className="font-medium text-slate-800">{item.inspectorName}</span> ({item.inspectorDesignation})
                   </div>
                 </div>
 
@@ -275,10 +275,10 @@ export const InspectionList: React.FC<InspectionListProps> = ({
                   {item.gpsVerification?.status === 'MATCHED' ? (
                     <span className="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                       <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                      GPS Verified ({item.gpsVerification.distanceFromRegisteredMeters}m)
+                      {t('dashboard.gps_verified', 'GPS Verified')} ({item.gpsVerification.distanceFromRegisteredMeters}m)
                     </span>
                   ) : (
-                    <span className="text-slate-400 font-medium">GPS: Pending On-site</span>
+                    <span className="text-slate-400 font-medium">{t('inspections.gps_pending', 'GPS: Pending On-site')}</span>
                   )}
 
                   <span
@@ -292,7 +292,7 @@ export const InspectionList: React.FC<InspectionListProps> = ({
                         : 'bg-slate-100 text-slate-600'
                     }`}
                   >
-                    {item.overallResult || item.status}
+                    {tStatus(item.overallResult || item.status)}
                   </span>
                 </div>
 
@@ -304,7 +304,7 @@ export const InspectionList: React.FC<InspectionListProps> = ({
                       className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs transition"
                     >
                       <Edit3 className="w-3.5 h-3.5" />
-                      <span>Conduct Inspection</span>
+                      <span>{t('inspections.btn_conduct_inspection', 'Conduct Inspection')}</span>
                     </button>
                   ) : (
                     <button
@@ -312,7 +312,7 @@ export const InspectionList: React.FC<InspectionListProps> = ({
                       className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs transition"
                     >
                       <Eye className="w-3.5 h-3.5" />
-                      <span>View Dossier Report</span>
+                      <span>{t('inspections.btn_view_dossier', 'View Dossier Report')}</span>
                     </button>
                   )}
                 </div>

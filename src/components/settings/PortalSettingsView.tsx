@@ -27,6 +27,7 @@ import {
 import { PortalSettings, User as UserType } from '../../types';
 import { api } from '../../services/api';
 import { CircularSpinner } from '../common/CircularSpinner';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface PortalSettingsViewProps {
   currentUser: UserType;
@@ -37,6 +38,7 @@ export const PortalSettingsView: React.FC<PortalSettingsViewProps> = ({
   currentUser,
   onNavigateToView,
 }) => {
+  const { t } = useTranslation();
   const [settings, setSettings] = useState<PortalSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -361,10 +363,10 @@ export const PortalSettingsView: React.FC<PortalSettingsViewProps> = ({
               <div>
                 <div className="flex items-center gap-2">
                   <Cpu className="w-4 h-4 text-emerald-600" />
-                  <span className="text-xs font-bold text-slate-900">Sandbox &amp; Telephony Simulation Mode</span>
+                  <span className="text-xs font-bold text-slate-900">{t('simulation.sandbox_toggle', 'Sandbox & Telephony Simulation Mode')}</span>
                 </div>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Allows safe realistic simulation of CCTV heartbeats, VoIP calls, and simulated field officer positions without triggering actual statutory notices.
+                  {t('simulation.sandbox_desc', 'Allows safe realistic simulation of CCTV heartbeats, VoIP calls, and simulated field officer positions without triggering actual statutory notices.')}
                 </p>
               </div>
 

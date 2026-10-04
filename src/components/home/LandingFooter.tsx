@@ -1,23 +1,25 @@
 import React from 'react';
 import { ShieldCheck, Mail } from 'lucide-react';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface LandingFooterProps {
-  isDarkMode: boolean;
-  lang: 'EN' | 'HI';
-  onNavigateSection: (id: string) => void;
-  onLaunchDashboard: () => void;
+  isDarkMode?: boolean;
+  lang?: string;
+  onNavigateSection?: (id: string) => void;
+  onLaunchDashboard?: () => void;
   onOpenPrivacy?: () => void;
   onOpenTerms?: () => void;
 }
 
 export const LandingFooter: React.FC<LandingFooterProps> = ({
   isDarkMode: _isDarkMode,
-  lang,
   onNavigateSection: _onNavigateSection,
   onLaunchDashboard: _onLaunchDashboard,
   onOpenPrivacy = () => {},
   onOpenTerms = () => {},
 }) => {
+  const { t } = useTranslation();
+
   return (
     <footer className="border-t border-slate-200 bg-white text-black">
       {/* Official Tricolor Ribbon */}
@@ -32,12 +34,10 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
             </div>
             <div>
               <div className="text-[11px] font-bold text-[#0B2545] uppercase tracking-wider">
-                {lang === 'HI'
-                  ? 'सामाजिक न्याय और अधिकारिता मंत्रालय · भारत सरकार'
-                  : 'Ministry of Social Justice and Empowerment · Government of India'}
+                {t('footer.ministry')}
               </div>
               <div className="font-extrabold text-sm text-[#0B2545]">
-                Satya Nirakshak · {lang === 'HI' ? 'राष्ट्रीय संस्थागत निगरानी ग्रिड' : 'National Surveillance & Inspection Grid'}
+                Satya Nirakshak · {t('footer.subtitle')}
               </div>
             </div>
           </div>
@@ -48,14 +48,14 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
               onClick={onOpenPrivacy}
               className="hover:text-[#0B2545] hover:underline cursor-pointer"
             >
-              {lang === 'HI' ? 'गोपनीयता नीति' : 'Privacy Policy'}
+              {t('footer.privacy')}
             </button>
             <span>•</span>
             <button
               onClick={onOpenTerms}
               className="hover:text-[#0B2545] hover:underline cursor-pointer"
             >
-              {lang === 'HI' ? 'नियम एवं शर्तें' : 'Terms & Conditions'}
+              {t('footer.terms')}
             </button>
             <span>•</span>
             <div className="flex items-center gap-1.5 text-slate-600">
@@ -68,19 +68,16 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
         {/* Disclaimer & Accreditation */}
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-600">
           <div>
-            &copy; {new Date().getFullYear()}{' '}
-            {lang === 'HI'
-              ? 'सामाजिक न्याय और अधिकारिता विभाग, भारत सरकार। सर्वाधिकार सुरक्षित।'
-              : 'Department of Social Justice and Empowerment, Government of India.'}
+            &copy; {new Date().getFullYear()} {t('footer.copyright')}
           </div>
 
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1 text-slate-700 font-semibold">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              GIGW 3.0 &amp; STQC Compliant
+              {t('footer.compliance')}
             </span>
             <span>•</span>
-            <span className="font-mono text-slate-500">NIC Sovereign Grid Online</span>
+            <span className="font-mono text-slate-500">{t('footer.node_status')}</span>
           </div>
         </div>
       </div>

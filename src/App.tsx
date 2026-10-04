@@ -37,8 +37,10 @@ import { OfficerManagementView } from './components/officers/OfficerManagementVi
 import { InspectionScheduleView } from './components/inspections/InspectionScheduleView';
 import { StatutoryChecklistView } from './components/inspections/StatutoryChecklistView';
 import { UploadEvidenceView } from './components/inspections/UploadEvidenceView';
+import { useTranslation } from './i18n/LanguageContext';
 
 export default function App() {
+  const { t, tRole, tRisk } = useTranslation();
   const [currentUser, setCurrentUser] = useState<User>(getStoredUser());
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [activeView, setActiveView] = useState<string>('home');
@@ -190,9 +192,9 @@ export default function App() {
         <div className="text-center space-y-3">
           <CircularSpinner size={48} speed={1.3} className="mx-auto" />
           <div className="text-sm font-bold text-slate-800">
-            Initializing Satya Nirakshak...
+            {t('app.initializing', 'Initializing Satya Nirakshak...')}
           </div>
-          <p className="text-xs text-slate-500">Loading secure schemes and telemetry registries.</p>
+          <p className="text-xs text-slate-500">{t('app.loading_sub', 'Loading secure schemes and telemetry registries.')}</p>
         </div>
       </div>
     );
@@ -262,23 +264,23 @@ export default function App() {
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#0B2545] bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                        {currentUser.role.replace(/_/g, ' ')}
+                        {tRole(currentUser.role)}
                       </span>
-                      <span className="text-[10px] text-slate-500 font-mono">Dossier ID: {currentUser.id}</span>
+                      <span className="text-[10px] text-slate-500 font-mono">{t('dashboard.dossier_id', 'Dossier ID')}: {currentUser.id}</span>
                     </div>
                     <h2 className="text-sm sm:text-base font-bold text-[#0B2545] mt-0.5 truncate">
                       {currentUser.name} · {currentUser.designation}
                     </h2>
                     <p className="text-xs text-slate-600 line-clamp-2 sm:line-clamp-none">
                       {currentUser.role === 'NGO_INSTITUTE'
-                        ? `Authorized NGO Scope: Center #${currentUser.assignedProjectId || 'FAC-01'} · Isolated Facility Metrics & Audit Feed`
+                        ? t('dashboard.scope_ngo', `Authorized NGO Scope: Center #${currentUser.assignedProjectId || 'FAC-01'} · Isolated Facility Metrics & Audit Feed`, { id: currentUser.assignedProjectId || 'FAC-01' })
                         : currentUser.role === 'INSPECTION_OFFICER'
-                        ? `Field Inspectorate Scope: Ground Verifications & Random VC in ${currentUser.state || 'Assigned Region'}`
+                        ? t('dashboard.scope_inspector', `Field Inspectorate Scope: Ground Verifications & Random VC in ${currentUser.state || 'Assigned Region'}`, { region: currentUser.state || 'Assigned Region' })
                         : currentUser.role === 'STATE_DISTRICT_AUTHORITY'
-                        ? `District Administration Scope: District ${currentUser.district || 'Pune'}, State of ${currentUser.state || 'Maharashtra'}`
+                        ? t('dashboard.scope_district', `District Administration Scope: District ${currentUser.district || 'Pune'}, State of ${currentUser.state || 'Maharashtra'}`, { district: currentUser.district || 'Pune', state: currentUser.state || 'Maharashtra' })
                         : currentUser.role === 'DEPARTMENT_OFFICIAL'
-                        ? 'Programme Directorate: Central Sector PM-AJAY, SMILE & Adarsh Gram Oversight'
-                        : 'National Apex Central Monitoring Cell: Consolidated Master Database Oversight (All-India)'}
+                        ? t('dashboard.scope_ministry', 'Programme Directorate: Central Sector PM-AJAY, SMILE & Adarsh Gram Oversight')
+                        : t('dashboard.scope_super_admin', 'National Apex Central Monitoring Cell: Consolidated Master Database Oversight (All-India)')}
                     </p>
                   </div>
                 </div>
@@ -287,10 +289,10 @@ export default function App() {
                   <button
                     onClick={() => handleNavigate('reports')}
                     className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded bg-[#0B2545] hover:bg-[#13315C] text-white shadow-xs transition cursor-pointer"
-                    title="Open your role-specific official report"
+                    title={t('dashboard.view_role_report', 'View Role-Specific Report')}
                   >
                     <FileBarChart className="w-3.5 h-3.5 text-amber-400" />
-                    <span>View Role-Specific Report</span>
+                    <span>{t('dashboard.view_role_report', 'View Role-Specific Report')}</span>
                   </button>
                 </div>
               </div>
@@ -331,18 +333,17 @@ export default function App() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
-                      Critical Risk Entities Requiring Oversight
+                      {t('dashboard.critical_entities_title', 'Critical Risk Entities Requiring Oversight')}
                     </h2>
                     <p className="text-xs text-slate-500">
-                      Facilities flagged by automated biometric variance, CCTV downtime, or overdue
-                      audits.
+                      {t('dashboard.critical_entities_desc', 'Facilities flagged by automated biometric variance, CCTV downtime, or overdue audits.')}
                     </p>
                   </div>
                   <button
                     onClick={() => handleNavigate('projects')}
                     className="text-xs font-semibold text-indigo-600 hover:text-indigo-800"
                   >
-                    View All Projects &rarr;
+                    {t('dashboard.view_all_projects', 'View All Projects')} &rarr;
                   </button>
                 </div>
 
@@ -367,7 +368,7 @@ export default function App() {
                                   : 'bg-orange-100 text-orange-800'
                               }`}
                             >
-                              {proj.riskLevel} RISK ({proj.riskScore}/100)
+                              {tRisk(proj.riskLevel)} ({proj.riskScore}/100)
                             </span>
                           </div>
                           <h3 className="font-bold text-slate-900 text-sm mt-1">
@@ -380,18 +381,18 @@ export default function App() {
 
                         <div className="grid grid-cols-3 gap-2 text-[11px] bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
                           <div>
-                            <div className="text-slate-400 text-[10px] uppercase">Attendance</div>
+                            <div className="text-slate-400 text-[10px] uppercase">{t('dashboard.attendance', 'Attendance')}</div>
                             <div className="font-bold text-rose-600">
                               {proj.averageAttendancePercent}%
                             </div>
                           </div>
                           <div>
-                            <div className="text-slate-400 text-[10px] uppercase">CCTV Feeds</div>
+                            <div className="text-slate-400 text-[10px] uppercase">{t('dashboard.cctv_feeds', 'CCTV Feeds')}</div>
                             <div className="font-bold text-slate-800">{proj.cctvStatus}</div>
                           </div>
                           <div>
                             <div className="text-slate-400 text-[10px] uppercase">
-                              Beneficiaries
+                              {t('dashboard.beneficiaries', 'Beneficiaries')}
                             </div>
                             <div className="font-bold text-slate-800">
                               {proj.beneficiaryCount}
@@ -404,13 +405,13 @@ export default function App() {
                             onClick={() => handleOpenCCTVForProject(proj.id)}
                             className="px-2.5 py-1 text-xs font-semibold rounded bg-slate-100 hover:bg-slate-200 text-slate-700"
                           >
-                            Live Feeds
+                            {t('dashboard.live_feeds', 'Live Feeds')}
                           </button>
                           <button
                             onClick={() => handleViewProject(proj.id)}
                             className="px-3 py-1 text-xs font-semibold rounded bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs"
                           >
-                            Investigate
+                            {t('dashboard.investigate', 'Investigate')}
                           </button>
                         </div>
                       </div>
@@ -550,9 +551,9 @@ export default function App() {
             <div className="space-y-4">
               <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <h2 className="text-sm sm:text-base font-bold text-slate-900">My Field Inspections</h2>
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">{t('dashboard.my_inspections_title', 'My Field Inspections')}</h2>
                   <p className="text-xs text-slate-500">
-                    Inspections assigned directly to officer {currentUser.name}
+                    {t('dashboard.my_inspections_desc', `Inspections assigned directly to officer ${currentUser.name}`, { name: currentUser.name })}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -560,13 +561,13 @@ export default function App() {
                     onClick={() => handleNavigate('upload-evidence')}
                     className="px-3 py-1.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold hover:bg-indigo-100 transition cursor-pointer"
                   >
-                    Upload Evidence
+                    {t('dashboard.upload_evidence', 'Upload Evidence')}
                   </button>
                   <button
                     onClick={() => handleNavigate('inspection-schedule')}
                     className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer"
                   >
-                    View Schedule
+                    {t('dashboard.view_schedule', 'View Schedule')}
                   </button>
                 </div>
               </div>
@@ -583,22 +584,22 @@ export default function App() {
           )}
 
           {/* ASSIGNED INSPECTIONS / TASKS */}
-          {(activeView === 'assigned-inspections' || activeView === 'assigned-tasks') && (
+          {(activeView === 'assigned-tasks' || activeView === 'assigned-inspections') && (
             <div className="space-y-4">
               <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
                 <div>
                   <h2 className="text-sm sm:text-base font-bold text-slate-900">
-                    {activeView === 'assigned-tasks' ? 'Assigned Field Tasks' : 'Assigned Inspections'}
+                    {activeView === 'assigned-tasks' ? t('dashboard.assigned_tasks_title', 'Assigned Field Tasks') : t('dashboard.assigned_inspections_title', 'Assigned Inspections')}
                   </h2>
                   <p className="text-xs text-slate-500">
-                    Official field verification and monitoring assignments requiring on-site audit
+                    {t('dashboard.assigned_desc', 'Official field verification and monitoring assignments requiring on-site audit')}
                   </p>
                 </div>
                 <button
                   onClick={() => handleNavigate('inspection-checklist')}
                   className="px-3 py-1.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold hover:bg-indigo-100 transition cursor-pointer"
                 >
-                  Statutory Checklist
+                  {t('dashboard.statutory_checklist', 'Statutory Checklist')}
                 </button>
               </div>
               <InspectionList
@@ -624,10 +625,10 @@ export default function App() {
               <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
                 <div>
                   <h2 className="text-sm sm:text-base font-bold text-slate-900">
-                    Pending Inspection Operations &amp; Actions
+                    {t('dashboard.pending_ops_title', 'Pending Inspection Operations & Actions')}
                   </h2>
                   <p className="text-xs text-slate-500">
-                    Active audits currently in progress or awaiting ground inspection
+                    {t('dashboard.pending_ops_desc', 'Active audits currently in progress or awaiting ground inspection')}
                   </p>
                 </div>
               </div>
@@ -649,10 +650,10 @@ export default function App() {
               <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
                 <div>
                   <h2 className="text-sm sm:text-base font-bold text-slate-900">
-                    Supervisory Review &amp; Report Approval Pipeline
+                    {t('dashboard.review_pipeline_title', 'Supervisory Review & Report Approval Pipeline')}
                   </h2>
                   <p className="text-xs text-slate-500">
-                    Completed field inspection dossiers awaiting senior officer sign-off and MIS transmission
+                    {t('dashboard.review_pipeline_desc', 'Completed field inspection dossiers awaiting senior officer sign-off and MIS transmission')}
                   </p>
                 </div>
               </div>
@@ -672,10 +673,10 @@ export default function App() {
               <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
                 <div>
                   <h2 className="text-sm sm:text-base font-bold text-slate-900">
-                    National Inspection Status &amp; Progress Registry
+                    {t('dashboard.national_registry_title', 'National Inspection Status & Progress Registry')}
                   </h2>
                   <p className="text-xs text-slate-500">
-                    Read-only transparency view of on-site monitoring operations across regions
+                    {t('dashboard.national_registry_desc', 'Read-only transparency view of on-site monitoring operations across regions')}
                   </p>
                 </div>
               </div>

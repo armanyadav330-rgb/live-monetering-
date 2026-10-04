@@ -12,7 +12,7 @@ import { LanguageSelector } from '../common/LanguageSelector';
 
 interface LandingNavProps {
   isDarkMode?: boolean;
-  lang?: 'EN' | 'HI';
+  lang?: string;
   onToggleLang?: () => void;
   onToggleTheme?: () => void;
   onLoginClick: () => void;
@@ -27,7 +27,7 @@ export const LandingNav: React.FC<LandingNavProps> = ({
   onLoginClick,
   onLaunchDashboard: _onLaunchDashboard,
 }) => {
-  const { lang, t } = useTranslation();
+  const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'larger'>('normal');
 
@@ -63,7 +63,7 @@ export const LandingNav: React.FC<LandingNavProps> = ({
             <button
               onClick={() => setFontSize('normal')}
               className={`cursor-pointer hover:text-white px-0.5 ${fontSize === 'normal' ? 'text-white underline font-extrabold' : ''}`}
-              title="Standard Font Size"
+              title={t('gov.normal_font', 'Standard Font Size')}
             >
               A-
             </button>
@@ -71,7 +71,7 @@ export const LandingNav: React.FC<LandingNavProps> = ({
             <button
               onClick={() => setFontSize('large')}
               className={`cursor-pointer hover:text-white px-0.5 ${fontSize === 'large' ? 'text-white underline font-extrabold' : ''}`}
-              title="Medium Font Size"
+              title={t('gov.normal_font', 'Medium Font Size')}
             >
               A
             </button>
@@ -79,14 +79,11 @@ export const LandingNav: React.FC<LandingNavProps> = ({
             <button
               onClick={() => setFontSize('larger')}
               className={`cursor-pointer hover:text-white px-0.5 ${fontSize === 'larger' ? 'text-white underline font-extrabold' : ''}`}
-              title="Large Font Size"
+              title={t('gov.increase_font', 'Large Font Size')}
             >
               A+
             </button>
           </div>
-
-          {/* Centralized Global Language Selector Dropdown */}
-          <LanguageSelector />
 
           {/* Verification Badge */}
           <span className="hidden sm:inline-flex items-center gap-1 font-semibold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-700/50 text-[9px]">
@@ -146,7 +143,7 @@ export const LandingNav: React.FC<LandingNavProps> = ({
           <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50/90 border border-emerald-200 text-emerald-800 text-xs font-semibold">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
             <span className="text-[11px]">
-              {lang === 'hi' ? 'सक्रिय एवं सुरक्षित ग्रिड' : 'Active & Verified Grid'}
+              {t('nav.active_grid')}
             </span>
           </div>
 
@@ -165,14 +162,14 @@ export const LandingNav: React.FC<LandingNavProps> = ({
 
       {/* 4. BOTTOM / SECONDARY HEADER AREA */}
       <div className="bg-slate-50/60 px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 w-full max-w-full">
-        {/* Left: System Support / Assistance with Existing Project Info */}
+        {/* Left: System Support / Assistance */}
         <div className="flex items-center gap-2.5 min-w-0">
           <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-[#0B2545] shadow-2xs shrink-0">
             <Headphones className="w-4 h-4 text-[#0B2545]" />
           </div>
           <div className="min-w-0">
             <div className="text-xs font-bold text-[#0B2545] leading-tight">
-              {lang === 'hi' ? 'सिस्टम सहायता / संपर्क' : 'System Support / Assistance'}
+              {t('nav.system_support')}
             </div>
             <a
               href="mailto:support-dosje@nic.in"
@@ -190,31 +187,32 @@ export const LandingNav: React.FC<LandingNavProps> = ({
             onClick={() => scrollToSection('features')}
             className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-200/60 transition cursor-pointer whitespace-nowrap"
           >
-            {lang === 'hi' ? 'प्रमुख मॉड्यूल' : 'Key Modules'}
+            {t('nav.key_modules')}
           </button>
           <button
             onClick={() => scrollToSection('how-it-works')}
             className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-200/60 transition cursor-pointer whitespace-nowrap"
           >
-            {lang === 'hi' ? 'कार्यप्रणाली' : 'How It Works'}
+            {t('nav.how_it_works')}
           </button>
           <button
             onClick={() => scrollToSection('preview')}
             className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-200/60 transition cursor-pointer whitespace-nowrap"
           >
-            {lang === 'hi' ? 'निगरानी ग्रिड' : 'Surveillance Grid'}
+            {t('nav.surveillance_grid')}
           </button>
           <button
             onClick={() => scrollToSection('status')}
             className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-200/60 transition cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
           >
-            <span>{lang === 'hi' ? 'क्लस्टर स्थिति' : 'Cluster Status'}</span>
+            <span>{t('nav.cluster_status')}</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           </button>
         </nav>
 
-        {/* Right: Existing Login / Access Portal Button Styled as Dark-Blue Government Button */}
-        <div className="flex items-center shrink-0">
+        {/* Right: Language Selector + Access Portal Button */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <LanguageSelector variant="header" />
           <button
             id="header-access-portal-btn"
             onClick={onLoginClick}
@@ -244,28 +242,28 @@ export const LandingNav: React.FC<LandingNavProps> = ({
               onClick={() => scrollToSection('features')}
               className="w-full text-left px-3 py-2 rounded-md hover:text-[#0B2545] hover:bg-slate-50 transition cursor-pointer"
             >
-              {lang === 'hi' ? 'प्रमुख मॉड्यूल' : 'Key Modules'}
+              {t('nav.key_modules')}
             </button>
             <button
               onClick={() => scrollToSection('how-it-works')}
               className="w-full text-left px-3 py-2 rounded-md hover:text-[#0B2545] hover:bg-slate-50 transition cursor-pointer"
             >
-              {lang === 'hi' ? 'कार्यप्रणाली' : 'How It Works'}
+              {t('nav.how_it_works')}
             </button>
             <button
               onClick={() => scrollToSection('preview')}
               className="w-full text-left px-3 py-2 rounded-md hover:text-[#0B2545] hover:bg-slate-50 transition cursor-pointer"
             >
-              {lang === 'hi' ? 'निगरानी ग्रिड' : 'Surveillance Grid'}
+              {t('nav.surveillance_grid')}
             </button>
             <button
               onClick={() => scrollToSection('status')}
               className="w-full text-left px-3 py-2 rounded-md hover:text-[#0B2545] hover:bg-slate-50 transition flex items-center justify-between cursor-pointer"
             >
-              <span>{lang === 'hi' ? 'क्लस्टर स्थिति' : 'System Status'}</span>
+              <span>{t('nav.cluster_status')}</span>
               <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <span>{lang === 'hi' ? '99.99% सक्रिय' : '99.99% Operational'}</span>
+                <span>{t('nav.operational')}</span>
               </span>
             </button>
           </div>
@@ -300,5 +298,3 @@ export const LandingNav: React.FC<LandingNavProps> = ({
     </header>
   );
 };
-
-

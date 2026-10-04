@@ -29,7 +29,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
   onSelectInspection,
   onNavigate,
 }) => {
-  const { t } = useTranslation();
+  const { t, tStatus } = useTranslation();
   const handleSelectProject = (projectId: string) => {
     if (onSelectProject) onSelectProject(projectId);
   };
@@ -107,7 +107,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
                 <div className="mt-2 text-[10px] text-indigo-700 font-medium flex items-center justify-between">
                   <span>{a.projectName}</span>
                   <span className="flex items-center">
-                    Review <ChevronRight className="w-3 h-3" />
+                    {t('common.review', 'Review')} <ChevronRight className="w-3 h-3" />
                   </span>
                 </div>
               </div>
@@ -162,7 +162,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
                         : 'bg-amber-500 text-white'
                     }`}
                   >
-                    Risk {p.riskScore}
+                    {t('charts.score', 'Risk')} {p.riskScore}
                   </span>
                   <div className="text-[10px] text-slate-400 mt-0.5">{p.scheme.split('(')[0]}</div>
                 </div>
@@ -190,7 +190,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
                 {t('dashboard.recent_inspections')}
               </h3>
             </div>
-            <span className="text-[10px] text-slate-500">Official Logs</span>
+            <span className="text-[10px] text-slate-500">{t('dashboard.official_logs', 'Official Logs')}</span>
           </div>
 
           <div className="space-y-2.5">
@@ -205,7 +205,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
                     {i.projectName}
                   </div>
                   <div className="text-[11px] text-slate-500 truncate">
-                    Insp. {i.inspectorName}
+                    {t('inspections.lbl_inspector', 'Inspector:')} {i.inspectorName}
                   </div>
                 </div>
                 <div className="text-right shrink-0">
@@ -220,7 +220,7 @@ export const AlertsFeed: React.FC<AlertsFeedProps> = ({
                         : 'bg-amber-100 text-amber-800'
                     }`}
                   >
-                    {i.overallResult || i.status}
+                    {tStatus(i.overallResult || i.status)}
                   </span>
                   <div className="text-[10px] text-slate-400 mt-0.5">{i.scheduledDate}</div>
                 </div>

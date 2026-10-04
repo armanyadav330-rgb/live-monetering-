@@ -13,6 +13,7 @@ import { CCTVCamera, Project, CCTVStatus } from '../../types';
 import { SimulatedCameraFeed } from './SimulatedCameraFeed';
 import { SimulationBanner } from '../common/SimulationBanner';
 import { api } from '../../services/api';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface CCTVMonitorProps {
   initialProjectId?: string;
@@ -23,6 +24,7 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
   initialProjectId,
   onSelectProject,
 }) => {
+  const { t, tStatus } = useTranslation();
   const [cameras, setCameras] = useState<CCTVCamera[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string>(initialProjectId || 'ALL');
@@ -61,7 +63,7 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
   return (
     <div className="space-y-4">
       {/* Simulation Banner */}
-      <SimulationBanner context="CCTV SIMULATION ACTIVE: Live RTSP streams are rendered via GPU-accelerated HTML5 Canvas with simulated multi-person presence, realistic jitter, and telemetry watermarks without requiring paid media server infrastructure." />
+      <SimulationBanner context={t('simulation.cctv_active', 'CCTV SIMULATION ACTIVE: Live RTSP streams are rendered via GPU-accelerated HTML5 Canvas with simulated multi-person presence, realistic jitter, and telemetry watermarks without requiring paid media server infrastructure.')} />
 
       {/* Control Header */}
       <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -69,12 +71,11 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
           <div className="flex items-center gap-2">
             <Video className="w-5 h-5 text-indigo-600" />
             <h1 className="text-base font-bold text-slate-900">
-              National CCTV Telemetry Command Center
+              {t('cctv.page_title', 'National CCTV Telemetry Command Center')}
             </h1>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            24x7 automated visual surveillance, RTSP packet integrity checks, and corridor occupancy
-            monitoring.
+            {t('cctv.page_desc', '24x7 automated visual surveillance, RTSP packet integrity checks, and corridor occupancy monitoring.')}
           </p>
         </div>
 
@@ -82,15 +83,15 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
         <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs">
           <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            {onlineCount} Online
+            {onlineCount} {t('status.online', 'Online')}
           </span>
           <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 border border-amber-200 font-bold">
             <span className="w-2 h-2 rounded-full bg-amber-500" />
-            {warningCount} Warning
+            {warningCount} {t('status.warning', 'Warning')}
           </span>
           <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-rose-50 text-rose-800 border border-rose-200 font-bold">
             <span className="w-2 h-2 rounded-full bg-rose-500" />
-            {offlineCount} Offline
+            {offlineCount} {t('status.offline', 'Offline')}
           </span>
         </div>
       </div>
@@ -109,7 +110,7 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
               }}
               className="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-medium max-w-[190px] xs:max-w-[260px] sm:max-w-xs"
             >
-              <option value="ALL">All Monitored Facilities ({projects.length})</option>
+              <option value="ALL">{t('cctv.all_facilities', 'All Monitored Facilities')} ({projects.length})</option>
               {projects.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.projectName} ({p.district})
@@ -124,16 +125,16 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
             onChange={(e) => setStatusFilter(e.target.value)}
             className="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs"
           >
-            <option value="ALL">All Stream States</option>
-            <option value="ONLINE">ONLINE Feeds Only</option>
-            <option value="WARNING">WARNING (Packet Loss)</option>
-            <option value="OFFLINE">OFFLINE Feeds Only</option>
+            <option value="ALL">{t('cctv.all_states', 'All Stream States')}</option>
+            <option value="ONLINE">{t('cctv.online_only', 'ONLINE Feeds Only')}</option>
+            <option value="WARNING">{t('cctv.warning_only', 'WARNING (Packet Loss)')}</option>
+            <option value="OFFLINE">{t('cctv.offline_only', 'OFFLINE Feeds Only')}</option>
           </select>
         </div>
 
         {/* Grid Density Controls */}
         <div className="flex items-center gap-2">
-          <span className="text-slate-500 font-medium">Layout:</span>
+          <span className="text-slate-500 font-medium">{t('cctv.layout', 'Layout:')}</span>
           <button
             onClick={() => setGridCols(2)}
             className={`px-2.5 py-1 rounded border text-xs font-semibold transition ${
@@ -153,7 +154,7 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
           <button
             onClick={fetchCameras}
             className="p-1.5 rounded border border-slate-300 hover:bg-slate-50 text-slate-600 ml-1"
-            title="Refresh Feeds"
+            title={t('common.refresh', 'Refresh Feeds')}
           >
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
@@ -164,12 +165,12 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
       {focusedCameraId ? (
         <div className="space-y-3">
           <div className="flex items-center justify-between bg-slate-900 text-white p-3 rounded-t-xl text-xs">
-            <span className="font-bold">Focused Stream Examination</span>
+            <span className="font-bold">{t('cctv.focused_stream', 'Focused Stream Examination')}</span>
             <button
               onClick={() => setFocusedCameraId(null)}
               className="text-indigo-400 hover:underline text-xs"
             >
-              Return to Multi-Camera Grid
+              {t('cctv.return_grid', 'Return to Multi-Camera Grid')}
             </button>
           </div>
           {cameras
@@ -183,25 +184,25 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
                 />
                 {/* Status Simulator Controls */}
                 <div className="p-3 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
-                  <span className="font-bold text-slate-700">Simulate Hardware Event:</span>
+                  <span className="font-bold text-slate-700">{t('cctv.simulate_event', 'Simulate Hardware Event:')}</span>
                   <div className="flex flex-wrap items-center gap-2">
                     <button
                       onClick={() => handleToggleStatus(cam.id, 'ONLINE')}
                       className="px-3 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold rounded text-xs"
                     >
-                      Set ONLINE
+                      {t('cctv.set_online', 'Set ONLINE')}
                     </button>
                     <button
                       onClick={() => handleToggleStatus(cam.id, 'WARNING')}
                       className="px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold rounded text-xs"
                     >
-                      Simulate JITTER / WARNING
+                      {t('cctv.set_warning', 'Simulate JITTER / WARNING')}
                     </button>
                     <button
                       onClick={() => handleToggleStatus(cam.id, 'OFFLINE')}
                       className="px-3 py-1 bg-rose-100 hover:bg-rose-200 text-rose-800 font-bold rounded text-xs"
                     >
-                      Simulate DISCONNECT / OFFLINE
+                      {t('cctv.set_offline', 'Simulate DISCONNECT / OFFLINE')}
                     </button>
                   </div>
                 </div>
@@ -236,7 +237,7 @@ export const CCTVMonitor: React.FC<CCTVMonitorProps> = ({
                     }
                     className="hover:underline text-indigo-600 font-semibold"
                   >
-                    Toggle {cam.status === 'ONLINE' ? 'Offline' : 'Online'}
+                    {t('cctv.toggle_status', `Toggle ${cam.status === 'ONLINE' ? 'Offline' : 'Online'}`, { status: cam.status === 'ONLINE' ? t('status.offline', 'Offline') : t('status.online', 'Online') })}
                   </button>
                 </div>
               </div>

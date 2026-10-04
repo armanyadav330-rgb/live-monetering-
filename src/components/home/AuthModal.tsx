@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { User, UserRole } from '../../types';
 import { CircularSpinner } from '../common/CircularSpinner';
+import { useTranslation } from '../../i18n/LanguageContext';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -24,7 +25,7 @@ interface AuthModalProps {
   isDarkMode?: boolean;
   initialMode?: 'login' | 'signup';
   initialRole?: UserRole;
-  lang?: 'EN' | 'HI';
+  lang?: string;
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({
@@ -33,8 +34,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   availableUsers,
   onSelectUserAndEnter,
   initialRole,
-  lang = 'EN',
 }) => {
+  const { t, tRole } = useTranslation();
   const [selectedRole, setSelectedRole] = useState<UserRole>(initialRole || 'SUPER_ADMIN');
   const [identifier, setIdentifier] = useState('admin.dosje@gov.in');
   const [password, setPassword] = useState('GovSecure@2026');
@@ -77,18 +78,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setForgotPasswordSent(false);
 
     if (!identifier.trim()) {
-      setErrorMessage(
-        lang === 'HI'
-          ? 'कृपया अपना ईमेल या आधिकारिक आईडी दर्ज करें'
-          : 'Please enter your Email or Official ID'
-      );
+      setErrorMessage(t('common.required', 'Please enter your Email or Official ID'));
       return;
     }
 
     if (!password) {
-      setErrorMessage(
-        lang === 'HI' ? 'कृपया अपना पासवर्ड दर्ज करें' : 'Please enter your password'
-      );
+      setErrorMessage(t('common.required', 'Please enter your password'));
       return;
     }
 
@@ -141,11 +136,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       if (matchedUser) {
         onSelectUserAndEnter(matchedUser);
       } else {
-        setErrorMessage(
-          lang === 'HI'
-            ? 'अमान्य क्रेडेंशियल। कृपया विवरण पुनः जांचें।'
-            : 'Invalid credentials. Please verify your official ID.'
-        );
+        setErrorMessage(t('auth.error_invalid'));
       }
     }, 350);
   };
@@ -176,17 +167,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 id="auth-modal-title"
                 className="text-base sm:text-lg font-bold text-[#0B2545] tracking-tight leading-snug"
               >
-                {lang === 'HI'
-                  ? 'लाइव निगरानी पोर्टल में प्रवेश'
-                  : 'Access Live Monitoring Portal'}
+                {t('auth.modal_title')}
               </h3>
               <p
                 id="auth-modal-subtitle"
                 className="text-xs text-slate-500 font-medium leading-tight mt-0.5"
               >
-                {lang === 'HI'
-                  ? 'अधिकृत निगरानी कर्मियों हेतु सुरक्षित साइन-इन'
-                  : 'Secure sign-in for authorized monitoring personnel'}
+                {t('auth.modal_subtitle')}
               </p>
             </div>
           </div>
@@ -221,9 +208,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             >
               <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600 mt-0.5" />
               <div className="leading-relaxed">
-                {lang === 'HI'
-                  ? 'पासवर्ड रीसेट लिंक आपके पंजीकृत सरकारी एनआईसी / आधिकारिक ईमेल पर भेज दिया गया है।'
-                  : 'A secure password recovery instructions link has been dispatched to your registered NIC / official email.'}
+                {t('auth.security_notice')}
               </div>
             </div>
           )}
@@ -235,7 +220,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 htmlFor="auth-role-select"
                 className="block text-xs font-semibold text-slate-700 mb-1.5"
               >
-                {lang === 'HI' ? 'भूमिका चुनें / पद' : 'Select Role / Designation'}
+                {t('landing.select_role')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -248,19 +233,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   className="w-full pl-10 pr-9 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50/70 border border-slate-200 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0B2545]/20 focus:border-[#0B2545] transition cursor-pointer appearance-none"
                 >
                   <option value="SUPER_ADMIN">
-                    {lang === 'HI' ? 'सुपर एडमिन (केंद्रीय मंत्रालय)' : 'Super Admin (Central Ministry)'}
+                    {tRole('SUPER_ADMIN')}
                   </option>
                   <option value="DEPARTMENT_OFFICIAL">
-                    {lang === 'HI' ? 'विभागीय अधिकारी (संयुक्त सचिव / राज्य स्तर)' : 'Department Official (Joint Secretary)'}
+                    {tRole('DEPARTMENT_OFFICIAL')}
                   </option>
                   <option value="INSPECTION_OFFICER">
-                    {lang === 'HI' ? 'निरीक्षण अधिकारी (फील्ड ऑडिटर)' : 'Inspection Officer (Field Auditor)'}
+                    {tRole('INSPECTION_OFFICER')}
                   </option>
                   <option value="STATE_DISTRICT_AUTHORITY">
-                    {lang === 'HI' ? 'जिला / राज्य प्राधिकारी (मजिस्ट्रेट)' : 'District / State Authority (Magistrate)'}
+                    {tRole('STATE_DISTRICT_AUTHORITY')}
                   </option>
                   <option value="NGO_INSTITUTE">
-                    {lang === 'HI' ? 'संस्था / एनजीओ व्यवस्थापक (वार्डन)' : 'Facility / NGO Admin (Warden)'}
+                    {tRole('NGO_INSTITUTE')}
                   </option>
                 </select>
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
@@ -275,7 +260,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 htmlFor="auth-email-input"
                 className="block text-xs font-semibold text-slate-700 mb-1.5"
               >
-                {lang === 'HI' ? 'ईमेल / आधिकारिक आईडी' : 'Email / Official ID'}
+                {t('auth.label_email')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -290,11 +275,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     setIdentifier(e.target.value);
                     if (errorMessage) setErrorMessage(null);
                   }}
-                  placeholder={
-                    lang === 'HI'
-                      ? 'उदा. officer@dosje.gov.in या आधिकारिक आईडी'
-                      : 'officer@dosje.gov.in or Official ID'
-                  }
+                  placeholder={t('landing.email')}
                   className="w-full pl-10 pr-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50/70 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0B2545]/20 focus:border-[#0B2545] transition"
                   autoComplete="username"
                 />
@@ -307,7 +288,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 htmlFor="auth-password-input"
                 className="block text-xs font-semibold text-slate-700 mb-1.5"
               >
-                {lang === 'HI' ? 'पासवर्ड' : 'Password'}
+                {t('auth.label_password')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -347,7 +328,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
             </div>
 
-            {/* 4. Remember me & 6. Forgot Password? */}
+            {/* 4. Remember me */}
             <div className="flex items-center justify-between pt-0.5 text-xs">
               <label
                 htmlFor="auth-remember-me"
@@ -360,7 +341,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   onChange={(e) => setRememberMe(e.target.checked)}
                   className="w-3.5 h-3.5 rounded text-[#0B2545] border-slate-300 focus:ring-[#0B2545] cursor-pointer"
                 />
-                <span>{lang === 'HI' ? 'मुझे याद रखें' : 'Remember me'}</span>
+                <span>{t('auth.remember_me')}</span>
               </label>
 
               <button
@@ -369,7 +350,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 onClick={handleForgotPassword}
                 className="text-[#0B2545] hover:text-blue-700 font-semibold hover:underline transition cursor-pointer"
               >
-                {lang === 'HI' ? 'पासवर्ड भूल गए?' : 'Forgot Password?'}
+                {t('common.help', 'Forgot Password?')}
               </button>
             </div>
 
@@ -385,13 +366,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <>
                     <CircularSpinner size={18} speed={1.2} />
                     <span>
-                      {lang === 'HI' ? 'प्रमाणीकरण जारी है...' : 'Authenticating...'}
+                      {t('auth.btn_authenticating')}
                     </span>
                   </>
                 ) : (
                   <>
                     <LogIn className="w-4 h-4 text-amber-400" />
-                    <span>{lang === 'HI' ? 'साइन इन करें' : 'Sign In'}</span>
+                    <span>{t('auth.btn_login')}</span>
                   </>
                 )}
               </button>
@@ -406,9 +387,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <div className="inline-flex items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-600">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
               <span>
-                {lang === 'HI'
-                  ? 'केवल अधिकृत कर्मियों के लिए • सुरक्षित एक्सेस'
-                  : 'Authorized personnel only • Secure access'}
+                {t('auth.security_notice')}
               </span>
             </div>
             <p className="text-[10px] text-slate-600 font-medium">
