@@ -15,6 +15,7 @@ import { User, UserRole } from '../../types';
 import { api, setStoredUser } from '../../services/api';
 import { useTranslation } from '../../i18n/LanguageContext';
 import { LanguageSelector } from './LanguageSelector';
+import { SatyaNirakshakLogo } from './SatyaNirakshakLogo';
 
 interface HeaderProps {
   currentUser: User;
@@ -161,8 +162,8 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4 bg-slate-50/70 w-full max-w-full">
         {/* Government Identity Branding */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="flex items-center justify-center w-8 h-8 min-[360px]:w-9 min-[360px]:h-9 sm:w-10 sm:h-10 rounded-lg bg-[#0B2545] text-amber-400 border-2 border-amber-500/80 shadow-2xs shrink-0 text-center">
-            <span className="text-base sm:text-xl leading-none text-center block select-none">🏛️</span>
+          <div className="flex items-center justify-center w-8 h-8 min-[360px]:w-9 min-[360px]:h-9 sm:w-10 sm:h-10 rounded-lg bg-white border border-slate-200 shadow-2xs shrink-0 p-1">
+            <SatyaNirakshakLogo size={36} variant="icon" />
           </div>
           <div className="min-w-0">
             <div className="text-[8px] sm:text-[11px] font-bold text-[#0B2545] tracking-wider uppercase truncate max-w-[100px] sm:max-w-none">

@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Menu,
   X,
+  Globe,
+  ChevronDown,
+  Heart,
+  ArrowUpRight,
   Shield,
   Headphones,
   Mail,
-  CheckCircle2,
+  Check,
 } from 'lucide-react';
 import { useTranslation } from '../../i18n/LanguageContext';
-import { LanguageSelector } from '../common/LanguageSelector';
+import { SupportedLanguage } from '../../i18n/translations';
 
 interface LandingNavProps {
   isDarkMode?: boolean;
@@ -17,19 +21,39 @@ interface LandingNavProps {
   onToggleTheme?: () => void;
   onLoginClick: () => void;
   onLaunchDashboard?: () => void;
+  onDonateClick?: () => void;
 }
 
 export const LandingNav: React.FC<LandingNavProps> = ({
-  isDarkMode: _isDarkMode,
-  lang: _langProp,
-  onToggleLang: _onToggleLang,
-  onToggleTheme: _onToggleTheme,
   onLoginClick,
-  onLaunchDashboard: _onLaunchDashboard,
+  onLaunchDashboard,
+  onDonateClick,
 }) => {
-  const { t } = useTranslation();
+  const { language, setLanguage, languages, currentLanguageInfo, t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [fontSize, setFontSize] = useState<'normal' | 'large' | 'larger'>('normal');
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+
+  const langRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdowns on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(event.target as Node)) {
+        setLangDropdownOpen(false);
+      }
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSelectLanguage = (code: SupportedLanguage) => {
+    setLanguage(code);
+    setLangDropdownOpen(false);
+  };
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
@@ -39,262 +63,333 @@ export const LandingNav: React.FC<LandingNavProps> = ({
     }
   };
 
+  const handlePortalClick = () => {
+    if (onLaunchDashboard) {
+      onLaunchDashboard();
+    } else {
+      onLoginClick();
+    }
+  };
+
+  const handleDonateClick = () => {
+    if (onDonateClick) {
+      onDonateClick();
+    } else {
+      scrollToSection('donation-amount-section');
+    }
+  };
+
   return (
     <header
       id="landing-header"
-      className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-xs shrink-0 font-sans transition-colors duration-200 w-full max-w-full"
+      className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-2xs transition-all duration-200 m-0 p-0"
     >
-      {/* 1. TOP CITIZEN & GOVT UTILITY STRIP */}
-      <div className="bg-[#0B2545] text-slate-200 text-[10px] sm:text-[11px] px-3 sm:px-6 lg:px-8 py-1 border-b border-slate-800 flex items-center justify-between gap-2 w-full max-w-full">
-        <div className="flex items-center gap-1.5 sm:gap-3 font-medium tracking-wide min-w-0">
-          <span className="text-amber-400 font-bold uppercase tracking-wider text-[9px] sm:text-[10px] truncate shrink-0">
-            {t('gov.india')}
-          </span>
-          <span className="text-slate-500 hidden sm:inline">|</span>
-          <span className="text-slate-300 text-[9px] sm:text-[10px] truncate hidden md:inline">
-            {t('gov.ministry')}
-          </span>
-        </div>
-
-        {/* Accessibility & Language Controls */}
-        <div className="flex items-center gap-2 text-[10px] shrink-0">
-          {/* Font Resizing Controls */}
-          <div className="hidden sm:flex items-center gap-1 bg-[#13315C] px-1.5 py-0.5 rounded border border-slate-700 text-amber-300 font-bold text-[10px]">
-            <button
-              onClick={() => setFontSize('normal')}
-              className={`cursor-pointer hover:text-white px-0.5 ${fontSize === 'normal' ? 'text-white underline font-extrabold' : ''}`}
-              title={t('gov.normal_font', 'Standard Font Size')}
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-3 sm:gap-4 relative">
+        {/* LEFT: Brand Lockup with Attractive Community Shield Emblem */}
+        <div
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="flex items-center gap-3 sm:gap-3.5 cursor-pointer group shrink-0 select-none"
+        >
+          {/* Polished & Attractive Shield Emblem matching user reference */}
+          <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-blue-50 via-white to-sky-50 border border-blue-200/80 shadow-2xs group-hover:shadow-md group-hover:border-blue-400 transition-all duration-300 flex items-center justify-center p-1">
+            <svg
+              viewBox="0 0 100 110"
+              className="w-full h-full drop-shadow-xs group-hover:scale-105 transition-transform duration-300"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-label="Satya Nirakshak Emblem"
             >
-              A-
-            </button>
-            <span className="text-slate-500">|</span>
-            <button
-              onClick={() => setFontSize('large')}
-              className={`cursor-pointer hover:text-white px-0.5 ${fontSize === 'large' ? 'text-white underline font-extrabold' : ''}`}
-              title={t('gov.normal_font', 'Medium Font Size')}
-            >
-              A
-            </button>
-            <span className="text-slate-500">|</span>
-            <button
-              onClick={() => setFontSize('larger')}
-              className={`cursor-pointer hover:text-white px-0.5 ${fontSize === 'larger' ? 'text-white underline font-extrabold' : ''}`}
-              title={t('gov.increase_font', 'Large Font Size')}
-            >
-              A+
-            </button>
+              <defs>
+                <linearGradient id="shieldNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#1E40AF" />
+                  <stop offset="100%" stopColor="#0B2545" />
+                </linearGradient>
+                <linearGradient id="shieldBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#3B82F6" />
+                  <stop offset="100%" stopColor="#1D4ED8" />
+                </linearGradient>
+              </defs>
+
+              {/* Outer Protective Shield Geometry */}
+              <path
+                d="M50 4 L18 18 C18 49 25 75 50 98 C75 75 82 49 82 18 Z"
+                stroke="url(#shieldNavy)"
+                strokeWidth="4.5"
+                strokeLinejoin="round"
+                fill="white"
+              />
+
+              {/* Upper Shield Chevron Arch */}
+              <path
+                d="M26 23 L50 12 L74 23"
+                stroke="url(#shieldNavy)"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+
+              {/* Central Guardian Figure (Navy) */}
+              <circle cx="50" cy="38" r="6" fill="#0B2545" />
+              <path
+                d="M38 57 C38 47 62 47 62 57"
+                stroke="#0B2545"
+                strokeWidth="4"
+                strokeLinecap="round"
+              />
+
+              {/* Left Beneficiary Figure (Royal Blue) */}
+              <circle cx="35" cy="48" r="4.5" fill="url(#shieldBlue)" />
+              <path
+                d="M26 66 C26 58 44 58 44 66"
+                stroke="url(#shieldBlue)"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+              />
+
+              {/* Right Beneficiary Figure (Royal Blue) */}
+              <circle cx="65" cy="48" r="4.5" fill="url(#shieldBlue)" />
+              <path
+                d="M56 66 C56 58 74 58 74 66"
+                stroke="url(#shieldBlue)"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+              />
+
+              {/* Bottom Ground-Anchor Pin / Blue Accent */}
+              <path
+                d="M40 76 L50 88 L60 76"
+                stroke="url(#shieldBlue)"
+                strokeWidth="4.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </div>
 
-          {/* Verification Badge */}
-          <span className="hidden sm:inline-flex items-center gap-1 font-semibold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-700/50 text-[9px]">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>{t('gov.nic_node')}</span>
-          </span>
-        </div>
-      </div>
-
-      {/* 2. SUBTLE TRICOLOR ACCENT BORDER */}
-      <div className="h-0.5 w-full grid grid-cols-3">
-        <div className="bg-[#FF9933]" />
-        <div className="bg-white" />
-        <div className="bg-[#138808]" />
-      </div>
-
-      {/* 3. MAIN HEADER: LEFT SECTION & CENTER BRAND SECTION */}
-      <div className="bg-white px-3 sm:px-6 lg:px-8 py-3 sm:py-4 border-b border-slate-200 flex items-center justify-between gap-3 sm:gap-6 w-full max-w-full">
-        {/* Brand Group Container */}
-        <div className="flex flex-wrap md:flex-nowrap items-center gap-3 sm:gap-5 min-w-0">
-          {/* LEFT SECTION: Institution Logo & Title */}
-          <div
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group shrink-0"
-          >
-            {/* Clean Government / Institution Style Icon */}
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#0B2545] text-amber-400 border border-amber-500/50 shadow-2xs flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <span className="text-xl sm:text-2xl leading-none select-none">🏛️</span>
+          {/* Brand Typography */}
+          <div className="flex flex-col text-left">
+            <div className="text-base sm:text-lg md:text-xl font-black tracking-tight leading-none text-[#0B2545]">
+              Satya <span className="text-blue-600 group-hover:text-blue-700 transition-colors">Nirakshak</span>
             </div>
-
-            <div className="min-w-0">
-              <div className="text-sm sm:text-base md:text-lg font-black text-[#0B2545] tracking-tight leading-snug">
-                {t('gov.portal_title')}
-              </div>
-              <div className="text-[10px] sm:text-xs font-semibold tracking-normal leading-tight text-slate-600">
-                <div className="font-semibold text-slate-700">{t('gov.ministry')}</div>
-                <div className="text-[9px] sm:text-[10px] text-slate-500 font-medium">{t('gov.india')}</div>
-              </div>
-            </div>
-          </div>
-
-          {/* CENTER / BRAND SECTION: Vertical Divider & Main System Identity */}
-          <div className="hidden md:flex items-center gap-4 border-l border-slate-200 pl-4 py-0.5 min-w-0">
-            <div className="min-w-0">
-              <div className="text-base sm:text-lg font-black text-[#0B2545] tracking-tight leading-snug">
-                {t('gov.portal_title')}
-              </div>
-              <div className="text-[11px] sm:text-xs font-semibold text-slate-600 tracking-normal leading-tight">
-                {t('gov.portal_subtitle')}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Status / Mobile Menu Action */}
-        <div className="flex items-center gap-2 shrink-0">
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50/90 border border-emerald-200 text-emerald-800 text-xs font-semibold">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-            <span className="text-[11px]">
-              {t('nav.active_grid')}
-            </span>
-          </div>
-
-          {/* Mobile Hamburger Toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer border border-slate-200 bg-white shadow-2xs shrink-0"
-            title="Toggle Navigation Menu"
-            aria-label="Toggle navigation"
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5 text-slate-700" /> : <Menu className="w-5 h-5 text-slate-700" />}
-          </button>
-        </div>
-      </div>
-
-      {/* 4. BOTTOM / SECONDARY HEADER AREA */}
-      <div className="bg-slate-50/60 px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 w-full max-w-full">
-        {/* Left: System Support / Assistance */}
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-[#0B2545] shadow-2xs shrink-0">
-            <Headphones className="w-4 h-4 text-[#0B2545]" />
-          </div>
-          <div className="min-w-0">
-            <div className="text-xs font-bold text-[#0B2545] leading-tight">
-              {t('nav.system_support')}
-            </div>
-            <a
-              href="mailto:support-dosje@nic.in"
-              className="text-[11px] text-slate-600 hover:text-[#0B2545] hover:underline font-medium flex items-center gap-1.5 leading-tight transition"
-            >
-              <Mail className="w-3 h-3 text-slate-400 shrink-0" />
-              <span className="truncate">support-dosje@nic.in</span>
-            </a>
-          </div>
-        </div>
-
-        {/* Center: Module Navigation Anchors (Desktop) */}
-        <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-semibold text-slate-600">
-          <button
-            onClick={() => scrollToSection('features')}
-            className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-200/60 transition cursor-pointer whitespace-nowrap"
-          >
-            {t('nav.key_modules')}
-          </button>
-          <button
-            onClick={() => scrollToSection('how-it-works')}
-            className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-200/60 transition cursor-pointer whitespace-nowrap"
-          >
-            {t('nav.how_it_works')}
-          </button>
-          <button
-            onClick={() => scrollToSection('preview')}
-            className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-200/60 transition cursor-pointer whitespace-nowrap"
-          >
-            {t('nav.surveillance_grid')}
-          </button>
-          <button
-            onClick={() => scrollToSection('status')}
-            className="px-2.5 py-1.5 rounded-md hover:text-[#0B2545] hover:bg-slate-200/60 transition cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
-          >
-            <span>{t('nav.cluster_status')}</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          </button>
-        </nav>
-
-        {/* Right: Language Selector + Access Portal Button */}
-        <div className="flex items-center gap-2.5 shrink-0">
-          <LanguageSelector variant="header" />
-          <button
-            id="header-access-portal-btn"
-            onClick={onLoginClick}
-            className="flex items-center gap-2 px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-bold rounded-lg bg-[#0B2545] hover:bg-[#13315C] active:bg-[#071930] text-white shadow-xs hover:shadow-md transition-all duration-150 cursor-pointer border border-[#0B2545] shrink-0"
-          >
-            <Shield className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>
-              {t('landing.cta_launch')}
-            </span>
-          </button>
-        </div>
-      </div>
-
-      {/* 5. MOBILE DRAWER MENU */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden px-4 pt-3 pb-5 border-b border-slate-200 space-y-3 bg-white text-slate-900 shadow-lg animate-in slide-in-from-top duration-200">
-          {/* Mobile Identity Subtitle */}
-          <div className="pb-2 border-b border-slate-100">
-            <div className="text-xs font-bold text-[#0B2545]">{t('gov.portal_title')}</div>
-            <div className="text-[11px] text-slate-500 font-medium">
-              {t('gov.portal_subtitle')}
+            <div className="text-[11px] sm:text-xs font-semibold text-slate-500 tracking-normal mt-1 leading-none flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+              <span>NGO Monitoring System</span>
             </div>
           </div>
+        </div>
 
-          <div className="flex flex-col space-y-1 text-xs font-semibold text-slate-700">
+        {/* RIGHT: Action Controls (Language + Donate + Monitoring Portal + Menu) */}
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          {/* 1. Language Dropdown Pill */}
+          <div ref={langRef} className="relative">
             <button
-              onClick={() => scrollToSection('features')}
-              className="w-full text-left px-3 py-2 rounded-md hover:text-[#0B2545] hover:bg-slate-50 transition cursor-pointer"
+              type="button"
+              onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+              className="bg-blue-50/70 hover:bg-blue-100/70 text-blue-900 border border-blue-200/80 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition cursor-pointer select-none"
+              aria-label="Select Language"
+              title="Select Language / भाषा चुनें"
             >
-              {t('nav.key_modules')}
-            </button>
-            <button
-              onClick={() => scrollToSection('how-it-works')}
-              className="w-full text-left px-3 py-2 rounded-md hover:text-[#0B2545] hover:bg-slate-50 transition cursor-pointer"
-            >
-              {t('nav.how_it_works')}
-            </button>
-            <button
-              onClick={() => scrollToSection('preview')}
-              className="w-full text-left px-3 py-2 rounded-md hover:text-[#0B2545] hover:bg-slate-50 transition cursor-pointer"
-            >
-              {t('nav.surveillance_grid')}
-            </button>
-            <button
-              onClick={() => scrollToSection('status')}
-              className="w-full text-left px-3 py-2 rounded-md hover:text-[#0B2545] hover:bg-slate-50 transition flex items-center justify-between cursor-pointer"
-            >
-              <span>{t('nav.cluster_status')}</span>
-              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <span>{t('nav.operational')}</span>
+              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-700 shrink-0" />
+              <span className="uppercase text-xs sm:text-sm tracking-wide">
+                {currentLanguageInfo?.short || 'EN'}
               </span>
+              <ChevronDown
+                className={`w-3.5 h-3.5 text-blue-600 transition-transform duration-200 ${
+                  langDropdownOpen ? 'rotate-180' : ''
+                }`}
+              />
             </button>
+
+            {/* Language Selection Popover */}
+            {langDropdownOpen && (
+              <div className="absolute right-0 top-full mt-2 w-56 max-h-72 overflow-y-auto rounded-2xl bg-white border border-blue-100 shadow-xl z-50 py-1.5 text-slate-800 text-xs animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-3 py-1.5 border-b border-slate-100 flex items-center justify-between text-[11px] font-bold text-[#0B2545]">
+                  <span>{t('app.select_language', 'Select Language')}</span>
+                  <span className="text-[10px] text-blue-500 font-mono">13 Languages</span>
+                </div>
+                <div className="py-1">
+                  {languages.map((item) => {
+                    const isSelected = item.code === language;
+                    return (
+                      <button
+                        key={item.code}
+                        type="button"
+                        onClick={() => handleSelectLanguage(item.code)}
+                        className={`w-full px-3.5 py-2 flex items-center justify-between transition cursor-pointer text-left ${
+                          isSelected
+                            ? 'bg-blue-50 text-blue-900 font-bold'
+                            : 'hover:bg-slate-50 text-slate-700'
+                        }`}
+                      >
+                        <span className="text-xs">{item.nativeLabel}</span>
+                        <span className="text-[10px] uppercase text-slate-400 font-semibold flex items-center gap-1">
+                          {item.short}
+                          {isSelected && <Check className="w-3.5 h-3.5 text-blue-600" />}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Mobile Font Size & Language Controls */}
-          <div className="pt-2.5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-700">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[11px] text-slate-500 font-medium">
-                {t('gov.language')}:
-              </span>
-              <LanguageSelector />
-            </div>
-          </div>
+          {/* 2. Donate Button (Crisp Blue & White Rounded Pill with Heart) */}
+          <button
+            type="button"
+            onClick={handleDonateClick}
+            className="bg-blue-50 hover:bg-blue-100 active:bg-blue-200 text-blue-700 border border-blue-200 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-bold transition shadow-2xs hover:shadow-xs cursor-pointer select-none"
+            title="Donate & Support Ground NGO Initiatives (80G Tax Deductible)"
+          >
+            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-blue-600 text-blue-600 shrink-0" />
+            <span>Donate</span>
+          </button>
 
-          {/* Mobile Action Button */}
-          <div className="pt-3 border-t border-slate-200">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onLoginClick();
-              }}
-              className="w-full py-2.5 rounded-lg bg-[#0B2545] hover:bg-[#13315C] text-white text-xs font-bold text-center cursor-pointer transition shadow-xs flex items-center justify-center gap-2"
+          {/* 3. Monitoring Portal Button (Dark Royal Navy Rounded Pill with Screen Icon & Diagonal Arrow) */}
+          <button
+            type="button"
+            onClick={handlePortalClick}
+            className="hidden sm:flex items-center gap-1.5 sm:gap-2 bg-[#0B2545] hover:bg-[#133A6B] active:bg-[#071930] text-white px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition cursor-pointer select-none border border-blue-900/30"
+            title="Launch Live Satya Nirakshak Monitoring Portal"
+          >
+            {/* Screen / Presentation Monitor Icon matching reference */}
+            <svg
+              className="w-4 h-4 text-white shrink-0"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              <Shield className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>
-                {t('landing.cta_launch')}
-              </span>
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <circle cx="8" cy="8" r="1.5" />
+              <path d="M21 15l-5-5L5 21" />
+              <path d="M8 21h8" />
+              <path d="M12 17v4" />
+            </svg>
+            <span>Monitoring Portal</span>
+            <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-200 shrink-0" strokeWidth={2.2} />
+          </button>
+
+          {/* 4. Circular Menu Button (3 Horizontal Lines) */}
+          <div ref={menuRef} className="relative">
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100/90 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition cursor-pointer select-none shrink-0"
+              aria-label="Navigation Menu"
+              title="Navigation Menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-4 h-4 sm:w-5 sm:h-5 text-slate-800" strokeWidth={2.2} />
+              ) : (
+                <Menu className="w-4 h-4 sm:w-5 sm:h-5 text-slate-800" strokeWidth={2.2} />
+              )}
             </button>
+
+            {/* Extended Navigation Popover */}
+            {mobileMenuOpen && (
+              <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 rounded-2xl bg-white border border-slate-200/90 shadow-2xl p-4 text-slate-800 text-xs animate-in fade-in zoom-in-95 duration-150 z-50 space-y-3">
+                {/* Header in menu */}
+                <div className="pb-2 border-b border-slate-100 flex items-center justify-between">
+                  <div>
+                    <div className="text-xs font-bold text-[#0B2545]">Satya Nirakshak</div>
+                    <div className="text-[10px] text-slate-500 font-medium">Live Surveillance & Audits</div>
+                  </div>
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                    Active Node
+                  </span>
+                </div>
+
+                {/* Portal Button on Mobile (visible if screen is small) */}
+                <div className="sm:hidden pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handlePortalClick();
+                    }}
+                    className="w-full py-2.5 rounded-xl bg-[#0B2545] hover:bg-[#133A6B] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs cursor-pointer border border-blue-900/30"
+                  >
+                    <Shield className="w-4 h-4 text-blue-200" />
+                    <span>Monitoring Portal</span>
+                    <ArrowUpRight className="w-4 h-4 text-white" />
+                  </button>
+                </div>
+
+                {/* Section Links */}
+                <div className="space-y-1 font-semibold text-slate-700">
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('features')}
+                    className="w-full text-left px-3 py-2 rounded-xl hover:text-blue-700 hover:bg-blue-50/60 transition cursor-pointer flex items-center justify-between"
+                  >
+                    <span>Key Surveillance Modules</span>
+                    <span className="text-[11px] text-blue-400">01</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('how-it-works')}
+                    className="w-full text-left px-3 py-2 rounded-xl hover:text-blue-700 hover:bg-blue-50/60 transition cursor-pointer flex items-center justify-between"
+                  >
+                    <span>How Field Verification Works</span>
+                    <span className="text-[11px] text-blue-400">02</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('status')}
+                    className="w-full text-left px-3 py-2 rounded-xl hover:text-blue-700 hover:bg-blue-50/60 transition cursor-pointer flex items-center justify-between"
+                  >
+                    <span>Live NGO CCTV Grid</span>
+                    <span className="text-[11px] text-blue-400">03</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('impact-section')}
+                    className="w-full text-left px-3 py-2 rounded-xl hover:text-blue-700 hover:bg-blue-50/60 transition cursor-pointer flex items-center justify-between"
+                  >
+                    <span>Ground Impact Initiatives</span>
+                    <span className="text-[11px] text-blue-400">04</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleDonateClick();
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 font-bold transition cursor-pointer flex items-center justify-between border border-blue-200"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <Heart className="w-3.5 h-3.5 fill-blue-600 text-blue-600" />
+                      <span>Donate & Support Programs</span>
+                    </div>
+                    <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-blue-200/80 text-blue-900">
+                      80G
+                    </span>
+                  </button>
+                </div>
+
+                {/* Support Contact Footer */}
+                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                  <span className="flex items-center gap-1.5">
+                    <Headphones className="w-3.5 h-3.5 text-[#0B2545]" />
+                    <span>Official Support</span>
+                  </span>
+                  <a
+                    href="mailto:support-dosje@nic.in"
+                    className="text-slate-600 hover:text-[#0B2545] font-medium flex items-center gap-1"
+                  >
+                    <Mail className="w-3 h-3 text-slate-400" />
+                    <span>support-dosje@nic.in</span>
+                  </a>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 };

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { User, UserRole } from '../../types';
 import { CircularSpinner } from '../common/CircularSpinner';
+import { SatyaNirakshakLogo } from '../common/SatyaNirakshakLogo';
 import { useTranslation } from '../../i18n/LanguageContext';
 
 interface AuthModalProps {
@@ -159,8 +160,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         {/* Government Header Bar */}
         <div className="px-5 sm:px-6 pt-5 pb-4 border-b border-slate-100 bg-linear-to-b from-slate-50/90 to-white flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0B2545] flex items-center justify-center text-amber-400 font-bold shadow-xs border border-amber-500/30 shrink-0">
-              <Shield className="w-5 h-5" />
+            <div className="w-11 h-11 rounded-xl bg-white border border-slate-200 flex items-center justify-center p-1 shadow-2xs shrink-0">
+              <SatyaNirakshakLogo size={38} variant="icon" />
             </div>
             <div>
               <h3

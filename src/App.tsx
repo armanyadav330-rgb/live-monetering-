@@ -27,6 +27,7 @@ import { AIChatbotModal } from './components/chatbot/AIChatbotModal';
 import { AIFloatingTrigger } from './components/chatbot/AIFloatingTrigger';
 import { AIAssistantView } from './components/chatbot/AIAssistantView';
 import { LandingPage } from './components/home/LandingPage';
+import { DonationLandingPage } from './components/donation/DonationLandingPage';
 import { User, Project, Inspection, AIAnomalyAlert } from './types';
 import { api, getStoredUser, setStoredUser } from './services/api';
 import { isRouteAuthorized } from './utils/rbac';
@@ -37,6 +38,10 @@ import { OfficerManagementView } from './components/officers/OfficerManagementVi
 import { InspectionScheduleView } from './components/inspections/InspectionScheduleView';
 import { StatutoryChecklistView } from './components/inspections/StatutoryChecklistView';
 import { UploadEvidenceView } from './components/inspections/UploadEvidenceView';
+import { SubmitReportSection } from './components/reports/SubmitReportSection';
+import { NGOReportHistoryView } from './components/reports/NGOReportHistoryView';
+import { AdminReportsView } from './components/reports/AdminReportsView';
+import { NGOReport } from './types';
 import { useTranslation } from './i18n/LanguageContext';
 
 export default function App() {
@@ -45,6 +50,7 @@ export default function App() {
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [activeView, setActiveView] = useState<string>('home');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [resubmitReportData, setResubmitReportData] = useState<NGOReport | null>(null);
 
   // Selected entities for deep view states
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
@@ -140,17 +146,7 @@ export default function App() {
     }
 
     if (view === 'submit-report') {
-      const target =
-        inspections.find(
-          (i) => i.inspectorId === currentUser.id || i.inspectorName === currentUser.name
-        ) || inspections[0];
-
-      if (target) {
-        setSelectedInspectionId(target.id);
-        setActiveView('inspection-report');
-      } else {
-        setActiveView('inspections');
-      }
+      setActiveView('submit-report');
       setSidebarOpen(false);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -312,6 +308,53 @@ export default function App() {
                 onOpenAIAssistant={(mode) => handleOpenAIAssistant(mode as any)}
                 onNavigate={handleNavigate}
               />
+
+              {/* 2 & 5. SUBMITTED REPORTS CARD & SUMMARY SECTION (ADMIN DASHBOARD) */}
+              {(currentUser.role === 'SUPER_ADMIN' ||
+                currentUser.role === 'DEPARTMENT_OFFICIAL' ||
+                currentUser.role === 'SUPERVISOR' ||
+                currentUser.role === 'STATE_DISTRICT_AUTHORITY') && (
+                <AdminReportsView
+                  currentUser={currentUser}
+                  isCompactDashboardWidget={true}
+                  onNavigateToFull={() => handleNavigate('submitted-reports')}
+                />
+              )}
+
+              {/* NGO SUPERINTENDENT ACTIVITY & COMPLIANCE REPORTING CAPSULE (NGO DASHBOARD) */}
+              {(currentUser.role === 'NGO_INSTITUTE' || currentUser.role === 'FIELD_OFFICER') && (
+                <div className="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#0B2545] bg-blue-50 px-2.5 py-0.5 rounded border border-blue-200 inline-block">
+                      Official NGO Reporting Center
+                    </span>
+                    <h3 className="text-sm sm:text-base font-bold text-[#0B2545]">
+                      Submit Periodic Activity & Fund Utilization Dossiers
+                    </h3>
+                    <p className="text-xs text-slate-500 max-w-xl">
+                      File your Monthly Activity, Progress, or Grant Utilization reports directly to the Central Oversight Cell with verifiable supporting documents.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto">
+                    <button
+                      onClick={() => handleNavigate('my-reports')}
+                      className="px-3.5 py-2 rounded-lg border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition cursor-pointer"
+                    >
+                      View My Reports
+                    </button>
+                    <button
+                      onClick={() => {
+                        setResubmitReportData(null);
+                        handleNavigate('submit-report');
+                      }}
+                      className="px-4 py-2 rounded-lg bg-[#0B2545] hover:bg-[#13315C] text-white text-xs font-bold shadow-xs transition cursor-pointer flex items-center gap-1.5"
+                    >
+                      <span>Submit New Report</span>
+                      <span className="text-amber-400">&rarr;</span>
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Risk Distribution and Analytics Charts */}
               <RiskChart projects={projects} />
@@ -506,6 +549,40 @@ export default function App() {
               currentUser={currentUser}
               onSelectInspection={handleViewInspectionDossier}
             />
+          )}
+
+          {/* 1. REPORT SUBMISSION SECTION (NGO SUPERINTENDENT) */}
+          {activeView === 'submit-report' && (
+            <SubmitReportSection
+              currentUser={currentUser}
+              projects={projects}
+              resubmitInitialData={resubmitReportData}
+              onNavigateToHistory={() => handleNavigate('my-reports')}
+              onReportSubmitted={() => {
+                refreshData();
+              }}
+            />
+          )}
+
+          {/* 4. NGO USER REPORT HISTORY (MY REPORTS) */}
+          {activeView === 'my-reports' && (
+            <NGOReportHistoryView
+              currentUser={currentUser}
+              onNavigateToSubmit={(resubmitItem) => {
+                setResubmitReportData(resubmitItem || null);
+                handleNavigate('submit-report');
+              }}
+            />
+          )}
+
+          {/* 2 & 3. ADMIN SUBMITTED REPORTS COMPLETE VIEW */}
+          {activeView === 'submitted-reports' && (
+            <div className="space-y-4">
+              <AdminReportsView
+                currentUser={currentUser}
+                isCompactDashboardWidget={false}
+              />
+            </div>
           )}
 
           {/* AUDIT LOGS VIEW */}
@@ -735,6 +812,31 @@ export default function App() {
           {/* ALERTS & ESCALATIONS VIEW */}
           {activeView === 'alerts' && (
             <AIAnalyticsDashboard onSelectProject={handleViewProject} />
+          )}
+
+          {/* NGO DONATIONS & SOCIAL IMPACT VIEW */}
+          {activeView === 'donate' && (
+            <div className="space-y-4">
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">
+                    Satya Nirakshak NGO Donations & Public Welfare Portal
+                  </h2>
+                  <p className="text-xs text-slate-500">
+                    100% transparent giving eligible for 50% deduction under Section 80G of Income Tax Act
+                  </p>
+                </div>
+                <button
+                  onClick={() => setActiveView('dashboard')}
+                  className="px-3 py-1.5 rounded-lg bg-[#0B2545] hover:bg-[#13315C] text-white text-xs font-bold transition cursor-pointer self-start sm:self-auto shrink-0"
+                >
+                  Return to Dashboard
+                </button>
+              </div>
+              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white">
+                <DonationLandingPage onBackToPortal={() => setActiveView('dashboard')} isStandaloneView={true} />
+              </div>
+            </div>
           )}
 
           {/* USER OFFICIAL PROFILE */}

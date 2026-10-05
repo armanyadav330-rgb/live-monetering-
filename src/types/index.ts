@@ -231,6 +231,61 @@ export interface NotificationItem {
   createdAt: string;
 }
 
+export type NGOReportType =
+  | 'Monthly Activity Report'
+  | 'Project Progress Report'
+  | 'Fund Utilization Report'
+  | 'Inspection/Field Report'
+  | 'Other';
+
+export type NGOReportStatus =
+  | 'Pending Review'
+  | 'Under Review'
+  | 'Approved'
+  | 'Rejected'
+  | 'Resubmission Required';
+
+export interface ReportDocument {
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+  dataUrl?: string;
+  uploadedAt: string;
+}
+
+export interface NGOReport {
+  id: string;
+  reportId: string; // e.g. REP-2026-0042
+  title: string;
+  reportType: NGOReportType;
+  reportingPeriod: string;
+  projectName: string;
+  projectId?: string;
+  ngoName: string;
+  submittedByUserId: string;
+  submittedByUserName: string;
+  submittedByUserDesignation?: string;
+  submittedByUserEmail?: string;
+  description: string;
+  beneficiaryCount: number;
+  activitiesCompleted: string;
+  issuesChallenges: string;
+  fundUtilizationSummary: string;
+  remarks: string;
+  documents: ReportDocument[];
+  status: NGOReportStatus;
+  submissionDate: string; // ISO string
+  reviewedByUserId?: string;
+  reviewedByUserName?: string;
+  reviewedAt?: string;
+  adminRemarks?: string;
+  resubmittedFromId?: string;
+  version?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AuditLog {
   id: string;
   userId: string;

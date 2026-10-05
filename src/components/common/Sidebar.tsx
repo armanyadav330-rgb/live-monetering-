@@ -3,6 +3,7 @@ import {
   Globe,
   LogOut,
   UserCircle,
+  Heart,
 } from 'lucide-react';
 import { UserRole } from '../../types';
 import {
@@ -11,6 +12,7 @@ import {
   RoleMenuItem,
 } from '../../utils/rbac';
 import { useTranslation } from '../../i18n/LanguageContext';
+import { SatyaNirakshakLogo } from './SatyaNirakshakLogo';
 
 interface SidebarProps {
   currentView?: string;
@@ -68,6 +70,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           )}
 
+          {/* Official Satya Nirakshak Brand Header */}
+          <div className="px-2 py-2 flex items-center gap-2.5 border-b border-[#13315C] mb-1">
+            <div className="w-9 h-9 rounded-lg bg-white flex items-center justify-center p-0.5 shadow-xs shrink-0">
+              <SatyaNirakshakLogo size={32} variant="icon" />
+            </div>
+            <div className="flex flex-col min-w-0">
+              <span className="font-black text-xs text-white tracking-wider leading-tight truncate">
+                SATYA NIRAKSHAK
+              </span>
+              <span className="text-[9px] font-bold text-emerald-400 tracking-wider uppercase truncate">
+                LIVE MONITORING NGO
+              </span>
+            </div>
+          </div>
+
           {/* Quick Gateway Link */}
           <button
             onClick={() => {
@@ -82,6 +99,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <span>{t('nav.home')}</span>
             </div>
             <span className="text-[9px] font-mono text-sky-300 uppercase">GOV.IN</span>
+          </button>
+
+          {/* Donations & Welfare Link */}
+          <button
+            onClick={() => {
+              onNavigate('donate');
+              if (onClose) onClose();
+            }}
+            className="w-full flex items-center justify-between px-2.5 py-1.5 rounded text-xs font-semibold text-amber-200 hover:bg-[#13315C] hover:text-white border border-dashed border-amber-500/40 transition cursor-pointer"
+            title="NGO Donations & Welfare Section"
+          >
+            <div className="flex items-center gap-2">
+              <Heart className="w-3.5 h-3.5 text-amber-400 fill-amber-400/30 shrink-0" />
+              <span>Donations & Welfare</span>
+            </div>
+            <span className="text-[9px] font-mono text-amber-300 font-bold uppercase">80G</span>
           </button>
 
           {/* Dynamic Role-Based Menu Items */}

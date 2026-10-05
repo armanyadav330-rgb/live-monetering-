@@ -117,6 +117,7 @@ export function getRoleBadge(role: UserRole): { text: string; bg: string; textCo
 export const ROLE_SIDEBAR_MENUS: Record<AppRoleCategory, RoleMenuItem[]> = {
   ADMIN: [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'submitted-reports', label: 'Submitted Reports', icon: FileCheck2, badge: 'NGO' },
     { id: 'cctv', label: 'Command Center / Live Monitoring', icon: Video, badge: '24×7' },
     { id: 'users', label: 'User Management', icon: Users },
     { id: 'roles', label: 'Role & Permission Management', icon: ShieldCheck, badge: 'RBAC' },
@@ -148,6 +149,7 @@ export const ROLE_SIDEBAR_MENUS: Record<AppRoleCategory, RoleMenuItem[]> = {
 
   SUPERVISOR: [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'submitted-reports', label: 'Submitted Reports', icon: FileCheck2, badge: 'NGO' },
     { id: 'cctv', label: 'Live Monitoring', icon: Video, badge: 'LIVE' },
     { id: 'inspections', label: 'Inspection Overview', icon: ClipboardCheck },
     { id: 'pending-inspections', label: 'Pending Inspections', icon: Clock3, badge: 'QUEUE' },
@@ -162,12 +164,13 @@ export const ROLE_SIDEBAR_MENUS: Record<AppRoleCategory, RoleMenuItem[]> = {
 
   FIELD_OFFICER: [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'submit-report', label: 'Submit Report', icon: Send, badge: 'NEW' },
+    { id: 'my-reports', label: 'My Reports', icon: FileText, badge: 'NGO' },
     { id: 'assigned-tasks', label: 'Assigned Tasks', icon: CheckSquare2, badge: 'TASKS' },
     { id: 'today-schedule', label: 'Today’s Schedule', icon: CalendarClock, badge: 'TODAY' },
     { id: 'start-inspection', label: 'Start Inspection', icon: PlayCircle, badge: 'ACTION' },
     { id: 'inspection-checklist', label: 'Inspection Checklist', icon: ListChecks },
     { id: 'upload-evidence', label: 'Upload Photos / Evidence', icon: Camera },
-    { id: 'submit-report', label: 'Submit Report', icon: Send },
     { id: 'pending-tasks', label: 'Pending Tasks', icon: Clock, badge: 'DUE' },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'profile', label: 'Profile', icon: UserCircle },
@@ -224,6 +227,8 @@ const AUTHORIZED_ROUTES: Record<AppRoleCategory, string[]> = {
     'assigned-tasks',
     'today-schedule',
     'submit-report',
+    'my-reports',
+    'submitted-reports',
     'pending-tasks',
     'inspection-status',
   ],
@@ -238,6 +243,8 @@ const AUTHORIZED_ROUTES: Record<AppRoleCategory, string[]> = {
     'start-inspection',
     'upload-evidence',
     'reports',
+    'my-reports',
+    'submitted-reports',
     'pending-actions',
     'alerts',
     'notifications',
@@ -254,6 +261,7 @@ const AUTHORIZED_ROUTES: Record<AppRoleCategory, string[]> = {
   SUPERVISOR: [
     'home',
     'dashboard',
+    'submitted-reports',
     'cctv',
     'inspections',
     'pending-inspections',
@@ -275,12 +283,14 @@ const AUTHORIZED_ROUTES: Record<AppRoleCategory, string[]> = {
   FIELD_OFFICER: [
     'home',
     'dashboard',
+    'submit-report',
+    'my-reports',
+    'submitted-reports',
     'assigned-tasks',
     'today-schedule',
     'start-inspection',
     'inspection-checklist',
     'upload-evidence',
-    'submit-report',
     'pending-tasks',
     'notifications',
     'profile',
@@ -294,6 +304,8 @@ const AUTHORIZED_ROUTES: Record<AppRoleCategory, string[]> = {
   VIEWER: [
     'home',
     'dashboard',
+    'submitted-reports',
+    'my-reports',
     'cctv',
     'inspection-status',
     'inspections',
@@ -311,7 +323,7 @@ const AUTHORIZED_ROUTES: Record<AppRoleCategory, string[]> = {
  * Checks whether the user's role is authorized to access the given view.
  */
 export function isRouteAuthorized(role: UserRole, view: string): boolean {
-  if (!view || view === 'home') return true;
+  if (!view || view === 'home' || view === 'donate') return true;
 
   // Clean view ID if it has parameters (e.g., 'projects/123')
   const baseView = view.split('/')[0];

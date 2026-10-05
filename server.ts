@@ -819,6 +819,84 @@ async function startServer() {
   });
 
   // ==========================================
+  // NGO REPORT SUBMISSION & REVIEW APIS
+  // ==========================================
+
+  // Get NGO Reports (user-scoped or all for admin)
+  app.get('/api/reports/ngo', (req, res) => {
+    try {
+      const user = getRequestUser(req);
+      const reports = portalStore.getNGOReports(user);
+      res.json({ success: true, data: reports });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  // Get NGO Report Summary Stats
+  app.get('/api/reports/ngo/stats', (req, res) => {
+    try {
+      const stats = portalStore.getNGOReportSummaryStats();
+      res.json({ success: true, data: stats });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  // Get Single NGO Report by ID
+  app.get('/api/reports/ngo/:id', (req, res) => {
+    try {
+      const report = portalStore.getNGOReportById(req.params.id);
+      if (!report) {
+        return res.status(404).json({ success: false, error: 'Report not found' });
+      }
+      res.json({ success: true, data: report });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  // Submit New NGO Report
+  app.post('/api/reports/ngo', (req, res) => {
+    try {
+      const user = getRequestUser(req);
+      const newReport = portalStore.createNGOReport(req.body, user);
+      res.status(201).json({
+        success: true,
+        data: newReport,
+        message: 'Report submitted successfully.',
+      });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  // Update NGO Report Status (Admin Review: Approve / Reject / Resubmission Required)
+  app.put('/api/reports/ngo/:id/status', (req, res) => {
+    try {
+      const user = getRequestUser(req);
+      const { status, adminRemarks } = req.body;
+      if (!status) {
+        return res.status(400).json({ success: false, error: 'Status is required' });
+      }
+      if ((status === 'Rejected' || status === 'Resubmission Required') && (!adminRemarks || !adminRemarks.trim())) {
+        return res.status(400).json({ success: false, error: 'Reason/remark is mandatory when rejecting or requesting resubmission' });
+      }
+      const updated = portalStore.updateNGOReportStatus(req.params.id, status, adminRemarks, user);
+      res.json({
+        success: true,
+        data: updated,
+        message: `Report status successfully updated to ${status}.`,
+      });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  // Serve public assets explicitly
+  app.use(express.static(path.join(process.cwd(), 'public')));
+
+  // ==========================================
   // VITE OR STATIC SERVING
   // ==========================================
   if (process.env.NODE_ENV !== 'production') {

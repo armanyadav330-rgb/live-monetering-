@@ -4,6 +4,7 @@ import { HeroSection } from './HeroSection';
 import { LandingFooter } from './LandingFooter';
 import { AuthModal } from './AuthModal';
 import { PolicyModal, PolicyType } from './PolicyModal';
+import { DonationLandingPage } from '../donation/DonationLandingPage';
 import { User, UserRole } from '../../types';
 import { useTranslation } from '../../i18n/LanguageContext';
 
@@ -53,7 +54,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans selection:bg-[#FF671F] selection:text-white flex flex-col justify-between">
+    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-600 selection:text-white flex flex-col justify-between">
       {/* 1. Header / Navigation Bar */}
       <LandingNav
         isDarkMode={isDarkMode}
@@ -61,6 +62,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         onToggleTheme={() => setIsDarkMode(!isDarkMode)}
         onLoginClick={() => handleOpenLogin()}
         onLaunchDashboard={() => handleOpenLogin(undefined, 'dashboard')}
+        onDonateClick={() => {
+          scrollToSection('donation-amount-section');
+          setTimeout(() => {
+            const input = document.getElementById('donation-amount-input') as HTMLInputElement | null;
+            if (input) input.focus();
+          }, 350);
+        }}
       />
 
       {/* Main Content Area */}
@@ -78,7 +86,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         />
 
         {/* 3. Essential 3-Pillar Overview */}
-        <section id="features" className="py-10 sm:py-12 bg-slate-50 border-y border-slate-200">
+        <section id="features" className="py-10 sm:py-12 bg-[#F8FAFC] border-y border-blue-100">
           <div id="how-it-works" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-8">
               <h2 className="text-lg sm:text-xl font-black text-[#0B2545]">
@@ -92,14 +100,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div id="status" className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
               {/* Pillar 1 */}
               <div
-                className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs text-left"
+                className="bg-white p-5 rounded-xl border border-blue-100 shadow-2xs hover:shadow-md hover:border-blue-300 transition-all text-left"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-800 flex items-center justify-center text-xl">
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-800 border border-blue-100 flex items-center justify-center text-xl">
                     📹
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
                     {t('pillars.cctv_badge')}
                   </span>
                 </div>
@@ -113,14 +121,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               {/* Pillar 2 */}
               <div
-                className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs text-left"
+                className="bg-white p-5 rounded-xl border border-blue-100 shadow-2xs hover:shadow-md hover:border-blue-300 transition-all text-left"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-800 flex items-center justify-center text-xl">
+                  <div className="w-10 h-10 rounded-lg bg-sky-50 text-sky-800 border border-sky-100 flex items-center justify-center text-xl">
                     📋
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
                     {t('pillars.inspections_badge')}
                   </span>
                 </div>
@@ -134,14 +142,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               {/* Pillar 3 */}
               <div
-                className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs text-left"
+                className="bg-white p-5 rounded-xl border border-blue-100 shadow-2xs hover:shadow-md hover:border-blue-300 transition-all text-left"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center text-xl">
+                  <div className="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-100 flex items-center justify-center text-xl">
                     👥
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
                     {t('pillars.biometric_badge')}
                   </span>
                 </div>
@@ -155,9 +163,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
           </div>
         </section>
+
+        {/* 4. Official NGO Donation & Social Impact Landing Section */}
+        <DonationLandingPage />
       </main>
 
-      {/* 4. Minimal, Professional Government Footer */}
+      {/* 5. Minimal, Professional Government / NGO Footer */}
       <LandingFooter
         isDarkMode={isDarkMode}
         lang={lang}

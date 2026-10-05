@@ -12,6 +12,8 @@ import {
   RiskLevel,
   PortalSettings,
   GrievanceTicket,
+  NGOReport,
+  NGOReportStatus,
 } from '../types';
 import { portalStore } from './store';
 import { cctvProvider } from './cctvProvider';
@@ -780,5 +782,93 @@ export const api = {
       // fallback
     }
     return portalStore.resolveGrievance(id, resolutionNotes, user);
+  },
+
+  // ---- NGO REPORTS ----
+  async getNGOReports(): Promise<NGOReport[]> {
+    const user = getStoredUser();
+    try {
+      const res = await fetch('/api/reports/ngo', { headers: getAuthHeaders() });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    return portalStore.getNGOReports(user);
+  },
+
+  async getNGOReportStats(): Promise<{
+    total: number;
+    pendingReview: number;
+    approved: number;
+    rejected: number;
+    underReview: number;
+    resubmissionRequired: number;
+  }> {
+    try {
+      const res = await fetch('/api/reports/ngo/stats', { headers: getAuthHeaders() });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    return portalStore.getNGOReportSummaryStats();
+  },
+
+  async getNGOReportById(id: string): Promise<NGOReport | null> {
+    try {
+      const res = await fetch(`/api/reports/ngo/${id}`, { headers: getAuthHeaders() });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    return portalStore.getNGOReportById(id) || null;
+  },
+
+  async submitNGOReport(data: Partial<NGOReport>): Promise<NGOReport> {
+    const user = getStoredUser();
+    try {
+      const res = await fetch('/api/reports/ngo', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    return portalStore.createNGOReport(data, user);
+  },
+
+  async updateNGOReportStatus(
+    id: string,
+    status: NGOReportStatus,
+    adminRemarks: string
+  ): Promise<NGOReport> {
+    const user = getStoredUser();
+    try {
+      const res = await fetch(`/api/reports/ngo/${id}/status`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ status, adminRemarks }),
+      });
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+    } catch {
+      // fallback
+    }
+    return portalStore.updateNGOReportStatus(id, status, adminRemarks, user);
   },
 };

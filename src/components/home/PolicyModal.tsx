@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 
 import { useTranslation } from '../../i18n/LanguageContext';
+import { SatyaNirakshakLogo } from '../common/SatyaNirakshakLogo';
 
 export type PolicyType = 'privacy' | 'terms' | 'hyperlink' | 'copyright';
 
@@ -54,11 +55,8 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
 
         <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0 bg-slate-50 dark:bg-slate-900/80">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0b2545] text-amber-400 border border-amber-500/40 flex flex-col items-center justify-center shrink-0 p-1">
-              <span className="text-base leading-none">🏛️</span>
-              <span className="text-[7px] font-bold tracking-tighter text-amber-300 uppercase">
-                DoSJE
-              </span>
+            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0 p-1 shadow-2xs">
+              <SatyaNirakshakLogo size={36} variant="icon" />
             </div>
             <div>
               <div className="text-[10px] font-bold text-[#FF671F] uppercase tracking-wider">

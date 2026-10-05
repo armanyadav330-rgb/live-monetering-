@@ -13,6 +13,8 @@ import {
   UserRole,
   PortalSettings,
   GrievanceTicket,
+  NGOReport,
+  NGOReportStatus,
 } from '../types';
 import {
   SEED_PROJECTS,
@@ -25,6 +27,7 @@ import {
   SEED_AUDIT_LOGS,
   SEED_VC_RECORDS,
   SEED_GRIEVANCES,
+  SEED_NGO_REPORTS,
 } from '../data/seedData';
 
 class PortalDataStore {
@@ -38,6 +41,7 @@ class PortalDataStore {
   private auditLogs: AuditLog[] = [];
   private vcRecords: RandomVCRecord[] = [];
   private grievances: GrievanceTicket[] = [];
+  private ngoReports: NGOReport[] = [];
   private settings: PortalSettings = {
     portalTitle: 'Satya Nirakshak',
     departmentName: 'Department of Social Justice and Empowerment (DoSJE)',
@@ -119,6 +123,7 @@ class PortalDataStore {
     this.auditLogs = JSON.parse(JSON.stringify(SEED_AUDIT_LOGS));
     this.vcRecords = JSON.parse(JSON.stringify(SEED_VC_RECORDS));
     this.grievances = JSON.parse(JSON.stringify(SEED_GRIEVANCES));
+    this.ngoReports = JSON.parse(JSON.stringify(SEED_NGO_REPORTS));
   }
 
   // ---- AUDIT LOGS ----
@@ -1052,6 +1057,164 @@ class PortalDataStore {
     }
 
     return item;
+  }
+
+  // ---- NGO REPORTS ----
+  public getNGOReports(user?: User): NGOReport[] {
+    let list = [...this.ngoReports];
+    if (user && (user.role === 'NGO_INSTITUTE' || user.role === 'FIELD_OFFICER')) {
+      list = list.filter(
+        (r) =>
+          r.submittedByUserId === user.id ||
+          (user.assignedProjectId && r.projectId === user.assignedProjectId) ||
+          (user.department && r.ngoName.toLowerCase().includes(user.department.toLowerCase()))
+      );
+    }
+    return list.sort(
+      (a, b) => new Date(b.submissionDate).getTime() - new Date(a.submissionDate).getTime()
+    );
+  }
+
+  public getNGOReportById(id: string): NGOReport | undefined {
+    return this.ngoReports.find((r) => r.id === id || r.reportId === id);
+  }
+
+  public createNGOReport(data: Partial<NGOReport>, user: User): NGOReport {
+    const count = this.ngoReports.length + 1;
+    const year = new Date().getFullYear();
+    const reportId = `REP-${year}-${String(count).padStart(4, '0')}`;
+    const newReport: NGOReport = {
+      id: `rep_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      reportId,
+      title: data.title?.trim() || 'Untitled Activity Report',
+      reportType: data.reportType || 'Monthly Activity Report',
+      reportingPeriod:
+        data.reportingPeriod?.trim() ||
+        new Date().toLocaleString('default', { month: 'long', year: 'numeric' }),
+      projectName:
+        data.projectName?.trim() ||
+        (user.assignedProjectId
+          ? this.projects.find((p) => p.id === user.assignedProjectId)?.projectName ||
+            'General Scheme Project'
+          : 'General Scheme Project'),
+      projectId: data.projectId || user.assignedProjectId,
+      ngoName: data.ngoName?.trim() || user.department || 'Authorized NGO Institute',
+      submittedByUserId: user.id,
+      submittedByUserName: user.name,
+      submittedByUserDesignation: user.designation,
+      submittedByUserEmail: user.email,
+      description: data.description?.trim() || '',
+      beneficiaryCount: Number(data.beneficiaryCount) || 0,
+      activitiesCompleted: data.activitiesCompleted?.trim() || '',
+      issuesChallenges: data.issuesChallenges?.trim() || '',
+      fundUtilizationSummary: data.fundUtilizationSummary?.trim() || '',
+      remarks: data.remarks?.trim() || '',
+      documents: data.documents || [],
+      status: 'Pending Review',
+      submissionDate: new Date().toISOString(),
+      resubmittedFromId: data.resubmittedFromId,
+      version: data.version ? data.version + 1 : 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    this.ngoReports.unshift(newReport);
+
+    // Create a notification for Admin
+    this.addNotification(
+      'New NGO Report Submitted',
+      `${newReport.reportId} ("${newReport.title}") submitted by ${user.name} (${newReport.ngoName}) is awaiting review.`,
+      'REPORT_SUBMITTED',
+      'SUPER_ADMIN',
+      'submitted-reports'
+    );
+
+    // Add Audit Log
+    this.addAuditLog(
+      user.id,
+      user.name,
+      user.role,
+      'INSPECTION_SUBMITTED' as any,
+      'REPORT',
+      newReport.id,
+      newReport.reportId,
+      { reportType: newReport.reportType, ngo: newReport.ngoName }
+    );
+
+    return newReport;
+  }
+
+  public updateNGOReportStatus(
+    id: string,
+    status: NGOReportStatus,
+    adminRemarks: string,
+    adminUser: User
+  ): NGOReport {
+    const report = this.getNGOReportById(id);
+    if (!report) {
+      throw new Error(`Report not found with id ${id}`);
+    }
+
+    report.status = status;
+    if (adminRemarks) {
+      report.adminRemarks = adminRemarks;
+    }
+    report.reviewedByUserId = adminUser.id;
+    report.reviewedByUserName = adminUser.name;
+    report.reviewedAt = new Date().toISOString();
+    report.updatedAt = new Date().toISOString();
+
+    // Notify the submitter
+    this.addNotification(
+      `Report Status Updated: ${status}`,
+      `Your report ${report.reportId} ("${report.title}") has been marked as "${status}" by ${adminUser.name}.${
+        adminRemarks ? ` Remarks: ${adminRemarks}` : ''
+      }`,
+      'REPORT_SUBMITTED',
+      'NGO_INSTITUTE',
+      'my-reports'
+    );
+
+    // Add Audit Log
+    this.addAuditLog(
+      adminUser.id,
+      adminUser.name,
+      adminUser.role,
+      'REPORT_EXPORTED' as any,
+      'REPORT',
+      report.id,
+      report.reportId,
+      { newStatus: status, remarks: adminRemarks }
+    );
+
+    return report;
+  }
+
+  public getNGOReportSummaryStats(): {
+    total: number;
+    pendingReview: number;
+    approved: number;
+    rejected: number;
+    underReview: number;
+    resubmissionRequired: number;
+  } {
+    const total = this.ngoReports.length;
+    const pendingReview = this.ngoReports.filter((r) => r.status === 'Pending Review').length;
+    const approved = this.ngoReports.filter((r) => r.status === 'Approved').length;
+    const rejected = this.ngoReports.filter((r) => r.status === 'Rejected').length;
+    const underReview = this.ngoReports.filter((r) => r.status === 'Under Review').length;
+    const resubmissionRequired = this.ngoReports.filter(
+      (r) => r.status === 'Resubmission Required'
+    ).length;
+
+    return {
+      total,
+      pendingReview,
+      approved,
+      rejected,
+      underReview,
+      resubmissionRequired,
+    };
   }
 }
 

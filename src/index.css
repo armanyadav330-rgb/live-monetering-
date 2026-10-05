@@ -40,3 +40,27 @@
   direction: ltr;
   text-align: left;
 }
+
+/* Leaflet Map & Popup Enhancements */
+.leaflet-popup-content-wrapper {
+  border-radius: 1rem !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  padding: 4px !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px 12px !important;
+  line-height: 1.4 !important;
+}
+
+.user-location-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
+.ngo-leaflet-marker {
+  background: transparent !important;
+  border: none !important;
+}
+

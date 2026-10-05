@@ -1,11 +1,11 @@
 import React from 'react';
-import { useTranslation } from '../../i18n/LanguageContext';
+import { ArrowRight, ArrowDown } from 'lucide-react';
 
 interface HeroSectionProps {
   isDarkMode?: boolean;
   lang?: string;
   onStartMonitoring: () => void;
-  onExploreDemo: () => void;
+  onExploreDemo?: () => void;
   onOpenInspectionOfficerDashboard?: () => void;
   onOpenSuperAdminDashboard?: () => void;
   onOpenDistrictDashboard?: () => void;
@@ -13,134 +13,96 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
-  isDarkMode: _isDarkMode,
   onStartMonitoring,
-  onExploreDemo: _onExploreDemo,
-  onOpenInspectionOfficerDashboard,
-  onOpenSuperAdminDashboard,
-  onOpenDistrictDashboard,
-  onOpenMinistryDashboard,
+  onExploreDemo,
 }) => {
-  const { t } = useTranslation();
+  const handleExplore = () => {
+    const el =
+      document.getElementById('features') ||
+      document.getElementById('how-it-works') ||
+      document.getElementById('status');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else if (onExploreDemo) {
+      onExploreDemo();
+    }
+  };
 
   return (
-    <section id="preview" className="relative overflow-hidden pt-8 sm:pt-12 pb-12 sm:pb-16 bg-white text-black">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          {/* Official GOI Emblem & Ministry Banner */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-50 text-black border border-slate-300">
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF671F] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF671F]" />
-            </span>
-            <span>
-              {t('hero.badge')}
+    <section
+      id="preview"
+      className="relative min-h-[82vh] sm:min-h-[86vh] lg:min-h-[90vh] flex items-center overflow-hidden bg-slate-950 text-white"
+    >
+      {/* Real photograph of an Indian grassroots social welfare & community campus */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <img
+          src="/assets/backgrounds/sabarmati_campus.jpg"
+          alt="Authentic Indian grassroots NGO and social welfare community campus"
+          className="w-full h-full object-cover object-center"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            // High-fidelity fallback to local administrative center if needed
+            const target = e.target as HTMLImageElement;
+            if (target.src.indexOf('ngo_building_main.jpg') === -1) {
+              target.src = '/assets/backgrounds/ngo_building_main.jpg';
+            }
+          }}
+        />
+
+        {/* Measured, natural editorial scrim: ensures WCAG AA text contrast while keeping real architectural photo dominant with deep blue harmony */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B2545]/90 via-[#0B2545]/60 to-[#0B2545]/25 sm:via-[#0B2545]/50 sm:to-[#0B2545]/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B2545]/90 via-transparent to-[#0B2545]/30 sm:hidden" />
+      </div>
+
+      {/* Hero Content Container with generous whitespace & editorial typography */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-24">
+        <div className="max-w-2xl space-y-6 sm:space-y-8 text-left">
+          {/* Small Label */}
+          <div>
+            <span className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-sky-300 uppercase select-none">
+              SATYA NIRAKSHAK
             </span>
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-lg sm:text-2xl lg:text-3xl font-extrabold tracking-tight leading-snug text-[#0B2545]">
-            {t('hero.title')}
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] text-balance">
+            Transparent NGO Monitoring.
           </h1>
 
-          <div className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">
-            {t('hero.dept')}
-          </div>
-
-          {/* Simple, Understandable Purpose Statement */}
-          <p className="text-sm sm:text-base text-slate-700 max-w-2xl mx-auto leading-relaxed font-medium">
-            {t('hero.desc')}
+          {/* One Short Supporting Line */}
+          <p className="text-lg sm:text-xl lg:text-2xl text-slate-200 font-normal tracking-wide">
+            Monitor. Verify. Improve.
           </p>
 
-          {/* Quick Role-based Access Guide */}
-          <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-left">
-            <div
-              id="super-admin-hero-card"
-              onClick={onOpenSuperAdminDashboard || onStartMonitoring}
-              className="relative p-3.5 rounded-xl border-2 border-amber-500/90 bg-amber-50/40 hover:bg-amber-50 hover:border-amber-600 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer group ring-2 ring-amber-500/20 transform hover:-translate-y-0.5"
+          {/* Minimal, High-Contrast Calls to Action */}
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
+            {/* Primary CTA */}
+            <button
+              type="button"
+              onClick={onStartMonitoring}
+              className="px-7 sm:px-8 py-3.5 sm:py-4 rounded-lg bg-white hover:bg-blue-50 text-[#0B2545] font-semibold text-sm sm:text-base tracking-wide transition-all duration-200 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center gap-2.5 group"
             >
-              <div className="flex items-center justify-between">
-                <span className="text-xl">🛡️</span>
-                <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-amber-600 text-white tracking-wider shadow-2xs">
-                  {t('role.super_admin', 'SUPER ADMIN')}
-                </span>
-              </div>
-              <div className="font-bold text-xs sm:text-sm text-amber-950 mt-1 flex items-center justify-between group-hover:text-amber-700 transition">
-                <span>{t('hero.super_admin_title')}</span>
-                <span className="text-amber-600 font-bold transition-transform group-hover:translate-x-1">→</span>
-              </div>
-              <div className="text-[11px] text-slate-700 mt-1 leading-tight">
-                {t('hero.super_admin_desc')}
-              </div>
-              <div className="mt-2.5 pt-1.5 border-t border-amber-200/70 flex items-center justify-between text-[10px] font-bold text-amber-700 group-hover:text-amber-900">
-                <span>{t('hero.super_admin_login')}</span>
-                <span className="text-xs font-mono">🔒</span>
-              </div>
-            </div>
+              <span>Get Started</span>
+              <ArrowRight className="w-4 h-4 text-[#0B2545] transition-transform duration-200 group-hover:translate-x-1" />
+            </button>
 
-            <div
-              id="inspection-officer-hero-card"
-              onClick={onOpenInspectionOfficerDashboard || onStartMonitoring}
-              className="relative p-3.5 rounded-xl border-2 border-indigo-600/90 bg-indigo-50/40 hover:bg-indigo-50 hover:border-indigo-700 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer group ring-2 ring-indigo-500/20 transform hover:-translate-y-0.5"
+            {/* Optional Secondary CTA */}
+            <button
+              type="button"
+              onClick={handleExplore}
+              className="px-6 sm:px-7 py-3.5 sm:py-4 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium text-sm sm:text-base border border-white/30 hover:border-white/50 backdrop-blur-xs transition-all duration-200 cursor-pointer flex items-center gap-2"
             >
-              <div className="flex items-center justify-between">
-                <span className="text-xl">🕵️‍♂️</span>
-                <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-indigo-600 text-white tracking-wider shadow-2xs">
-                  {t('role.inspection_officer', 'INSPECTOR')}
-                </span>
-              </div>
-              <div className="font-bold text-xs sm:text-sm text-indigo-950 mt-1 flex items-center justify-between group-hover:text-indigo-600 transition">
-                <span>{t('hero.inspector_title')}</span>
-                <span className="text-indigo-600 font-bold transition-transform group-hover:translate-x-1">→</span>
-              </div>
-              <div className="text-[11px] text-slate-700 mt-1 leading-tight">
-                {t('hero.inspector_desc')}
-              </div>
-              <div className="mt-2.5 pt-1.5 border-t border-indigo-200/70 flex items-center justify-between text-[10px] font-bold text-indigo-700 group-hover:text-indigo-900">
-                <span>{t('hero.inspector_login')}</span>
-                <span className="text-xs font-mono">🔒</span>
-              </div>
-            </div>
-
-            <div
-              id="district-authority-hero-card"
-              onClick={onOpenDistrictDashboard || onStartMonitoring}
-              className="relative p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0B2545] shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer group transform hover:-translate-y-0.5"
-            >
-              <div className="text-xl">🏛️</div>
-              <div className="font-bold text-xs sm:text-sm text-black mt-1 group-hover:text-[#0B2545] transition flex items-center justify-between">
-                <span>{t('hero.district_title')}</span>
-                <span className="text-slate-400 group-hover:text-[#0B2545] font-bold transition-transform group-hover:translate-x-1">→</span>
-              </div>
-              <div className="text-[11px] text-slate-600 mt-1 leading-tight">
-                {t('hero.district_desc')}
-              </div>
-              <div className="mt-2.5 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] font-bold text-slate-600 group-hover:text-[#0B2545]">
-                <span>{t('hero.district_login')}</span>
-                <span className="text-xs font-mono">🔒</span>
-              </div>
-            </div>
-
-            <div
-              id="central-ministry-hero-card"
-              onClick={onOpenMinistryDashboard || onStartMonitoring}
-              className="relative p-3.5 rounded-xl border border-slate-200 bg-white hover:border-[#0B2545] shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer group transform hover:-translate-y-0.5"
-            >
-              <div className="text-xl">🇮🇳</div>
-              <div className="font-bold text-xs sm:text-sm text-black mt-1 group-hover:text-[#0B2545] transition flex items-center justify-between">
-                <span>{t('hero.ministry_title')}</span>
-                <span className="text-slate-400 group-hover:text-[#0B2545] font-bold transition-transform group-hover:translate-x-1">→</span>
-              </div>
-              <div className="text-[11px] text-slate-600 mt-1 leading-tight">
-                {t('hero.ministry_desc')}
-              </div>
-              <div className="mt-2.5 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] font-bold text-slate-600 group-hover:text-[#0B2545]">
-                <span>{t('hero.ministry_login')}</span>
-                <span className="text-xs font-mono">🔒</span>
-              </div>
-            </div>
+              <span>Explore</span>
+              <ArrowDown className="w-4 h-4 text-blue-200" />
+            </button>
           </div>
         </div>
+      </div>
+
+      {/* Quiet, authentic environmental marker */}
+      <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-10 z-10 hidden sm:flex items-center gap-2 text-[11px] sm:text-xs text-white/70 font-light tracking-wide select-none">
+        <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
+        <span>Grassroots Social Welfare Campus, India</span>
       </div>
     </section>
   );
