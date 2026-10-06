@@ -34,8 +34,8 @@ export const FinalDonationCTA: React.FC<FinalDonationCTAProps> = ({
       <div className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-10 lg:px-16 text-center space-y-6 sm:space-y-8">
         {/* Small Tracked Editorial Label */}
         <div>
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-[0.22em] text-emerald-300 uppercase select-none shadow-xs">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-[0.22em] text-white uppercase select-none shadow-xs">
+            <Sparkles className="w-3.5 h-3.5 text-white" />
             <span>SATYA NIRAKSHAK · CHILD EDUCATION MISSION</span>
           </span>
         </div>
@@ -44,7 +44,7 @@ export const FinalDonationCTA: React.FC<FinalDonationCTAProps> = ({
         <h2 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] max-w-4xl mx-auto text-balance">
           <span>Be the Reason Someone&apos;s</span>
           <br />
-          <span className="text-emerald-300 font-extrabold">Tomorrow Is Better.</span>
+          <span className="text-white font-extrabold">Tomorrow Is Better.</span>
         </h2>
 
         {/* Clean Supporting Prose */}
@@ -58,9 +58,9 @@ export const FinalDonationCTA: React.FC<FinalDonationCTAProps> = ({
           <button
             type="button"
             onClick={onDonateClick}
-            className="px-8 sm:px-10 py-3.5 sm:py-4 rounded-lg bg-white hover:bg-emerald-50 text-slate-900 font-semibold text-sm sm:text-base tracking-wide transition-all duration-200 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center gap-2.5 group"
+            className="px-8 sm:px-10 py-3.5 sm:py-4 rounded-lg bg-white hover:bg-slate-100 text-slate-900 font-semibold text-sm sm:text-base tracking-wide transition-all duration-200 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center gap-2.5 group"
           >
-            <Heart className="w-4 h-4 fill-emerald-600 text-emerald-600 transition-transform group-hover:scale-110" />
+            <Heart className="w-4 h-4 fill-black text-black transition-transform group-hover:scale-110" />
             <span>Donate Now</span>
             <ArrowRight className="w-4 h-4 text-slate-900 transition-transform duration-200 group-hover:translate-x-1" />
           </button>
@@ -81,17 +81,17 @@ export const FinalDonationCTA: React.FC<FinalDonationCTAProps> = ({
         {/* Trust Badges */}
         <div className="pt-2 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm text-slate-200 font-medium">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+            <ShieldCheck className="w-4 h-4 text-white shrink-0" />
             <span>50% Tax Deduction under Sec 80G</span>
           </div>
           <span className="text-white/40 hidden sm:inline">•</span>
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+            <ShieldCheck className="w-4 h-4 text-white shrink-0" />
             <span>Instant Audited 80G Certificate</span>
           </div>
           <span className="text-white/40 hidden sm:inline">•</span>
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+            <ShieldCheck className="w-4 h-4 text-white shrink-0" />
             <span>100% Verified Field Deployment</span>
           </div>
         </div>
@@ -99,7 +99,7 @@ export const FinalDonationCTA: React.FC<FinalDonationCTAProps> = ({
 
       {/* Quiet Environmental Marker */}
       <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-10 z-10 hidden sm:flex items-center gap-2 text-[11px] sm:text-xs text-white/70 font-light tracking-wide select-none">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
         <span>Early Childhood Education NGO Initiative, India</span>
       </div>
     </section>

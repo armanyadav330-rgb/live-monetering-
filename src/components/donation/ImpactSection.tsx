@@ -36,9 +36,9 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
       id: 'EDUCATION',
       title: 'Education & Scholarships',
       tag: 'Education & Youth',
-      tagColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-      badgeBg: 'bg-emerald-600 text-white',
-      iconColor: 'text-emerald-700',
+      tagColor: 'bg-slate-100 text-slate-900 border-slate-300',
+      badgeBg: 'bg-slate-900 text-white',
+      iconColor: 'text-slate-900',
       icon: GraduationCap,
       image: '/assets/donations/education_impact.jpg',
       alt: 'Children studying in rural classroom',
@@ -51,9 +51,9 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
       id: 'NUTRITION',
       title: 'Food & Essential Support',
       tag: 'Nutrition & Hunger',
-      tagColor: 'bg-amber-50 text-amber-800 border-amber-200',
-      badgeBg: 'bg-amber-600 text-white',
-      iconColor: 'text-amber-700',
+      tagColor: 'bg-slate-100 text-slate-900 border-slate-300',
+      badgeBg: 'bg-slate-900 text-white',
+      iconColor: 'text-slate-900',
       icon: UtensilsCrossed,
       image: '/assets/donations/food_impact.jpg',
       alt: 'Community cooked meal distribution drive',
@@ -66,9 +66,9 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
       id: 'HEALTHCARE',
       title: 'Healthcare & Well-being',
       tag: 'Primary Healthcare',
-      tagColor: 'bg-rose-50 text-rose-800 border-rose-200',
-      badgeBg: 'bg-rose-600 text-white',
-      iconColor: 'text-rose-700',
+      tagColor: 'bg-slate-100 text-slate-900 border-slate-300',
+      badgeBg: 'bg-slate-900 text-white',
+      iconColor: 'text-slate-900',
       icon: HeartPulse,
       image: '/assets/donations/healthcare_impact.jpg',
       alt: 'Doctor providing medical checkup at rural clinic',
@@ -81,9 +81,9 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
       id: 'COMMUNITY_DEV',
       title: 'Community Development',
       tag: 'Empowerment & SHG',
-      tagColor: 'bg-slate-100 text-slate-800 border-slate-300',
+      tagColor: 'bg-slate-100 text-slate-900 border-slate-300',
       badgeBg: 'bg-slate-900 text-white',
-      iconColor: 'text-slate-800',
+      iconColor: 'text-slate-900',
       icon: Users,
       image: '/assets/donations/community_impact.jpg',
       alt: 'Women self-help group livelihood training',
@@ -99,8 +99,8 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-900 border border-slate-300 mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-slate-900" />
             <span>Verified Social Initiatives</span>
           </div>
 
@@ -147,7 +147,7 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
 
                     {/* Verified Badge */}
                     <div className="absolute top-3 right-3">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-700 text-white shadow-xs">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-slate-900 text-white shadow-xs">
                         <CheckCircle2 className="w-3 h-3" />
                         <span>Verified</span>
                       </span>
@@ -163,7 +163,7 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
 
                   {/* Card Body */}
                   <div className="p-5">
-                    <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-emerald-700 transition">
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-black transition">
                       {card.title}
                     </h3>
                   </div>
@@ -179,7 +179,7 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
                     }}
                     className="w-full py-2.5 px-4 rounded-xl bg-slate-100 group-hover:bg-slate-900 text-slate-800 group-hover:text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer border border-slate-300 group-hover:border-slate-900 shadow-2xs"
                   >
-                    <Heart className="w-3.5 h-3.5 fill-rose-600 text-rose-600 group-hover:fill-white group-hover:text-white transition-colors" />
+                    <Heart className="w-3.5 h-3.5 fill-black text-black group-hover:fill-white group-hover:text-white transition-colors" />
                     <span>{card.ctaText}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>

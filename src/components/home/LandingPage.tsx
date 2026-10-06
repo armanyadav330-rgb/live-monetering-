@@ -106,8 +106,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-800 border border-slate-200 flex items-center justify-center text-xl">
                     📹
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-black border border-slate-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
                     {t('pillars.cctv_badge')}
                   </span>
                 </div>
@@ -127,8 +127,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-800 border border-slate-200 flex items-center justify-center text-xl">
                     📋
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-black border border-slate-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
                     {t('pillars.inspections_badge')}
                   </span>
                 </div>
@@ -148,8 +148,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-800 border border-slate-200 flex items-center justify-center text-xl">
                     👥
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-black border border-slate-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
                     {t('pillars.biometric_badge')}
                   </span>
                 </div>

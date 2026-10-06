@@ -96,8 +96,8 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-3xl border-2 border-slate-200 shadow-xl p-6 sm:p-10 text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-900 border border-slate-300 mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-slate-900" />
             <span>Transparent Direct Giving · 100% Tax Deductible (Sec 80G)</span>
           </div>
 
@@ -129,7 +129,7 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
               onClick={() => setFrequency('MONTHLY')}
               className={`px-5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                 frequency === 'MONTHLY'
-                  ? 'bg-emerald-600 text-white shadow-xs'
+                  ? 'bg-slate-900 text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -161,7 +161,7 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
                   onChange={handleInputChange}
                   className={`w-full pl-10 pr-4 py-3.5 text-xl sm:text-2xl font-black rounded-xl border-2 text-slate-900 focus:outline-hidden transition placeholder:text-slate-400 ${
                     validationError
-                      ? 'border-rose-400 bg-rose-50/30 focus:border-rose-600 focus:ring-2 focus:ring-rose-200'
+                      ? 'border-slate-900 bg-slate-50 focus:border-black focus:ring-2 focus:ring-slate-300'
                       : 'border-slate-300 bg-white focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20'
                   }`}
                   aria-invalid={!!validationError}
@@ -173,9 +173,9 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
               {validationError && (
                 <div
                   id="amount-error-msg"
-                  className="flex items-center gap-1.5 text-xs text-rose-600 font-bold mt-1"
+                  className="flex items-center gap-1.5 text-xs text-black font-bold mt-1"
                 >
-                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <AlertCircle className="w-4 h-4 shrink-0 text-black" />
                   <span>{validationError}</span>
                 </div>
               )}
@@ -196,7 +196,7 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
                       onClick={() => handleSelectQuick(opt.value)}
                       className={`py-3 px-2 rounded-xl text-center font-bold text-sm border-2 transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-emerald-600 bg-emerald-600 text-white shadow-md scale-102'
+                          ? 'border-slate-900 bg-slate-900 text-white shadow-md scale-102'
                           : 'border-slate-200 bg-white hover:border-slate-400 hover:bg-slate-50 text-slate-800'
                       }`}
                     >
@@ -211,7 +211,7 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
                   onClick={handleSelectCustom}
                   className={`py-3 px-2 rounded-xl text-center font-bold text-sm border-2 transition-all cursor-pointer ${
                     selectedPreset === 'CUSTOM'
-                      ? 'border-emerald-600 bg-emerald-50 text-emerald-900 shadow-xs'
+                      ? 'border-slate-900 bg-slate-100 text-slate-900 shadow-xs'
                       : 'border-slate-200 bg-white hover:border-slate-400 hover:bg-slate-50 text-slate-700'
                   }`}
                 >
@@ -253,7 +253,7 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
             <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 font-bold shadow-xs">
-                  <TrendingUp className="w-5 h-5 text-emerald-400" />
+                  <TrendingUp className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">
@@ -266,8 +266,8 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
               </div>
 
               {isValidAmount && (
-                <div className="text-xs font-semibold text-emerald-800 bg-white px-3 py-1.5 rounded-xl border border-emerald-200 self-start sm:self-auto flex items-center gap-1.5 shadow-2xs">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div className="text-xs font-semibold text-slate-900 bg-white px-3 py-1.5 rounded-xl border border-slate-300 self-start sm:self-auto flex items-center gap-1.5 shadow-2xs">
+                  <ShieldCheck className="w-4 h-4 text-slate-900 shrink-0" />
                   <span>50% Deduction under Sec 80G</span>
                 </div>
               )}
@@ -275,14 +275,14 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
 
             {/* 7. Action Button */}
             <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              <div className="flex items-center gap-2 text-xs text-slate-600 font-medium">
+                <ShieldCheck className="w-4 h-4 text-slate-900 shrink-0" />
                 <span>Instant 80G tax receipt issued upon confirmation.</span>
               </div>
 
               <button
                 type="submit"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 active:scale-98 text-white font-black text-sm sm:text-base shadow-md hover:shadow-lg shadow-emerald-600/25 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-black active:bg-black active:scale-98 text-white font-black text-sm sm:text-base shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer border border-black"
               >
                 <span>Continue to Donate</span>
                 <ArrowRight className="w-4 h-4" />

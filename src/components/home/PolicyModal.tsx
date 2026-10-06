@@ -50,8 +50,8 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
             : 'bg-white border-slate-300 text-slate-900'
         }`}
       >
-        {/* Official Header with Emblem & Tricolor */}
-        <div className="h-1.5 w-full bg-gradient-to-r from-[#FF671F] via-white to-[#046A38]" />
+        {/* Official Header with Neutral Slate Ribbon */}
+        <div className="h-1.5 w-full bg-gradient-to-r from-slate-900 via-slate-500 to-black" />
 
         <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0 bg-slate-50 dark:bg-slate-900/80">
           <div className="flex items-center gap-3">
@@ -59,7 +59,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
               <SatyaNirakshakLogo size={36} variant="icon" />
             </div>
             <div>
-              <div className="text-[10px] font-bold text-[#FF671F] uppercase tracking-wider">
+              <div className="text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                 {(lang === 'hi' || (lang as any) === 'HI') ? 'भारत सरकार · एनआईसी संप्रभु मानक' : 'Government of India · NIC Sovereign Standards'}
               </div>
               <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
@@ -83,7 +83,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
             onClick={() => setActiveTab('privacy')}
             className={`px-3 py-1.5 rounded-lg transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'privacy'
-                ? 'bg-slate-900 text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-black shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -94,7 +94,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
             onClick={() => setActiveTab('terms')}
             className={`px-3 py-1.5 rounded-lg transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'terms'
-                ? 'bg-slate-900 text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-black shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -105,7 +105,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
             onClick={() => setActiveTab('hyperlink')}
             className={`px-3 py-1.5 rounded-lg transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'hyperlink'
-                ? 'bg-slate-900 text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-black shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -116,7 +116,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
             onClick={() => setActiveTab('copyright')}
             className={`px-3 py-1.5 rounded-lg transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'copyright'
-                ? 'bg-slate-900 text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-black shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -129,8 +129,8 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
         <div className="p-5 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-300">
           {activeTab === 'privacy' && (
             <div className="space-y-3">
-              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400" />
+              <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white flex items-start gap-2.5">
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-slate-900 dark:text-white" />
                 <div className="text-xs">
                   {(lang === 'hi' || (lang as any) === 'HI') ? (
                     <>
@@ -175,8 +175,8 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
 
           {activeTab === 'terms' && (
             <div className="space-y-3">
-              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-300 flex items-start gap-2.5">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
+              <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-slate-900 dark:text-white" />
                 <div className="text-xs">
                   {(lang === 'hi' || (lang as any) === 'HI') ? (
                     <>
@@ -272,7 +272,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
         {/* Modal Footer */}
         <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0 bg-slate-50 dark:bg-slate-950">
           <span className="text-[11px] text-slate-500 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
             <span>Guidelines for Indian Government Websites (GIGW 3.0)</span>
           </span>
 

@@ -32,15 +32,15 @@ export const DonationHero: React.FC<DonationHeroProps> = ({
       {/* 2. Foreground Hero Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center">
         {/* Official Statutory Trust Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-md text-xs sm:text-sm font-semibold text-emerald-300 shadow-lg mb-6 transition">
-          <Sparkles className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-md text-xs sm:text-sm font-semibold text-white shadow-lg mb-6 transition">
+          <Sparkles className="w-3.5 h-3.5 text-white shrink-0" />
           <span>Official Social Welfare Mission · 100% Tax Exemption (Sec 80G)</span>
         </div>
 
         {/* Main Heading */}
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight sm:leading-none text-white max-w-4xl mx-auto">
           Together, We Can <br className="hidden sm:inline" />
-          <span className="bg-gradient-to-r from-emerald-200 via-white to-amber-200 bg-clip-text text-transparent">
+          <span className="text-white">
             Make a Difference
           </span>
         </h1>
@@ -55,9 +55,9 @@ export const DonationHero: React.FC<DonationHeroProps> = ({
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-5">
           <button
             onClick={onDonateClick}
-            className="w-full sm:w-auto px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-black text-base shadow-xl shadow-emerald-950/40 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer ring-2 ring-emerald-400/40"
+            className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white hover:bg-slate-100 active:bg-slate-200 text-black font-black text-base shadow-xl shadow-black/40 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer ring-2 ring-white/50"
           >
-            <Heart className="w-5 h-5 fill-white text-white" />
+            <Heart className="w-5 h-5 fill-black text-black" />
             <span>Donate Now</span>
           </button>
 
@@ -73,7 +73,7 @@ export const DonationHero: React.FC<DonationHeroProps> = ({
         {/* 3 Trust Signals */}
         <div className="mt-12 pt-8 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
           <div className="flex items-center gap-2.5 p-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-xs">
-            <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+            <ShieldCheck className="w-5 h-5 text-white shrink-0" />
             <div>
               <div className="text-xs font-bold text-white">80G Tax Deductible</div>
               <div className="text-[10px] text-slate-300">Instant Gov 80G Receipt</div>
@@ -81,7 +81,7 @@ export const DonationHero: React.FC<DonationHeroProps> = ({
           </div>
 
           <div className="flex items-center gap-2.5 p-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-xs">
-            <Award className="w-5 h-5 text-amber-400 shrink-0" />
+            <Award className="w-5 h-5 text-white shrink-0" />
             <div>
               <div className="text-xs font-bold text-white">100% Transparent</div>
               <div className="text-[10px] text-slate-300">Ground-Audited Records</div>
@@ -89,7 +89,7 @@ export const DonationHero: React.FC<DonationHeroProps> = ({
           </div>
 
           <div className="flex items-center gap-2.5 p-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-xs">
-            <Heart className="w-5 h-5 text-rose-400 shrink-0" />
+            <Heart className="w-5 h-5 text-white shrink-0" />
             <div>
               <div className="text-xs font-bold text-white">Direct Beneficiary</div>
               <div className="text-[10px] text-slate-300">Zero Intermediary Loss</div>
@@ -97,7 +97,7 @@ export const DonationHero: React.FC<DonationHeroProps> = ({
           </div>
 
           <div className="flex items-center gap-2.5 p-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-xs">
-            <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+            <ShieldCheck className="w-5 h-5 text-white shrink-0" />
             <div>
               <div className="text-xs font-bold text-white">256-Bit SSL Secure</div>
               <div className="text-[10px] text-slate-300">Bank-Grade Protection</div>

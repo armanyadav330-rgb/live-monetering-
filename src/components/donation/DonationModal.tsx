@@ -263,7 +263,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                 <span className="text-sm sm:text-base font-black text-slate-900">
                   Satya Nirakshak NGO
                 </span>
-                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
+                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-slate-100 text-slate-900 border border-slate-300">
                   Sec 80G Certified
                 </span>
               </div>
@@ -368,7 +368,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  <Heart className="w-3.5 h-3.5 fill-rose-400 text-rose-400" />
+                  <Heart className="w-3.5 h-3.5 fill-white text-white" />
                   <span>Monthly Sustainer</span>
                 </button>
               </div>
@@ -393,15 +393,15 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                     onChange={handleAmountInputChange}
                     className={`w-full pl-10 pr-4 py-3 text-xl font-black rounded-xl border-2 text-slate-900 focus:outline-hidden transition placeholder:text-slate-400 ${
                       step1Error
-                        ? 'border-rose-400 bg-rose-50/30 focus:border-rose-600'
+                        ? 'border-slate-900 bg-slate-50 focus:border-black'
                         : 'border-slate-300 bg-white focus:border-slate-800'
                     }`}
                   />
                 </div>
                 {/* 5. Clear validation message */}
                 {step1Error && (
-                  <p className="text-xs text-rose-600 font-bold flex items-center gap-1 mt-1">
-                    <AlertCircle className="w-4 h-4 shrink-0" />
+                  <p className="text-xs text-black font-bold flex items-center gap-1 mt-1">
+                    <AlertCircle className="w-4 h-4 shrink-0 text-black" />
                     <span>{step1Error}</span>
                   </p>
                 )}
@@ -432,7 +432,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                     onClick={handleSelectCustom}
                     className={`py-2.5 px-2 rounded-xl text-center font-bold text-sm border-2 transition cursor-pointer ${
                       selectedPreset === 'CUSTOM'
-                        ? 'border-slate-900 bg-emerald-50 text-slate-900'
+                        ? 'border-slate-900 bg-slate-100 text-slate-900'
                         : 'border-slate-200 bg-white hover:border-slate-300 text-slate-700'
                     }`}
                   >
@@ -442,9 +442,9 @@ export const DonationModal: React.FC<DonationModalProps> = ({
               </div>
 
               {/* 6. Show the entered amount clearly before proceeding: “Donation Amount: ₹[USER ENTERED AMOUNT]” */}
-              <div className="p-3.5 bg-amber-50 rounded-xl border border-amber-200 flex items-center justify-between">
+              <div className="p-3.5 bg-slate-100 rounded-xl border border-slate-200 flex items-center justify-between">
                 <div>
-                  <div className="text-[10px] uppercase font-bold text-amber-900 tracking-wider">
+                  <div className="text-[10px] uppercase font-bold text-slate-600 tracking-wider">
                     Summary
                   </div>
                   <div className="text-base font-black text-slate-900">
@@ -452,7 +452,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                   </div>
                 </div>
                 {amount > 0 && (
-                  <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <span className="text-[11px] font-bold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-300">
                     Sec 80G Eligible
                   </span>
                 )}
@@ -482,9 +482,9 @@ export const DonationModal: React.FC<DonationModalProps> = ({
           {currentStep === 2 && (
             <div className="space-y-4">
               {/* Highlight exact amount passed from Step 1 */}
-              <div className="p-3.5 bg-amber-50/90 border border-amber-200 rounded-xl flex items-center justify-between">
+              <div className="p-3.5 bg-slate-100 border border-slate-200 rounded-xl flex items-center justify-between">
                 <div>
-                  <div className="text-[10px] uppercase font-bold text-amber-900 tracking-wider">
+                  <div className="text-[10px] uppercase font-bold text-slate-600 tracking-wider">
                     Selected Contribution
                   </div>
                   <div className="text-base sm:text-lg font-black text-slate-900">
@@ -524,12 +524,12 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                     value={donor.name}
                     onChange={(e) => setDonor({ ...donor, name: e.target.value })}
                     className={`w-full pl-9 pr-3 py-2.5 rounded-xl border text-sm font-medium focus:outline-hidden ${
-                      validationErrors.name ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 focus:border-slate-800'
+                      validationErrors.name ? 'border-slate-900 bg-slate-50' : 'border-slate-300 focus:border-slate-800'
                     }`}
                   />
                 </div>
                 {validationErrors.name && (
-                  <p className="text-[11px] text-rose-600 mt-1 font-semibold">{validationErrors.name}</p>
+                  <p className="text-[11px] text-black mt-1 font-semibold">{validationErrors.name}</p>
                 )}
               </div>
 
@@ -546,12 +546,12 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                       value={donor.email}
                       onChange={(e) => setDonor({ ...donor, email: e.target.value })}
                       className={`w-full pl-9 pr-3 py-2.5 rounded-xl border text-sm font-medium focus:outline-hidden ${
-                        validationErrors.email ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 focus:border-slate-800'
+                        validationErrors.email ? 'border-slate-900 bg-slate-50' : 'border-slate-300 focus:border-slate-800'
                       }`}
                     />
                   </div>
                   {validationErrors.email && (
-                    <p className="text-[11px] text-rose-600 mt-1 font-semibold">{validationErrors.email}</p>
+                    <p className="text-[11px] text-black mt-1 font-semibold">{validationErrors.email}</p>
                   )}
                 </div>
 
@@ -567,12 +567,12 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                       value={donor.phone}
                       onChange={(e) => setDonor({ ...donor, phone: e.target.value })}
                       className={`w-full pl-9 pr-3 py-2.5 rounded-xl border text-sm font-medium focus:outline-hidden ${
-                        validationErrors.phone ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 focus:border-slate-800'
+                        validationErrors.phone ? 'border-slate-900 bg-slate-50' : 'border-slate-300 focus:border-slate-800'
                       }`}
                     />
                   </div>
                   {validationErrors.phone && (
-                    <p className="text-[11px] text-rose-600 mt-1 font-semibold">{validationErrors.phone}</p>
+                    <p className="text-[11px] text-black mt-1 font-semibold">{validationErrors.phone}</p>
                   )}
                 </div>
               </div>
@@ -589,11 +589,11 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                     value={donor.panNumber}
                     onChange={(e) => setDonor({ ...donor, panNumber: e.target.value.toUpperCase() })}
                     className={`w-full px-3 py-2.5 rounded-xl border text-sm font-mono uppercase focus:outline-hidden ${
-                      validationErrors.panNumber ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 focus:border-slate-800'
+                      validationErrors.panNumber ? 'border-slate-900 bg-slate-50' : 'border-slate-300 focus:border-slate-800'
                     }`}
                   />
                   {validationErrors.panNumber && (
-                    <p className="text-[11px] text-rose-600 mt-1 font-semibold">{validationErrors.panNumber}</p>
+                    <p className="text-[11px] text-black mt-1 font-semibold">{validationErrors.panNumber}</p>
                   )}
                   <p className="text-[10px] text-slate-500 mt-0.5">
                     Required by Income Tax Department to file Form 10BD for donor tax rebate.
@@ -740,13 +740,13 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
-                      <Smartphone className="w-5 h-5 text-emerald-700" />
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-900 flex items-center justify-center font-bold">
+                      <Smartphone className="w-5 h-5 text-slate-900" />
                     </div>
                     <div>
                       <div className="text-sm font-bold text-slate-900 flex items-center gap-2">
                         <span>UPI / QR / Instant App</span>
-                        <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">
+                        <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded bg-slate-100 text-slate-900">
                           0% Fee
                         </span>
                       </div>
@@ -769,7 +769,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                   onClick={() => setPaymentMethod('CARD')}
                   className={`p-4 rounded-2xl border-2 flex items-center justify-between cursor-pointer transition ${
                     paymentMethod === 'CARD'
-                      ? 'border-slate-900 bg-emerald-50/40 shadow-xs'
+                      ? 'border-slate-900 bg-slate-50 shadow-xs'
                       : 'border-slate-200 hover:border-slate-300 bg-white'
                   }`}
                 >
@@ -800,13 +800,13 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                   onClick={() => setPaymentMethod('NETBANKING')}
                   className={`p-4 rounded-2xl border-2 flex items-center justify-between cursor-pointer transition ${
                     paymentMethod === 'NETBANKING'
-                      ? 'border-slate-900 bg-emerald-50/40 shadow-xs'
+                      ? 'border-slate-900 bg-slate-50 shadow-xs'
                       : 'border-slate-200 hover:border-slate-300 bg-white'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold">
-                      <Building className="w-5 h-5 text-purple-700" />
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-900 flex items-center justify-center font-bold">
+                      <Building className="w-5 h-5 text-slate-900" />
                     </div>
                     <div>
                       <div className="text-sm font-bold text-slate-900">
@@ -829,7 +829,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({
 
               {/* Security info */}
               <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3 text-xs text-slate-600">
-                <Lock className="w-4 h-4 text-emerald-600 shrink-0" />
+                <Lock className="w-4 h-4 text-slate-900 shrink-0" />
                 <span>256-bit bank-grade TLS encryption. Your payment data is never stored on our servers.</span>
               </div>
             </div>
@@ -886,15 +886,15 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                   )}
                   <div>
                     <span className="text-slate-500 font-medium">Tax Benefit:</span>
-                    <div className="font-bold text-emerald-700">Eligible (Section 80G)</div>
+                    <div className="font-bold text-slate-900">Eligible (Section 80G)</div>
                   </div>
                 </div>
               </div>
 
               {/* Integration Ready Disclosure */}
-              <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 text-xs text-emerald-900 leading-relaxed">
-                <div className="font-bold flex items-center gap-1.5 text-emerald-950 mb-1">
-                  <Sparkles className="w-4 h-4 text-emerald-600" />
+              <div className="p-4 rounded-xl bg-slate-100 border border-slate-300 text-xs text-slate-900 leading-relaxed">
+                <div className="font-bold flex items-center gap-1.5 text-slate-900 mb-1">
+                  <Sparkles className="w-4 h-4 text-slate-900" />
                   <span>Payment Gateway Integration:</span>
                 </div>
                 <span>
@@ -908,12 +908,12 @@ export const DonationModal: React.FC<DonationModalProps> = ({
           {/* STEP 5: CONFIRMATION & 80G RECEIPT */}
           {currentStep === 5 && submissionResult && (
             <div className="space-y-6 text-center">
-              <div className="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto shadow-md">
+              <div className="w-16 h-16 rounded-2xl bg-slate-100 text-slate-900 flex items-center justify-center mx-auto shadow-md border border-slate-300">
                 <Check className="w-8 h-8 stroke-[3]" />
               </div>
 
               <div>
-                <span className="text-xs font-extrabold uppercase px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
+                <span className="text-xs font-extrabold uppercase px-2.5 py-1 rounded-full bg-slate-100 text-slate-900 border border-slate-300">
                   Contribution Registered
                 </span>
                 <h3 className="text-2xl font-black text-slate-900 mt-2">
@@ -962,7 +962,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                   </div>
                   <div>
                     <span className="text-slate-500">Donation Amount:</span>
-                    <div className="font-black text-sm text-emerald-800">
+                    <div className="font-black text-sm text-slate-900">
                       ₹{submissionResult.amount.toLocaleString('en-IN')}
                     </div>
                   </div>

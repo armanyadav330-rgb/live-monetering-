@@ -195,9 +195,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           {errorMessage && (
             <div
               id="auth-error-alert"
-              className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2 animate-in fade-in"
+              className="p-3 rounded-xl bg-slate-100 border border-slate-300 text-black text-xs flex items-center gap-2 animate-in fade-in"
             >
-              <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
+              <AlertCircle className="w-4 h-4 shrink-0 text-black" />
               <span>{errorMessage}</span>
             </div>
           )}
@@ -205,9 +205,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           {forgotPasswordSent && (
             <div
               id="auth-forgot-alert"
-              className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-start gap-2 animate-in fade-in"
+              className="p-3 rounded-xl bg-slate-100 border border-slate-300 text-black text-xs flex items-start gap-2 animate-in fade-in"
             >
-              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600 mt-0.5" />
+              <CheckCircle2 className="w-4 h-4 shrink-0 text-black mt-0.5" />
               <div className="leading-relaxed">
                 {t('auth.security_notice')}
               </div>
@@ -349,7 +349,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 type="button"
                 id="auth-forgot-password-link"
                 onClick={handleForgotPassword}
-                className="text-slate-900 hover:text-emerald-700 font-semibold hover:underline transition cursor-pointer"
+                className="text-slate-900 hover:text-black font-semibold hover:underline transition cursor-pointer"
               >
                 {t('common.help', 'Forgot Password?')}
               </button>
@@ -372,7 +372,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   </>
                 ) : (
                   <>
-                    <LogIn className="w-4 h-4 text-amber-400" />
+                    <LogIn className="w-4 h-4 text-white" />
                     <span>{t('auth.btn_login')}</span>
                   </>
                 )}
@@ -386,7 +386,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             className="pt-3 pb-1 border-t border-slate-100 text-center space-y-1"
           >
             <div className="inline-flex items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-600">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <ShieldCheck className="w-3.5 h-3.5 text-slate-900 shrink-0" />
               <span>
                 {t('auth.security_notice')}
               </span>

@@ -23,8 +23,8 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
 
   return (
     <footer className="border-t border-slate-200 bg-white text-slate-800">
-      {/* Official Neutral / Tricolor Slate Ribbon */}
-      <div className="h-1 w-full bg-gradient-to-r from-slate-700 via-emerald-600 to-slate-900" />
+      {/* Official Neutral Slate Ribbon */}
+      <div className="h-1 w-full bg-gradient-to-r from-slate-800 via-slate-500 to-black" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-slate-100">
@@ -74,7 +74,7 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
 
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1 text-slate-700 font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <ShieldCheck className="w-3.5 h-3.5 text-slate-800" />
               {t('footer.compliance')}
             </span>
             <span>•</span>

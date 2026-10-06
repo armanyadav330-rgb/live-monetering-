@@ -50,8 +50,8 @@ export const SuccessStories: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-300 mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-900 border border-slate-300 mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-slate-900" />
             <span>Real Lives Transformed</span>
           </div>
 
@@ -95,7 +95,7 @@ export const SuccessStories: React.FC = () => {
                     <h3 className="text-lg font-black tracking-tight flex items-center justify-between">
                       <span>{story.name}, {story.age}</span>
                     </h3>
-                    <div className="flex items-center gap-1 text-xs text-amber-300 font-medium mt-0.5">
+                    <div className="flex items-center gap-1 text-xs text-white font-medium mt-0.5">
                       <MapPin className="w-3.5 h-3.5 shrink-0" />
                       <span>{story.location}</span>
                     </div>
@@ -106,7 +106,7 @@ export const SuccessStories: React.FC = () => {
                 <div className="p-6">
                   {/* Quote */}
                   <div className="relative pl-6 italic text-xs sm:text-sm text-slate-700 font-medium leading-relaxed mb-4">
-                    <Quote className="w-4 h-4 text-amber-500 absolute -top-1 left-0 shrink-0 opacity-80" />
+                    <Quote className="w-4 h-4 text-slate-900 absolute -top-1 left-0 shrink-0 opacity-80" />
                     “{story.quote}”
                   </div>
 
@@ -119,8 +119,8 @@ export const SuccessStories: React.FC = () => {
 
               {/* Verified Impact Pill at footer */}
               <div className="p-6 pt-0">
-                <div className="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-[11px] font-semibold text-emerald-800 flex items-center gap-2">
-                  <Award className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div className="p-3 rounded-xl bg-slate-100 border border-slate-300 text-[11px] font-semibold text-slate-900 flex items-center gap-2">
+                  <Award className="w-4 h-4 text-slate-900 shrink-0" />
                   <span>{story.impactMetric}</span>
                 </div>
               </div>

@@ -168,11 +168,11 @@ export const LandingNav: React.FC<LandingNavProps> = ({
 
           {/* Brand Typography */}
           <div className="flex flex-col text-left">
-            <div className="text-base sm:text-lg md:text-xl font-black tracking-tight leading-none text-slate-900">
-              Satya <span className="text-emerald-700 group-hover:text-emerald-800 transition-colors">Nirakshak</span>
+            <div className="text-base sm:text-lg md:text-xl font-black tracking-tight leading-none text-black">
+              Satya <span className="text-black">Nirakshak</span>
             </div>
-            <div className="text-[11px] sm:text-xs font-semibold text-slate-500 tracking-normal mt-1 leading-none flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+            <div className="text-[11px] sm:text-xs font-semibold text-slate-600 tracking-normal mt-1 leading-none flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
               <span>NGO Monitoring System</span>
             </div>
           </div>
@@ -185,16 +185,16 @@ export const LandingNav: React.FC<LandingNavProps> = ({
             <button
               type="button"
               onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-              className="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition cursor-pointer select-none"
+              className="bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition cursor-pointer select-none"
               aria-label="Select Language"
               title="Select Language / भाषा चुनें"
             >
-              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-600 shrink-0" />
+              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-700 shrink-0" />
               <span className="uppercase text-xs sm:text-sm tracking-wide">
                 {currentLanguageInfo?.short || 'EN'}
               </span>
               <ChevronDown
-                className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-200 ${
+                className={`w-3.5 h-3.5 text-slate-600 transition-transform duration-200 ${
                   langDropdownOpen ? 'rotate-180' : ''
                 }`}
               />
@@ -217,14 +217,14 @@ export const LandingNav: React.FC<LandingNavProps> = ({
                         onClick={() => handleSelectLanguage(item.code)}
                         className={`w-full px-3.5 py-2 flex items-center justify-between transition cursor-pointer text-left ${
                           isSelected
-                            ? 'bg-slate-100 text-slate-900 font-bold'
+                            ? 'bg-slate-100 text-black font-bold'
                             : 'hover:bg-slate-50 text-slate-700'
                         }`}
                       >
                         <span className="text-xs">{item.nativeLabel}</span>
-                        <span className="text-[10px] uppercase text-slate-400 font-semibold flex items-center gap-1">
+                        <span className="text-[10px] uppercase text-slate-500 font-semibold flex items-center gap-1">
                           {item.short}
-                          {isSelected && <Check className="w-3.5 h-3.5 text-emerald-600" />}
+                          {isSelected && <Check className="w-3.5 h-3.5 text-black" />}
                         </span>
                       </button>
                     );
@@ -238,10 +238,10 @@ export const LandingNav: React.FC<LandingNavProps> = ({
           <button
             type="button"
             onClick={handleDonateClick}
-            className="bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 text-emerald-800 border border-emerald-300 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-bold transition shadow-2xs hover:shadow-xs cursor-pointer select-none"
+            className="bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-black border border-slate-300 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-bold transition shadow-2xs hover:shadow-xs cursor-pointer select-none"
             title="Donate & Support Ground NGO Initiatives (80G Tax Deductible)"
           >
-            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-600 text-emerald-600 shrink-0" />
+            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-black text-black shrink-0" />
             <span>Donate</span>
           </button>
 
@@ -297,8 +297,8 @@ export const LandingNav: React.FC<LandingNavProps> = ({
                     <div className="text-xs font-bold text-slate-900">Satya Nirakshak</div>
                     <div className="text-[10px] text-slate-500 font-medium">Live Surveillance & Audits</div>
                   </div>
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
                     Active Node
                   </span>
                 </div>
@@ -359,13 +359,13 @@ export const LandingNav: React.FC<LandingNavProps> = ({
                       setMobileMenuOpen(false);
                       handleDonateClick();
                     }}
-                    className="w-full text-left px-3 py-2 rounded-xl text-emerald-800 bg-emerald-50 hover:bg-emerald-100 font-bold transition cursor-pointer flex items-center justify-between border border-emerald-300"
+                    className="w-full text-left px-3 py-2 rounded-xl text-black bg-slate-100 hover:bg-slate-200 font-bold transition cursor-pointer flex items-center justify-between border border-slate-300"
                   >
                     <div className="flex items-center gap-1.5">
-                      <Heart className="w-3.5 h-3.5 fill-emerald-600 text-emerald-600" />
+                      <Heart className="w-3.5 h-3.5 fill-black text-black" />
                       <span>Donate & Support Programs</span>
                     </div>
-                    <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-900">
+                    <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-slate-200 text-black">
                       80G
                     </span>
                   </button>

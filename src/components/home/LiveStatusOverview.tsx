@@ -86,7 +86,7 @@ export const LiveStatusOverview: React.FC<LiveStatusOverviewProps> = ({
 
             <div className="flex items-center gap-2 text-xs font-semibold shrink-0">
               <span className="px-3 py-1.5 rounded-lg bg-slate-100 text-black border border-slate-300 flex items-center gap-1.5 font-bold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <CheckCircle2 className="w-4 h-4 text-black" />
                 {lang === 'HI' ? 'सभी क्षेत्रीय नोड पूर्णतया सक्रिय' : 'All Regional Nodes Operational'}
               </span>
             </div>
@@ -100,7 +100,7 @@ export const LiveStatusOverview: React.FC<LiveStatusOverviewProps> = ({
               >
                 <div className="flex items-start justify-between text-xs gap-2">
                   <span className="font-black text-black leading-tight">{reg.name}</span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0 mt-0.5" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-black shrink-0 mt-0.5" />
                 </div>
 
                 <div className="mt-3 flex items-baseline justify-between">

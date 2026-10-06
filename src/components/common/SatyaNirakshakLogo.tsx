@@ -184,7 +184,7 @@ export const SatyaNirakshakLogo: React.FC<SatyaNirakshakLogoProps> = ({
             }`}
           >
             <span>SATYA </span>
-            <span className="text-emerald-700">NIRAKSHAK</span>
+            <span className={textColor || 'text-slate-900'}>NIRAKSHAK</span>
           </div>
           <div className="flex items-center gap-1.5 mt-0.5">
             <span
