@@ -94,15 +94,15 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
       className="py-16 sm:py-20 bg-white border-b border-slate-200"
     >
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-b from-blue-50/20 via-white to-blue-50/10 rounded-3xl border-2 border-blue-100 shadow-xl p-6 sm:p-10 text-center">
+        <div className="bg-white rounded-3xl border-2 border-slate-200 shadow-xl p-6 sm:p-10 text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
             <span>Transparent Direct Giving · 100% Tax Deductible (Sec 80G)</span>
           </div>
 
-          {/* 1. Clear Heading Required by Brief */}
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0B2545] tracking-tight">
+          {/* 1. Clear Heading */}
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
             Enter Donation Amount
           </h2>
 
@@ -112,14 +112,14 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
           </p>
 
           {/* Frequency Toggle: One-Time vs Monthly */}
-          <div className="mt-6 inline-flex p-1 bg-blue-50/80 rounded-xl border border-blue-100">
+          <div className="mt-6 inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200">
             <button
               type="button"
               onClick={() => setFrequency('ONE_TIME')}
               className={`px-5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 frequency === 'ONE_TIME'
-                  ? 'bg-white text-blue-950 shadow-xs border border-blue-100'
-                  : 'text-slate-600 hover:text-blue-900'
+                  ? 'bg-white text-slate-900 shadow-xs border border-slate-200'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               One-Time Gift
@@ -129,8 +129,8 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
               onClick={() => setFrequency('MONTHLY')}
               className={`px-5 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                 frequency === 'MONTHLY'
-                  ? 'bg-blue-600 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-blue-900'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <Heart className="w-3.5 h-3.5 fill-white text-white" />
@@ -140,7 +140,7 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
 
           {/* Form container */}
           <form onSubmit={handleSubmit} className="mt-8 space-y-6 text-left">
-            {/* 2. Amount Input Box - Starts EMPTY, No pre-fill */}
+            {/* 2. Amount Input Box */}
             <div className="bg-white p-5 sm:p-6 rounded-2xl border-2 border-slate-200 shadow-xs space-y-3">
               <label
                 htmlFor="donation-amount-input"
@@ -150,7 +150,7 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
               </label>
 
               <div className="relative flex items-center">
-                <span className="absolute left-4 text-2xl font-black text-[#0B2545]">₹</span>
+                <span className="absolute left-4 text-2xl font-black text-slate-900">₹</span>
                 <input
                   id="donation-amount-input"
                   ref={inputRef}
@@ -162,7 +162,7 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
                   className={`w-full pl-10 pr-4 py-3.5 text-xl sm:text-2xl font-black rounded-xl border-2 text-slate-900 focus:outline-hidden transition placeholder:text-slate-400 ${
                     validationError
                       ? 'border-rose-400 bg-rose-50/30 focus:border-rose-600 focus:ring-2 focus:ring-rose-200'
-                      : 'border-slate-300 bg-white focus:border-[#0B2545] focus:ring-2 focus:ring-[#0B2545]/20'
+                      : 'border-slate-300 bg-white focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20'
                   }`}
                   aria-invalid={!!validationError}
                   aria-describedby={validationError ? 'amount-error-msg' : undefined}
@@ -196,8 +196,8 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
                       onClick={() => handleSelectQuick(opt.value)}
                       className={`py-3 px-2 rounded-xl text-center font-bold text-sm border-2 transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-blue-600 bg-blue-600 text-white shadow-md scale-102'
-                          : 'border-blue-100 bg-white hover:border-blue-300 hover:bg-blue-50/30 text-slate-800'
+                          ? 'border-emerald-600 bg-emerald-600 text-white shadow-md scale-102'
+                          : 'border-slate-200 bg-white hover:border-slate-400 hover:bg-slate-50 text-slate-800'
                       }`}
                     >
                       {opt.label}
@@ -211,8 +211,8 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
                   onClick={handleSelectCustom}
                   className={`py-3 px-2 rounded-xl text-center font-bold text-sm border-2 transition-all cursor-pointer ${
                     selectedPreset === 'CUSTOM'
-                      ? 'border-blue-600 bg-blue-50 text-blue-900 shadow-xs'
-                      : 'border-blue-100 bg-white hover:border-blue-300 hover:bg-blue-50/30 text-slate-700'
+                      ? 'border-emerald-600 bg-emerald-50 text-emerald-900 shadow-xs'
+                      : 'border-slate-200 bg-white hover:border-slate-400 hover:bg-slate-50 text-slate-700'
                   }`}
                 >
                   Custom
@@ -220,7 +220,7 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
               </div>
             </div>
 
-            {/* Cause Allocation Selector (Optional) */}
+            {/* Cause Allocation Selector */}
             <div className="pt-2">
               <label className="text-xs font-bold text-slate-700 block mb-2">
                 Allocate your contribution to a specific program (Optional):
@@ -239,8 +239,8 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
                     onClick={() => setSelectedCause(cause.id)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition cursor-pointer ${
                       selectedCause === cause.id
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
-                        : 'bg-white text-slate-700 border-slate-200 hover:border-blue-200 hover:bg-blue-50/20'
+                        ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
+                        : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400 hover:bg-slate-50'
                     }`}
                   >
                     {cause.label}
@@ -249,41 +249,40 @@ export const DonationAmountSection: React.FC<DonationAmountSectionProps> = ({
               </div>
             </div>
 
-            {/* 6. Show the entered amount clearly before proceeding: “Donation Amount: ₹[USER ENTERED AMOUNT]” */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-blue-50/90 border border-blue-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            {/* 6. Selected Contribution Summary */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 font-bold shadow-xs">
-                  <TrendingUp className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 font-bold shadow-xs">
+                  <TrendingUp className="w-5 h-5 text-emerald-400" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-blue-900 uppercase tracking-wider">
+                  <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                     Selected Contribution Summary
                   </div>
-                  {/* Exact text format required by user prompt */}
-                  <div className="text-lg sm:text-xl font-black text-[#0B2545] mt-0.5">
+                  <div className="text-lg sm:text-xl font-black text-slate-900 mt-0.5">
                     Donation Amount: {isValidAmount ? `₹${numericAmount.toLocaleString('en-IN')}` : '—'}
                   </div>
                 </div>
               </div>
 
               {isValidAmount && (
-                <div className="text-xs font-semibold text-blue-800 bg-white px-3 py-1.5 rounded-xl border border-blue-200 self-start sm:self-auto flex items-center gap-1.5 shadow-2xs">
-                  <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+                <div className="text-xs font-semibold text-emerald-800 bg-white px-3 py-1.5 rounded-xl border border-emerald-200 self-start sm:self-auto flex items-center gap-1.5 shadow-2xs">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>50% Deduction under Sec 80G</span>
                 </div>
               )}
             </div>
 
-            {/* 7. Action Button: “Continue to Donate” */}
+            {/* 7. Action Button */}
             <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
-                <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>Instant 80G tax receipt issued upon confirmation.</span>
               </div>
 
               <button
                 type="submit"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 active:scale-98 text-white font-black text-sm sm:text-base shadow-md hover:shadow-lg shadow-blue-500/25 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 active:scale-98 text-white font-black text-sm sm:text-base shadow-md hover:shadow-lg shadow-emerald-600/25 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Continue to Donate</span>
                 <ArrowRight className="w-4 h-4" />

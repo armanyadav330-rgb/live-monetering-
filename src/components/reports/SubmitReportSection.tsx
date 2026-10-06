@@ -94,7 +94,7 @@ export const SubmitReportSection: React.FC<SubmitReportSectionProps> = ({
     if (!files || files.length === 0) return;
 
     const newDocs: ReportDocument[] = [];
-    Array.from(files).forEach((file) => {
+    Array.from(files).forEach((file: File) => {
       const isAllowed =
         file.type.includes('pdf') ||
         file.type.includes('image') ||

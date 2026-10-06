@@ -15,7 +15,7 @@ export const WhyDonateSection: React.FC = () => {
     {
       title: 'Transparent Use of Funds',
       icon: Eye,
-      color: 'text-blue-600 bg-blue-50 border-blue-200',
+      color: 'text-slate-800 bg-slate-100 border-slate-300',
       description:
         'Every rupee received is publicly tracked with live audited financial statements. Real-time CCTV and geotagged field reports verify that all resources reach the designated ground programs.',
       badge: '100% Audited',
@@ -56,7 +56,7 @@ export const WhyDonateSection: React.FC = () => {
             <span>Guaranteed Integrity & Accountability</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0B2545] tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
             Why Your Support Matters
           </h2>
 
@@ -84,7 +84,7 @@ export const WhyDonateSection: React.FC = () => {
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <h3 className="text-base sm:text-lg font-bold text-[#0B2545] flex items-center gap-2">
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                       <span>{pt.title}</span>
                     </h3>
@@ -105,11 +105,11 @@ export const WhyDonateSection: React.FC = () => {
         {/* Government Regulatory Compliance Banner */}
         <div className="mt-10 p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0B2545] text-amber-400 flex items-center justify-center font-bold text-lg shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center font-bold text-lg shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-xs sm:text-sm font-bold text-[#0B2545]">
+              <div className="text-xs sm:text-sm font-bold text-slate-900">
                 Compliant with DoSJE & NGO Darpan Governance Guidelines
               </div>
               <div className="text-[11px] text-slate-500 font-medium">

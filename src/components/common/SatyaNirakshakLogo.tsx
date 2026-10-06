@@ -33,8 +33,8 @@ export const SatyaNirakshakLogo: React.FC<SatyaNirakshakLogoProps> = ({
     >
       <defs>
         <linearGradient id="snNavyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#144376" />
-          <stop offset="100%" stopColor="#0B2545" />
+          <stop offset="0%" stopColor="#334155" />
+          <stop offset="100%" stopColor="#0F172A" />
         </linearGradient>
 
         <linearGradient id="snGreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -43,34 +43,34 @@ export const SatyaNirakshakLogo: React.FC<SatyaNirakshakLogoProps> = ({
         </linearGradient>
 
         <linearGradient id="snShieldLeft" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#0E3867" />
-          <stop offset="100%" stopColor="#082342" />
+          <stop offset="0%" stopColor="#1E293B" />
+          <stop offset="100%" stopColor="#0F172A" />
         </linearGradient>
 
         <linearGradient id="snShieldRight" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#1C5289" />
-          <stop offset="100%" stopColor="#113D6B" />
+          <stop offset="0%" stopColor="#334155" />
+          <stop offset="100%" stopColor="#1E293B" />
         </linearGradient>
       </defs>
 
       {/* 1. LEFT RADAR WAVES */}
       <path
         d="M 125 105 A 110 110 0 0 0 125 215"
-        stroke="#124376"
+        stroke="#334155"
         strokeWidth="8.5"
         strokeLinecap="round"
         fill="none"
       />
       <path
         d="M 140 118 A 95 95 0 0 0 140 202"
-        stroke="#17508B"
+        stroke="#475569"
         strokeWidth="9"
         strokeLinecap="round"
         fill="none"
       />
       <path
         d="M 155 132 A 80 80 0 0 0 155 188"
-        stroke="#1D5D9F"
+        stroke="#64748B"
         strokeWidth="9.5"
         strokeLinecap="round"
         fill="none"
@@ -79,21 +79,21 @@ export const SatyaNirakshakLogo: React.FC<SatyaNirakshakLogoProps> = ({
       {/* 2. RIGHT RADAR WAVES */}
       <path
         d="M 275 105 A 110 110 0 0 1 275 215"
-        stroke="#124376"
+        stroke="#334155"
         strokeWidth="8.5"
         strokeLinecap="round"
         fill="none"
       />
       <path
         d="M 260 118 A 95 95 0 0 1 260 202"
-        stroke="#17508B"
+        stroke="#475569"
         strokeWidth="9"
         strokeLinecap="round"
         fill="none"
       />
       <path
         d="M 245 132 A 80 80 0 0 1 245 188"
-        stroke="#1D5D9F"
+        stroke="#64748B"
         strokeWidth="9.5"
         strokeLinecap="round"
         fill="none"
@@ -102,25 +102,25 @@ export const SatyaNirakshakLogo: React.FC<SatyaNirakshakLogoProps> = ({
       {/* 3. TOP CONSTELLATION / NETWORK GRAPH NODES */}
       <path
         d="M 160 100 A 75 75 0 0 1 240 100"
-        stroke="#144376"
+        stroke="#334155"
         strokeWidth="7"
         strokeLinecap="round"
         fill="none"
       />
-      <line x1="172" y1="120" x2="200" y2="92" stroke="#1E5C96" strokeWidth="3" />
-      <line x1="200" y1="92" x2="228" y2="120" stroke="#1E5C96" strokeWidth="3" />
-      <line x1="172" y1="120" x2="228" y2="120" stroke="#1E5C96" strokeWidth="2.5" />
-      <line x1="150" y1="135" x2="172" y2="120" stroke="#1E5C96" strokeWidth="3" />
-      <line x1="228" y1="120" x2="250" y2="135" stroke="#1E5C96" strokeWidth="3" />
-      <line x1="172" y1="120" x2="200" y2="132" stroke="#1E5C96" strokeWidth="2" />
-      <line x1="228" y1="120" x2="200" y2="132" stroke="#1E5C96" strokeWidth="2" />
+      <line x1="172" y1="120" x2="200" y2="92" stroke="#475569" strokeWidth="3" />
+      <line x1="200" y1="92" x2="228" y2="120" stroke="#475569" strokeWidth="3" />
+      <line x1="172" y1="120" x2="228" y2="120" stroke="#475569" strokeWidth="2.5" />
+      <line x1="150" y1="135" x2="172" y2="120" stroke="#475569" strokeWidth="3" />
+      <line x1="228" y1="120" x2="250" y2="135" stroke="#475569" strokeWidth="3" />
+      <line x1="172" y1="120" x2="200" y2="132" stroke="#475569" strokeWidth="2" />
+      <line x1="228" y1="120" x2="200" y2="132" stroke="#475569" strokeWidth="2" />
 
       {/* Network Node Dots */}
-      <circle cx="200" cy="92" r="5" fill="#144376" />
-      <circle cx="172" cy="120" r="4.5" fill="#144376" />
+      <circle cx="200" cy="92" r="5" fill="#334155" />
+      <circle cx="172" cy="120" r="4.5" fill="#334155" />
       <circle cx="228" cy="120" r="4.5" fill="#10B981" />
-      <circle cx="150" cy="135" r="4" fill="#144376" />
-      <circle cx="250" cy="135" r="4" fill="#144376" />
+      <circle cx="150" cy="135" r="4" fill="#334155" />
+      <circle cx="250" cy="135" r="4" fill="#334155" />
 
       {/* 4. SHIELD BOTTOM CREST */}
       <path
@@ -133,10 +133,10 @@ export const SatyaNirakshakLogo: React.FC<SatyaNirakshakLogoProps> = ({
       />
 
       {/* 5. MAIN CENTRAL SURVEILLANCE EYE */}
-      {/* Upper Eyelid (Navy) */}
+      {/* Upper Eyelid (Dark Slate) */}
       <path
         d="M 112 165 C 145 118, 255 118, 288 165 C 250 138, 150 138, 112 165 Z"
-        fill="#0B2545"
+        fill="#0F172A"
       />
 
       {/* Lower Eyelid (Emerald Green) */}
@@ -152,10 +152,10 @@ export const SatyaNirakshakLogo: React.FC<SatyaNirakshakLogoProps> = ({
       <circle cx="200" cy="165" r="32" fill="url(#snGreenGrad)" />
 
       {/* Aperture ring */}
-      <circle cx="200" cy="165" r="21" fill="#0B2545" />
+      <circle cx="200" cy="165" r="21" fill="#0F172A" />
 
       {/* Camera Lens Pupil */}
-      <circle cx="200" cy="165" r="14" fill="#06182C" />
+      <circle cx="200" cy="165" r="14" fill="#020617" />
 
       {/* Lens Glare Highlight Arcs */}
       <path
@@ -180,11 +180,11 @@ export const SatyaNirakshakLogo: React.FC<SatyaNirakshakLogoProps> = ({
         <div className="flex flex-col leading-none">
           <div
             className={`font-black tracking-tight text-sm sm:text-base md:text-lg ${
-              textColor || 'text-[#0B2545]'
+              textColor || 'text-slate-900'
             }`}
           >
             <span>SATYA </span>
-            <span className="text-[#144376]">NIRAKSHAK</span>
+            <span className="text-emerald-700">NIRAKSHAK</span>
           </div>
           <div className="flex items-center gap-1.5 mt-0.5">
             <span
@@ -198,7 +198,7 @@ export const SatyaNirakshakLogo: React.FC<SatyaNirakshakLogoProps> = ({
               className={`text-[8px] font-black px-1 py-0.2 rounded border uppercase ${
                 textColor
                   ? 'border-white/30 text-white bg-white/10'
-                  : 'border-[#0B2545]/30 text-[#0B2545] bg-[#0B2545]/5'
+                  : 'border-slate-800/30 text-slate-900 bg-slate-900/5'
               }`}
             >
               NGO
@@ -216,21 +216,21 @@ export const SatyaNirakshakLogo: React.FC<SatyaNirakshakLogoProps> = ({
       <div className="mt-1 flex flex-col items-center">
         <h2
           className={`font-black text-xl sm:text-2xl tracking-wider leading-tight ${
-            textColor || 'text-[#0B2545]'
+            textColor || 'text-slate-900'
           }`}
         >
           SATYA
         </h2>
         <h2
           className={`font-black text-xl sm:text-2xl tracking-normal leading-tight ${
-            textColor || 'text-[#0B2545]'
+            textColor || 'text-slate-900'
           }`}
         >
           NIRAKSHAK
         </h2>
         <p
           className={`text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase mt-0.5 ${
-            textColor || 'text-[#0B2545]'
+            textColor || 'text-slate-900'
           }`}
         >
           LIVE MONITORING SYSTEM
@@ -238,19 +238,19 @@ export const SatyaNirakshakLogo: React.FC<SatyaNirakshakLogoProps> = ({
         <div className="flex items-center justify-center gap-2 mt-1">
           <div
             className={`h-0.5 w-8 rounded-full ${
-              textColor ? 'bg-current opacity-70' : 'bg-[#0B2545]'
+              textColor ? 'bg-current opacity-70' : 'bg-slate-900'
             }`}
           />
           <span
             className={`text-xs font-black tracking-widest ${
-              textColor || 'text-[#0B2545]'
+              textColor || 'text-slate-900'
             }`}
           >
             NGO
           </span>
           <div
             className={`h-0.5 w-8 rounded-full ${
-              textColor ? 'bg-current opacity-70' : 'bg-[#0B2545]'
+              textColor ? 'bg-current opacity-70' : 'bg-slate-900'
             }`}
           />
         </div>

@@ -36,9 +36,9 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
       id: 'EDUCATION',
       title: 'Education & Scholarships',
       tag: 'Education & Youth',
-      tagColor: 'bg-blue-50 text-blue-700 border-blue-200',
-      badgeBg: 'bg-blue-600 text-white',
-      iconColor: 'text-blue-600',
+      tagColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+      badgeBg: 'bg-emerald-600 text-white',
+      iconColor: 'text-emerald-700',
       icon: GraduationCap,
       image: '/assets/donations/education_impact.jpg',
       alt: 'Children studying in rural classroom',
@@ -51,9 +51,9 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
       id: 'NUTRITION',
       title: 'Food & Essential Support',
       tag: 'Nutrition & Hunger',
-      tagColor: 'bg-sky-50 text-sky-700 border-sky-200',
-      badgeBg: 'bg-sky-600 text-white',
-      iconColor: 'text-sky-600',
+      tagColor: 'bg-amber-50 text-amber-800 border-amber-200',
+      badgeBg: 'bg-amber-600 text-white',
+      iconColor: 'text-amber-700',
       icon: UtensilsCrossed,
       image: '/assets/donations/food_impact.jpg',
       alt: 'Community cooked meal distribution drive',
@@ -66,9 +66,9 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
       id: 'HEALTHCARE',
       title: 'Healthcare & Well-being',
       tag: 'Primary Healthcare',
-      tagColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
-      badgeBg: 'bg-indigo-600 text-white',
-      iconColor: 'text-indigo-600',
+      tagColor: 'bg-rose-50 text-rose-800 border-rose-200',
+      badgeBg: 'bg-rose-600 text-white',
+      iconColor: 'text-rose-700',
       icon: HeartPulse,
       image: '/assets/donations/healthcare_impact.jpg',
       alt: 'Doctor providing medical checkup at rural clinic',
@@ -81,9 +81,9 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
       id: 'COMMUNITY_DEV',
       title: 'Community Development',
       tag: 'Empowerment & SHG',
-      tagColor: 'bg-blue-50 text-blue-800 border-blue-200',
-      badgeBg: 'bg-[#0B2545] text-white',
-      iconColor: 'text-[#0B2545]',
+      tagColor: 'bg-slate-100 text-slate-800 border-slate-300',
+      badgeBg: 'bg-slate-900 text-white',
+      iconColor: 'text-slate-800',
       icon: Users,
       image: '/assets/donations/community_impact.jpg',
       alt: 'Women self-help group livelihood training',
@@ -95,16 +95,16 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
   ];
 
   return (
-    <section id="impact-section" className="py-16 sm:py-20 bg-[#F8FAFC] border-b border-blue-100">
+    <section id="impact-section" className="py-16 sm:py-20 bg-[#F8FAFC] border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
             <span>Verified Social Initiatives</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0B2545] tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
             Your Donation Creates Impact
           </h2>
 
@@ -122,7 +122,7 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
               <div
                 key={card.id}
                 onClick={() => onSelectCause(card.id)}
-                className="group bg-white rounded-2xl sm:rounded-3xl border border-blue-100 shadow-2xs hover:shadow-xl hover:border-blue-300 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer hover:-translate-y-1.5 text-left"
+                className="group bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-2xs hover:shadow-xl hover:border-slate-400 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer hover:-translate-y-1.5 text-left"
               >
                 <div>
                   {/* Top Image Container with subtle zoom effect */}
@@ -133,7 +133,7 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B2545]/70 via-black/10 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-black/10 to-transparent" />
 
                     {/* Top Floating Badge */}
                     <div className="absolute top-3 left-3">
@@ -145,9 +145,9 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
                       </span>
                     </div>
 
-                    {/* Verified Badge (Blue Theme) */}
+                    {/* Verified Badge */}
                     <div className="absolute top-3 right-3">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-blue-600 text-white shadow-xs">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-700 text-white shadow-xs">
                         <CheckCircle2 className="w-3 h-3" />
                         <span>Verified</span>
                       </span>
@@ -155,7 +155,7 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
 
                     {/* Bottom overlay title highlight */}
                     <div className="absolute bottom-3 left-3 right-3">
-                      <div className="w-9 h-9 rounded-xl bg-white/95 backdrop-blur-md flex items-center justify-center shadow-md mb-1.5 border border-blue-100">
+                      <div className="w-9 h-9 rounded-xl bg-white/95 backdrop-blur-md flex items-center justify-center shadow-md mb-1.5 border border-slate-200">
                         <Icon className={`w-5 h-5 ${card.iconColor}`} />
                       </div>
                     </div>
@@ -163,7 +163,7 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
 
                   {/* Card Body */}
                   <div className="p-5">
-                    <h3 className="text-base sm:text-lg font-bold text-[#0B2545] leading-snug group-hover:text-blue-600 transition">
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-emerald-700 transition">
                       {card.title}
                     </h3>
                   </div>
@@ -177,9 +177,9 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ onSelectCause }) =
                       e.stopPropagation();
                       onSelectCause(card.id);
                     }}
-                    className="w-full py-2.5 px-4 rounded-xl bg-blue-50/70 group-hover:bg-[#0B2545] text-blue-900 group-hover:text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer border border-blue-200 group-hover:border-[#0B2545] shadow-2xs"
+                    className="w-full py-2.5 px-4 rounded-xl bg-slate-100 group-hover:bg-slate-900 text-slate-800 group-hover:text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer border border-slate-300 group-hover:border-slate-900 shadow-2xs"
                   >
-                    <Heart className="w-3.5 h-3.5 fill-blue-600 text-blue-600 group-hover:fill-white group-hover:text-white transition-colors" />
+                    <Heart className="w-3.5 h-3.5 fill-rose-600 text-rose-600 group-hover:fill-white group-hover:text-white transition-colors" />
                     <span>{card.ctaText}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>

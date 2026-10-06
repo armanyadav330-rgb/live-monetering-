@@ -90,8 +90,8 @@ export const LandingNav: React.FC<LandingNavProps> = ({
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="flex items-center gap-3 sm:gap-3.5 cursor-pointer group shrink-0 select-none"
         >
-          {/* Polished & Attractive Shield Emblem matching user reference */}
-          <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-blue-50 via-white to-sky-50 border border-blue-200/80 shadow-2xs group-hover:shadow-md group-hover:border-blue-400 transition-all duration-300 flex items-center justify-center p-1">
+          {/* Polished & Attractive Shield Emblem */}
+          <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-slate-100 via-white to-slate-100 border border-slate-300 shadow-2xs group-hover:shadow-md group-hover:border-slate-500 transition-all duration-300 flex items-center justify-center p-1">
             <svg
               viewBox="0 0 100 110"
               className="w-full h-full drop-shadow-xs group-hover:scale-105 transition-transform duration-300"
@@ -101,12 +101,12 @@ export const LandingNav: React.FC<LandingNavProps> = ({
             >
               <defs>
                 <linearGradient id="shieldNavy" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#1E40AF" />
-                  <stop offset="100%" stopColor="#0B2545" />
+                  <stop offset="0%" stopColor="#334155" />
+                  <stop offset="100%" stopColor="#0F172A" />
                 </linearGradient>
-                <linearGradient id="shieldBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#3B82F6" />
-                  <stop offset="100%" stopColor="#1D4ED8" />
+                <linearGradient id="shieldAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#64748B" />
+                  <stop offset="100%" stopColor="#1E293B" />
                 </linearGradient>
               </defs>
 
@@ -128,37 +128,37 @@ export const LandingNav: React.FC<LandingNavProps> = ({
                 strokeLinejoin="round"
               />
 
-              {/* Central Guardian Figure (Navy) */}
-              <circle cx="50" cy="38" r="6" fill="#0B2545" />
+              {/* Central Guardian Figure */}
+              <circle cx="50" cy="38" r="6" fill="#0F172A" />
               <path
                 d="M38 57 C38 47 62 47 62 57"
-                stroke="#0B2545"
+                stroke="#0F172A"
                 strokeWidth="4"
                 strokeLinecap="round"
               />
 
-              {/* Left Beneficiary Figure (Royal Blue) */}
-              <circle cx="35" cy="48" r="4.5" fill="url(#shieldBlue)" />
+              {/* Left Beneficiary Figure */}
+              <circle cx="35" cy="48" r="4.5" fill="url(#shieldAccent)" />
               <path
                 d="M26 66 C26 58 44 58 44 66"
-                stroke="url(#shieldBlue)"
+                stroke="url(#shieldAccent)"
                 strokeWidth="3.5"
                 strokeLinecap="round"
               />
 
-              {/* Right Beneficiary Figure (Royal Blue) */}
-              <circle cx="65" cy="48" r="4.5" fill="url(#shieldBlue)" />
+              {/* Right Beneficiary Figure */}
+              <circle cx="65" cy="48" r="4.5" fill="url(#shieldAccent)" />
               <path
                 d="M56 66 C56 58 74 58 74 66"
-                stroke="url(#shieldBlue)"
+                stroke="url(#shieldAccent)"
                 strokeWidth="3.5"
                 strokeLinecap="round"
               />
 
-              {/* Bottom Ground-Anchor Pin / Blue Accent */}
+              {/* Bottom Ground-Anchor Pin */}
               <path
                 d="M40 76 L50 88 L60 76"
-                stroke="url(#shieldBlue)"
+                stroke="url(#shieldAccent)"
                 strokeWidth="4.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -168,11 +168,11 @@ export const LandingNav: React.FC<LandingNavProps> = ({
 
           {/* Brand Typography */}
           <div className="flex flex-col text-left">
-            <div className="text-base sm:text-lg md:text-xl font-black tracking-tight leading-none text-[#0B2545]">
-              Satya <span className="text-blue-600 group-hover:text-blue-700 transition-colors">Nirakshak</span>
+            <div className="text-base sm:text-lg md:text-xl font-black tracking-tight leading-none text-slate-900">
+              Satya <span className="text-emerald-700 group-hover:text-emerald-800 transition-colors">Nirakshak</span>
             </div>
             <div className="text-[11px] sm:text-xs font-semibold text-slate-500 tracking-normal mt-1 leading-none flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
               <span>NGO Monitoring System</span>
             </div>
           </div>
@@ -185,16 +185,16 @@ export const LandingNav: React.FC<LandingNavProps> = ({
             <button
               type="button"
               onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-              className="bg-blue-50/70 hover:bg-blue-100/70 text-blue-900 border border-blue-200/80 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition cursor-pointer select-none"
+              className="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 text-xs sm:text-sm font-semibold transition cursor-pointer select-none"
               aria-label="Select Language"
               title="Select Language / भाषा चुनें"
             >
-              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-700 shrink-0" />
+              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-600 shrink-0" />
               <span className="uppercase text-xs sm:text-sm tracking-wide">
                 {currentLanguageInfo?.short || 'EN'}
               </span>
               <ChevronDown
-                className={`w-3.5 h-3.5 text-blue-600 transition-transform duration-200 ${
+                className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-200 ${
                   langDropdownOpen ? 'rotate-180' : ''
                 }`}
               />
@@ -202,10 +202,10 @@ export const LandingNav: React.FC<LandingNavProps> = ({
 
             {/* Language Selection Popover */}
             {langDropdownOpen && (
-              <div className="absolute right-0 top-full mt-2 w-56 max-h-72 overflow-y-auto rounded-2xl bg-white border border-blue-100 shadow-xl z-50 py-1.5 text-slate-800 text-xs animate-in fade-in zoom-in-95 duration-150">
-                <div className="px-3 py-1.5 border-b border-slate-100 flex items-center justify-between text-[11px] font-bold text-[#0B2545]">
+              <div className="absolute right-0 top-full mt-2 w-56 max-h-72 overflow-y-auto rounded-2xl bg-white border border-slate-200 shadow-xl z-50 py-1.5 text-slate-800 text-xs animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-3 py-1.5 border-b border-slate-100 flex items-center justify-between text-[11px] font-bold text-slate-900">
                   <span>{t('app.select_language', 'Select Language')}</span>
-                  <span className="text-[10px] text-blue-500 font-mono">13 Languages</span>
+                  <span className="text-[10px] text-slate-500 font-mono">13 Languages</span>
                 </div>
                 <div className="py-1">
                   {languages.map((item) => {
@@ -217,14 +217,14 @@ export const LandingNav: React.FC<LandingNavProps> = ({
                         onClick={() => handleSelectLanguage(item.code)}
                         className={`w-full px-3.5 py-2 flex items-center justify-between transition cursor-pointer text-left ${
                           isSelected
-                            ? 'bg-blue-50 text-blue-900 font-bold'
+                            ? 'bg-slate-100 text-slate-900 font-bold'
                             : 'hover:bg-slate-50 text-slate-700'
                         }`}
                       >
                         <span className="text-xs">{item.nativeLabel}</span>
                         <span className="text-[10px] uppercase text-slate-400 font-semibold flex items-center gap-1">
                           {item.short}
-                          {isSelected && <Check className="w-3.5 h-3.5 text-blue-600" />}
+                          {isSelected && <Check className="w-3.5 h-3.5 text-emerald-600" />}
                         </span>
                       </button>
                     );
@@ -234,22 +234,22 @@ export const LandingNav: React.FC<LandingNavProps> = ({
             )}
           </div>
 
-          {/* 2. Donate Button (Crisp Blue & White Rounded Pill with Heart) */}
+          {/* 2. Donate Button */}
           <button
             type="button"
             onClick={handleDonateClick}
-            className="bg-blue-50 hover:bg-blue-100 active:bg-blue-200 text-blue-700 border border-blue-200 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-bold transition shadow-2xs hover:shadow-xs cursor-pointer select-none"
+            className="bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 text-emerald-800 border border-emerald-300 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-bold transition shadow-2xs hover:shadow-xs cursor-pointer select-none"
             title="Donate & Support Ground NGO Initiatives (80G Tax Deductible)"
           >
-            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-blue-600 text-blue-600 shrink-0" />
+            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-600 text-emerald-600 shrink-0" />
             <span>Donate</span>
           </button>
 
-          {/* 3. Monitoring Portal Button (Dark Royal Navy Rounded Pill with Screen Icon & Diagonal Arrow) */}
+          {/* 3. Monitoring Portal Button */}
           <button
             type="button"
             onClick={handlePortalClick}
-            className="hidden sm:flex items-center gap-1.5 sm:gap-2 bg-[#0B2545] hover:bg-[#133A6B] active:bg-[#071930] text-white px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition cursor-pointer select-none border border-blue-900/30"
+            className="hidden sm:flex items-center gap-1.5 sm:gap-2 bg-slate-900 hover:bg-slate-800 active:bg-black text-white px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition cursor-pointer select-none border border-slate-800"
             title="Launch Live Satya Nirakshak Monitoring Portal"
           >
             {/* Screen / Presentation Monitor Icon matching reference */}
@@ -269,7 +269,7 @@ export const LandingNav: React.FC<LandingNavProps> = ({
               <path d="M12 17v4" />
             </svg>
             <span>Monitoring Portal</span>
-            <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-200 shrink-0" strokeWidth={2.2} />
+            <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-300 shrink-0" strokeWidth={2.2} />
           </button>
 
           {/* 4. Circular Menu Button (3 Horizontal Lines) */}
@@ -294,11 +294,11 @@ export const LandingNav: React.FC<LandingNavProps> = ({
                 {/* Header in menu */}
                 <div className="pb-2 border-b border-slate-100 flex items-center justify-between">
                   <div>
-                    <div className="text-xs font-bold text-[#0B2545]">Satya Nirakshak</div>
+                    <div className="text-xs font-bold text-slate-900">Satya Nirakshak</div>
                     <div className="text-[10px] text-slate-500 font-medium">Live Surveillance & Audits</div>
                   </div>
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     Active Node
                   </span>
                 </div>
@@ -311,9 +311,9 @@ export const LandingNav: React.FC<LandingNavProps> = ({
                       setMobileMenuOpen(false);
                       handlePortalClick();
                     }}
-                    className="w-full py-2.5 rounded-xl bg-[#0B2545] hover:bg-[#133A6B] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs cursor-pointer border border-blue-900/30"
+                    className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs cursor-pointer border border-slate-800"
                   >
-                    <Shield className="w-4 h-4 text-blue-200" />
+                    <Shield className="w-4 h-4 text-slate-300" />
                     <span>Monitoring Portal</span>
                     <ArrowUpRight className="w-4 h-4 text-white" />
                   </button>
@@ -324,34 +324,34 @@ export const LandingNav: React.FC<LandingNavProps> = ({
                   <button
                     type="button"
                     onClick={() => scrollToSection('features')}
-                    className="w-full text-left px-3 py-2 rounded-xl hover:text-blue-700 hover:bg-blue-50/60 transition cursor-pointer flex items-center justify-between"
+                    className="w-full text-left px-3 py-2 rounded-xl hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer flex items-center justify-between"
                   >
                     <span>Key Surveillance Modules</span>
-                    <span className="text-[11px] text-blue-400">01</span>
+                    <span className="text-[11px] text-slate-400">01</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => scrollToSection('how-it-works')}
-                    className="w-full text-left px-3 py-2 rounded-xl hover:text-blue-700 hover:bg-blue-50/60 transition cursor-pointer flex items-center justify-between"
+                    className="w-full text-left px-3 py-2 rounded-xl hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer flex items-center justify-between"
                   >
                     <span>How Field Verification Works</span>
-                    <span className="text-[11px] text-blue-400">02</span>
+                    <span className="text-[11px] text-slate-400">02</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => scrollToSection('status')}
-                    className="w-full text-left px-3 py-2 rounded-xl hover:text-blue-700 hover:bg-blue-50/60 transition cursor-pointer flex items-center justify-between"
+                    className="w-full text-left px-3 py-2 rounded-xl hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer flex items-center justify-between"
                   >
                     <span>Live NGO CCTV Grid</span>
-                    <span className="text-[11px] text-blue-400">03</span>
+                    <span className="text-[11px] text-slate-400">03</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => scrollToSection('impact-section')}
-                    className="w-full text-left px-3 py-2 rounded-xl hover:text-blue-700 hover:bg-blue-50/60 transition cursor-pointer flex items-center justify-between"
+                    className="w-full text-left px-3 py-2 rounded-xl hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer flex items-center justify-between"
                   >
                     <span>Ground Impact Initiatives</span>
-                    <span className="text-[11px] text-blue-400">04</span>
+                    <span className="text-[11px] text-slate-400">04</span>
                   </button>
                   <button
                     type="button"
@@ -359,13 +359,13 @@ export const LandingNav: React.FC<LandingNavProps> = ({
                       setMobileMenuOpen(false);
                       handleDonateClick();
                     }}
-                    className="w-full text-left px-3 py-2 rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 font-bold transition cursor-pointer flex items-center justify-between border border-blue-200"
+                    className="w-full text-left px-3 py-2 rounded-xl text-emerald-800 bg-emerald-50 hover:bg-emerald-100 font-bold transition cursor-pointer flex items-center justify-between border border-emerald-300"
                   >
                     <div className="flex items-center gap-1.5">
-                      <Heart className="w-3.5 h-3.5 fill-blue-600 text-blue-600" />
+                      <Heart className="w-3.5 h-3.5 fill-emerald-600 text-emerald-600" />
                       <span>Donate & Support Programs</span>
                     </div>
-                    <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-blue-200/80 text-blue-900">
+                    <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-900">
                       80G
                     </span>
                   </button>
@@ -374,12 +374,12 @@ export const LandingNav: React.FC<LandingNavProps> = ({
                 {/* Support Contact Footer */}
                 <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
                   <span className="flex items-center gap-1.5">
-                    <Headphones className="w-3.5 h-3.5 text-[#0B2545]" />
+                    <Headphones className="w-3.5 h-3.5 text-slate-700" />
                     <span>Official Support</span>
                   </span>
                   <a
                     href="mailto:support-dosje@nic.in"
-                    className="text-slate-600 hover:text-[#0B2545] font-medium flex items-center gap-1"
+                    className="text-slate-600 hover:text-slate-900 font-medium flex items-center gap-1"
                   >
                     <Mail className="w-3 h-3 text-slate-400" />
                     <span>support-dosje@nic.in</span>

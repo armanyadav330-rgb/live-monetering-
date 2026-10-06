@@ -49,9 +49,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           }}
         />
 
-        {/* Measured, natural editorial scrim: ensures WCAG AA text contrast while keeping real architectural photo dominant with deep blue harmony */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0B2545]/90 via-[#0B2545]/60 to-[#0B2545]/25 sm:via-[#0B2545]/50 sm:to-[#0B2545]/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B2545]/90 via-transparent to-[#0B2545]/30 sm:hidden" />
+        {/* Measured, natural editorial scrim: ensures WCAG AA text contrast while keeping real architectural photo dominant */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/80 to-slate-950/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-transparent to-slate-950/40 sm:hidden" />
       </div>
 
       {/* Hero Content Container with generous whitespace & editorial typography */}
@@ -59,7 +59,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="max-w-2xl space-y-6 sm:space-y-8 text-left">
           {/* Small Label */}
           <div>
-            <span className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-sky-300 uppercase select-none">
+            <span className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-emerald-400 uppercase select-none">
               SATYA NIRAKSHAK
             </span>
           </div>
@@ -80,10 +80,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <button
               type="button"
               onClick={onStartMonitoring}
-              className="px-7 sm:px-8 py-3.5 sm:py-4 rounded-lg bg-white hover:bg-blue-50 text-[#0B2545] font-semibold text-sm sm:text-base tracking-wide transition-all duration-200 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center gap-2.5 group"
+              className="px-7 sm:px-8 py-3.5 sm:py-4 rounded-lg bg-white hover:bg-slate-100 text-slate-900 font-semibold text-sm sm:text-base tracking-wide transition-all duration-200 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center gap-2.5 group"
             >
               <span>Get Started</span>
-              <ArrowRight className="w-4 h-4 text-[#0B2545] transition-transform duration-200 group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 text-slate-900 transition-transform duration-200 group-hover:translate-x-1" />
             </button>
 
             {/* Optional Secondary CTA */}
@@ -93,7 +93,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               className="px-6 sm:px-7 py-3.5 sm:py-4 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium text-sm sm:text-base border border-white/30 hover:border-white/50 backdrop-blur-xs transition-all duration-200 cursor-pointer flex items-center gap-2"
             >
               <span>Explore</span>
-              <ArrowDown className="w-4 h-4 text-blue-200" />
+              <ArrowDown className="w-4 h-4 text-slate-300" />
             </button>
           </div>
         </div>
@@ -101,7 +101,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
       {/* Quiet, authentic environmental marker */}
       <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-10 z-10 hidden sm:flex items-center gap-2 text-[11px] sm:text-xs text-white/70 font-light tracking-wide select-none">
-        <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
         <span>Grassroots Social Welfare Campus, India</span>
       </div>
     </section>

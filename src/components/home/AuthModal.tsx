@@ -166,7 +166,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <div>
               <h3
                 id="auth-modal-title"
-                className="text-base sm:text-lg font-bold text-[#0B2545] tracking-tight leading-snug"
+                className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-snug"
               >
                 {t('auth.modal_title')}
               </h3>
@@ -231,7 +231,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   id="auth-role-select"
                   value={selectedRole}
                   onChange={(e) => handleRoleChange(e.target.value as UserRole)}
-                  className="w-full pl-10 pr-9 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50/70 border border-slate-200 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0B2545]/20 focus:border-[#0B2545] transition cursor-pointer appearance-none"
+                  className="w-full pl-10 pr-9 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50/70 border border-slate-200 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900/20 focus:border-slate-800 transition cursor-pointer appearance-none"
                 >
                   <option value="SUPER_ADMIN">
                     {tRole('SUPER_ADMIN')}
@@ -277,7 +277,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     if (errorMessage) setErrorMessage(null);
                   }}
                   placeholder={t('landing.email')}
-                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50/70 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0B2545]/20 focus:border-[#0B2545] transition"
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50/70 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900/20 focus:border-slate-800 transition"
                   autoComplete="username"
                 />
               </div>
@@ -305,7 +305,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     if (errorMessage) setErrorMessage(null);
                   }}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50/70 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0B2545]/20 focus:border-[#0B2545] transition"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl text-xs sm:text-sm bg-slate-50/70 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900/20 focus:border-slate-800 transition"
                   autoComplete="current-password"
                 />
                 <button
@@ -318,10 +318,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   }}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                   title={showPassword ? 'Hide password' : 'Show password'}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-[#0B2545] active:scale-95 transition-colors cursor-pointer select-none"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-900 active:scale-95 transition-colors cursor-pointer select-none"
                 >
                   {showPassword ? (
-                    <EyeOff className="w-4 h-4 text-[#0B2545]" />
+                    <EyeOff className="w-4 h-4 text-slate-900" />
                   ) : (
                     <Eye className="w-4 h-4 text-slate-500" />
                   )}
@@ -340,7 +340,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   id="auth-remember-me"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-3.5 h-3.5 rounded text-[#0B2545] border-slate-300 focus:ring-[#0B2545] cursor-pointer"
+                  className="w-3.5 h-3.5 rounded text-slate-900 border-slate-300 focus:ring-slate-900 cursor-pointer"
                 />
                 <span>{t('auth.remember_me')}</span>
               </label>
@@ -349,7 +349,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 type="button"
                 id="auth-forgot-password-link"
                 onClick={handleForgotPassword}
-                className="text-[#0B2545] hover:text-blue-700 font-semibold hover:underline transition cursor-pointer"
+                className="text-slate-900 hover:text-emerald-700 font-semibold hover:underline transition cursor-pointer"
               >
                 {t('common.help', 'Forgot Password?')}
               </button>
@@ -361,7 +361,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 type="submit"
                 id="auth-signin-submit-btn"
                 disabled={isLoading}
-                className="w-full py-3 px-5 rounded-xl bg-[#0B2545] hover:bg-[#13315C] active:bg-[#071930] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
+                className="w-full py-3 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 active:bg-black text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <>

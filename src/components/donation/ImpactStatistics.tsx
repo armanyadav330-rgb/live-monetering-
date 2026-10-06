@@ -102,17 +102,17 @@ export const ImpactStatistics: React.FC = () => {
   return (
     <section
       id="ngo-gallery-section"
-      className="py-16 sm:py-20 bg-[#F8FAFC] border-b border-blue-100"
+      className="py-16 sm:py-20 bg-[#F8FAFC] border-b border-slate-200"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
             <span>Verified NGO Ground Activities</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0B2545] tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
             Our Work in Action
           </h2>
 
@@ -128,7 +128,7 @@ export const ImpactStatistics: React.FC = () => {
             <div
               key={item.id}
               onClick={() => setSelectedPhoto(item)}
-              className="group bg-white rounded-2xl sm:rounded-3xl border border-blue-100 shadow-2xs hover:shadow-xl hover:border-blue-300 transition-all duration-300 overflow-hidden cursor-pointer hover:-translate-y-1.5 text-left flex flex-col justify-between"
+              className="group bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-2xs hover:shadow-xl hover:border-slate-400 transition-all duration-300 overflow-hidden cursor-pointer hover:-translate-y-1.5 text-left flex flex-col justify-between"
             >
               <div>
                 {/* Photo Container with smooth zoom */}
@@ -146,18 +146,18 @@ export const ImpactStatistics: React.FC = () => {
                     }}
                   />
                   {/* Natural photo gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B2545]/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-black/20 to-transparent" />
 
                   {/* Top Category Badge */}
                   <div className="absolute top-3 left-3">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-blue-900 shadow-xs backdrop-blur-md border border-blue-100">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-slate-900 shadow-xs backdrop-blur-md border border-slate-200">
                       <span>{item.category}</span>
                     </span>
                   </div>
 
                   {/* Top Right Verified Tag */}
                   <div className="absolute top-3 right-3">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-blue-600 text-white shadow-xs">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-600 text-white shadow-xs">
                       <CheckCircle2 className="w-3 h-3" />
                       <span>Verified</span>
                     </span>
@@ -165,7 +165,7 @@ export const ImpactStatistics: React.FC = () => {
 
                   {/* Bottom Photo Overlay Info */}
                   <div className="absolute bottom-3 left-3 right-3 text-white">
-                    <div className="flex items-center gap-1.5 text-xs text-sky-300 font-semibold mb-1">
+                    <div className="flex items-center gap-1.5 text-xs text-amber-300 font-semibold mb-1">
                       <MapPin className="w-3.5 h-3.5 shrink-0" />
                       <span className="truncate">{item.location}</span>
                     </div>
@@ -173,8 +173,8 @@ export const ImpactStatistics: React.FC = () => {
 
                   {/* Hover View Full Photo Button */}
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                    <span className="px-4 py-2 rounded-full bg-white/95 text-[#0B2545] font-bold text-xs flex items-center gap-1.5 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform border border-blue-100">
-                      <Maximize2 className="w-3.5 h-3.5 text-blue-600" />
+                    <span className="px-4 py-2 rounded-full bg-white/95 text-slate-900 font-bold text-xs flex items-center gap-1.5 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform border border-slate-200">
+                      <Maximize2 className="w-3.5 h-3.5 text-slate-700" />
                       <span>View Photo Details</span>
                     </span>
                   </div>
@@ -184,15 +184,15 @@ export const ImpactStatistics: React.FC = () => {
                 <div className="p-5 sm:p-6 space-y-2.5">
                   <div className="flex items-center justify-between text-[11px] text-slate-500 font-medium">
                     <span className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-blue-500" />
+                      <Calendar className="w-3 h-3 text-slate-500" />
                       {item.date}
                     </span>
-                    <span className="font-semibold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200 text-[10px]">
+                    <span className="font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 text-[10px]">
                       {item.beneficiaries}
                     </span>
                   </div>
 
-                  <h3 className="text-base sm:text-lg font-bold text-[#0B2545] leading-snug group-hover:text-blue-600 transition">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug group-hover:text-emerald-700 transition">
                     {item.title}
                   </h3>
                 </div>
@@ -200,9 +200,9 @@ export const ImpactStatistics: React.FC = () => {
 
               {/* Bottom Card Footer */}
               <div className="p-5 sm:p-6 pt-0">
-                <div className="w-full py-2 px-3 rounded-xl bg-blue-50/70 group-hover:bg-[#0B2545] text-blue-900 group-hover:text-white font-bold text-xs flex items-center justify-between transition-colors border border-blue-100 group-hover:border-[#0B2545]">
+                <div className="w-full py-2 px-3 rounded-xl bg-slate-100 group-hover:bg-slate-900 text-slate-800 group-hover:text-white font-bold text-xs flex items-center justify-between transition-colors border border-slate-200 group-hover:border-slate-900">
                   <span className="flex items-center gap-1.5">
-                    <Heart className="w-3.5 h-3.5 fill-blue-600 text-blue-600 group-hover:fill-white group-hover:text-white transition-colors" />
+                    <Heart className="w-3.5 h-3.5 fill-rose-600 text-rose-600 group-hover:fill-white group-hover:text-white transition-colors" />
                     <span>Active Community Intervention</span>
                   </span>
                   <span>→</span>
@@ -247,7 +247,7 @@ export const ImpactStatistics: React.FC = () => {
                 }}
               />
               <div className="absolute bottom-3 left-3">
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-[#0B2545] shadow-md">
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-slate-900 shadow-md">
                   {selectedPhoto.category}
                 </span>
               </div>
@@ -263,7 +263,7 @@ export const ImpactStatistics: React.FC = () => {
                 <span className="font-semibold text-slate-700">{selectedPhoto.beneficiaries}</span>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-black text-[#0B2545] leading-snug">
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
                 {selectedPhoto.title}
               </h3>
 

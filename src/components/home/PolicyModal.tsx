@@ -62,7 +62,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
               <div className="text-[10px] font-bold text-[#FF671F] uppercase tracking-wider">
                 {(lang === 'hi' || (lang as any) === 'HI') ? 'भारत सरकार · एनआईसी संप्रभु मानक' : 'Government of India · NIC Sovereign Standards'}
               </div>
-              <h3 className="text-sm sm:text-base font-bold text-[#0b2545] dark:text-white">
+              <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
                 {(lang === 'hi' || (lang as any) === 'HI') ? 'वैधानिक अनुपालन एवं अभिशासन चार्टर' : 'Statutory Compliance & Governance Charter'}
               </h3>
             </div>
@@ -83,7 +83,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
             onClick={() => setActiveTab('privacy')}
             className={`px-3 py-1.5 rounded-lg transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'privacy'
-                ? 'bg-[#0b2545] text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
+                ? 'bg-slate-900 text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -94,7 +94,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
             onClick={() => setActiveTab('terms')}
             className={`px-3 py-1.5 rounded-lg transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'terms'
-                ? 'bg-[#0b2545] text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
+                ? 'bg-slate-900 text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -105,7 +105,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
             onClick={() => setActiveTab('hyperlink')}
             className={`px-3 py-1.5 rounded-lg transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'hyperlink'
-                ? 'bg-[#0b2545] text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
+                ? 'bg-slate-900 text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -116,7 +116,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
             onClick={() => setActiveTab('copyright')}
             className={`px-3 py-1.5 rounded-lg transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'copyright'
-                ? 'bg-[#0b2545] text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
+                ? 'bg-slate-900 text-amber-300 dark:bg-slate-800 dark:text-amber-400 shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -175,8 +175,8 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
 
           {activeTab === 'terms' && (
             <div className="space-y-3">
-              <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-900 dark:text-blue-300 flex items-start gap-2.5">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-blue-600 dark:text-blue-400" />
+              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-300 flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
                 <div className="text-xs">
                   {(lang === 'hi' || (lang as any) === 'HI') ? (
                     <>
@@ -278,7 +278,7 @@ export const PolicyModal: React.FC<PolicyModalProps> = ({
 
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-[#0b2545] dark:bg-slate-800 hover:bg-[#13315C] dark:hover:bg-slate-700 text-white font-bold text-xs transition cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs transition cursor-pointer"
           >
             {(lang === 'hi' || (lang as any) === 'HI') ? 'स्वीकार करें एवं बंद करें' : 'Acknowledge & Close'}
           </button>

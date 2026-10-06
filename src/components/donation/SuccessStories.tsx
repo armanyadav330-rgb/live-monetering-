@@ -55,7 +55,7 @@ export const SuccessStories: React.FC = () => {
             <span>Real Lives Transformed</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0B2545] tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
             Stories of Hope & Dignity
           </h2>
 
@@ -85,7 +85,7 @@ export const SuccessStories: React.FC = () => {
 
                   {/* Program Tag */}
                   <div className="absolute top-3 left-3">
-                    <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-[#0B2545]/90 text-white backdrop-blur-xs shadow-xs border border-white/20">
+                    <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-slate-900/90 text-white backdrop-blur-xs shadow-xs border border-white/20">
                       {story.program}
                     </span>
                   </div>

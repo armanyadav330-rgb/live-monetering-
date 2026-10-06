@@ -88,9 +88,9 @@ export const KeyFeatures: React.FC<KeyFeaturesProps> = ({
           : 'Field officers conduct on-site audits with tamper-proof GPS coordinates and timestamps, submitting photo evidence, meal quality logs, and physical muster checks.',
       icon: MapPin,
       badge: lang === 'HI' ? 'जीपीएस प्रमाणित' : 'GPS Verified',
-      badgeClass: 'bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30',
-      iconBg: 'bg-blue-500/10 text-blue-600',
-      topStripe: 'bg-blue-600',
+      badgeClass: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30',
+      iconBg: 'bg-emerald-500/10 text-emerald-600',
+      topStripe: 'bg-emerald-600',
     },
     {
       id: 'cag-audit-reports',
@@ -102,9 +102,9 @@ export const KeyFeatures: React.FC<KeyFeaturesProps> = ({
           : 'Download complete historical audit trails, anomaly registers, and CCTV visual snapshots in PDF/Excel compliant with CAG and DBT grant-in-aid release requirements.',
       icon: BarChart3,
       badge: lang === 'HI' ? 'कैग अनुरूप' : 'CAG Compliant',
-      badgeClass: 'bg-[#0b2545]/10 text-[#0b2545] dark:text-amber-300 border-[#0b2545]/30',
-      iconBg: 'bg-[#0b2545]/10 text-[#0b2545] dark:text-white',
-      topStripe: 'bg-[#0b2545]',
+      badgeClass: 'bg-slate-900/10 text-slate-900 dark:text-amber-300 border-slate-900/30',
+      iconBg: 'bg-slate-900/10 text-slate-900 dark:text-white',
+      topStripe: 'bg-slate-900',
     },
   ];
 

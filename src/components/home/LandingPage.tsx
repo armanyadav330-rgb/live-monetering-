@@ -54,7 +54,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-600 selection:text-white flex flex-col justify-between">
+    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-slate-800 selection:text-white flex flex-col justify-between">
       {/* 1. Header / Navigation Bar */}
       <LandingNav
         isDarkMode={isDarkMode}
@@ -86,10 +86,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         />
 
         {/* 3. Essential 3-Pillar Overview */}
-        <section id="features" className="py-10 sm:py-12 bg-[#F8FAFC] border-y border-blue-100">
+        <section id="features" className="py-10 sm:py-12 bg-[#F8FAFC] border-y border-slate-200">
           <div id="how-it-works" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-8">
-              <h2 className="text-lg sm:text-xl font-black text-[#0B2545]">
+              <h2 className="text-lg sm:text-xl font-black text-slate-900">
                 {t('pillars.title')}
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 font-medium mt-1">
@@ -100,18 +100,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div id="status" className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
               {/* Pillar 1 */}
               <div
-                className="bg-white p-5 rounded-xl border border-blue-100 shadow-2xs hover:shadow-md hover:border-blue-300 transition-all text-left"
+                className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs hover:shadow-md hover:border-slate-400 transition-all text-left"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-800 border border-blue-100 flex items-center justify-center text-xl">
+                  <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-800 border border-slate-200 flex items-center justify-center text-xl">
                     📹
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     {t('pillars.cctv_badge')}
                   </span>
                 </div>
-                <h3 className="text-sm font-bold text-[#0B2545] mb-1.5">
+                <h3 className="text-sm font-bold text-slate-900 mb-1.5">
                   {t('pillars.cctv_title')}
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
@@ -121,18 +121,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               {/* Pillar 2 */}
               <div
-                className="bg-white p-5 rounded-xl border border-blue-100 shadow-2xs hover:shadow-md hover:border-blue-300 transition-all text-left"
+                className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs hover:shadow-md hover:border-slate-400 transition-all text-left"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-sky-50 text-sky-800 border border-sky-100 flex items-center justify-center text-xl">
+                  <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-800 border border-slate-200 flex items-center justify-center text-xl">
                     📋
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     {t('pillars.inspections_badge')}
                   </span>
                 </div>
-                <h3 className="text-sm font-bold text-[#0B2545] mb-1.5">
+                <h3 className="text-sm font-bold text-slate-900 mb-1.5">
                   {t('pillars.inspections_title')}
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
@@ -142,18 +142,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               {/* Pillar 3 */}
               <div
-                className="bg-white p-5 rounded-xl border border-blue-100 shadow-2xs hover:shadow-md hover:border-blue-300 transition-all text-left"
+                className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs hover:shadow-md hover:border-slate-400 transition-all text-left"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-100 flex items-center justify-center text-xl">
+                  <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-800 border border-slate-200 flex items-center justify-center text-xl">
                     👥
                   </div>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                     {t('pillars.biometric_badge')}
                   </span>
                 </div>
-                <h3 className="text-sm font-bold text-[#0B2545] mb-1.5">
+                <h3 className="text-sm font-bold text-slate-900 mb-1.5">
                   {t('pillars.biometric_title')}
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
